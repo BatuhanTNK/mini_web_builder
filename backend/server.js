@@ -43,6 +43,12 @@ app.use(express.json({ limit: '10mb' }));
 // Serve uploaded files as static
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Serve frontend build (production)
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+}
+
 // Multer config — save to uploads/images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -208,6 +214,15 @@ app.get('/api/public/:slug', (req, res) => {
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// SPA fallback — any non-API route returns index.html so React Router works
+app.get(/^\/(?!api|uploads).*/, (req, res, next) => {
+  const indexFile = path.join(frontendDist, 'index.html');
+  if (fs.existsSync(indexFile)) {
+    return res.sendFile(indexFile);
+  }
+  next();
 });
 
 // Error handler for multer
