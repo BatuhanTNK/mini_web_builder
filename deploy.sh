@@ -57,17 +57,18 @@ else
   pm2 save
 fi
 
-# 6) Nginx config (varsa atla, yoksa kopyala)
+# 6) Nginx config (her deploy'da guncel tut)
 if command -v nginx >/dev/null 2>&1; then
-  if [ ! -f /etc/nginx/sites-available/miniweb ]; then
-    echo "==> Nginx config kuruluyor..."
-    sudo cp "$PROJECT_DIR/nginx.conf" /etc/nginx/sites-available/miniweb
-    sudo ln -sf /etc/nginx/sites-available/miniweb /etc/nginx/sites-enabled/miniweb
-    sudo rm -f /etc/nginx/sites-enabled/default
-    sudo nginx -t
+  echo "==> Nginx config guncelleniyor..."
+  sudo cp "$PROJECT_DIR/nginx.conf" /etc/nginx/sites-available/miniweb
+  sudo ln -sf /etc/nginx/sites-available/miniweb /etc/nginx/sites-enabled/miniweb
+  sudo rm -f /etc/nginx/sites-enabled/default
+  sudo nginx -t
+  if systemctl is-active --quiet nginx; then
     sudo systemctl reload nginx
   else
-    echo "==> Nginx config zaten var, atlandi."
+    sudo systemctl start nginx
+    sudo systemctl enable nginx
   fi
 else
   echo "==> Nginx kurulu degil. Yuklemek icin: sudo apt-get install -y nginx"
