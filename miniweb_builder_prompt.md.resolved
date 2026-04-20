@@ -1,0 +1,367 @@
+# 🚀 MiniWeb Builder — Kapsamlı Proje Promptu
+
+---
+
+## 📌 Projeye Genel Bakış
+
+Me-qr.com'daki **MiniWeb** özelliğine benzer, bir web sitesi içinde **hazır şablonlardan sürükle-bırak ile mini web siteleri oluşturulabilen** tam kapsamlı bir platform geliştir. Her mini site:
+- Benzersiz bir URL'ye sahip olacak (örn. `yourdomain.com/p/username` veya `yourdomain.com/site/abc123`)
+- QR kodu ile erişilebilir olacak
+- Mobil-first tasarıma sahip olacak (max-width: 480px, dikey kaydırma)
+- Blok tabanlı, modüler bir yapıyla oluşturulacak
+
+---
+
+## 🛠 Tech Stack
+
+### Backend
+- **Node.js + Express.js** — REST API
+- **MongoDB + Mongoose** — Veritabanı (esnek şema yapısı blok sistemi için ideal)
+- **Multer + Cloudinary** — Görsel yükleme
+- **JWT** — Kimlik doğrulama
+- **Mongoose Slug Plugin** — Benzersiz URL üretimi
+
+### Frontend
+- **React.js (Vite)** — SPA
+- **React DnD veya @dnd-kit/core** — Sürükle-bırak blok düzenleyici
+- **Zustand** — Global state yönetimi
+- **React Router v6** — Sayfa yönlendirme
+- **Axios** — API istekleri
+- **QRCode.react** — Yerleşik QR kodu oluşturma
+
+### Stil
+- **Vanilla CSS + CSS Variables** — Tema sistemi
+- **Google Fonts (Inter, Outfit)** — Modern tipografi
+
+---
+
+## 🗄 Veritabanı Şeması
+
+### `User` Modeli
+```js
+{
+  _id, email, password (bcrypt), name, plan: ["free", "pro", "enterprise"],
+  createdAt, updatedAt
+}
+```
+
+### `MiniSite` Modeli
+```js
+{
+  _id,
+  userId: ObjectId(ref: "User"),
+  title: String,
+  slug: String,          // benzersiz URL parçası örn. "benim-shopify-rehberim"
+  templateId: String,    // "blank" | "linktree" | "portfolio" | "restaurant" | "event" | "vcard"
+  theme: {
+    primaryColor: String,
+    backgroundColor: String,
+    fontFamily: String,
+    backgroundType: "solid" | "gradient" | "image",
+    backgroundImage: String
+  },
+  blocks: [BlockSchema], // sıralı blok dizisi
+  settings: {
+    favicon: String,
+    metaTitle: String,
+    metaDescription: String,
+    customDomain: String,
+    isPublished: Boolean,
+    passwordProtected: Boolean,
+    password: String,
+    analytics: { views: Number, uniqueViews: Number }
+  },
+  qrCode: {
+    generated: Boolean,
+    imageUrl: String,
+    color: String,
+    bgColor: String,
+    logo: String
+  },
+  createdAt, updatedAt
+}
+```
+
+### `Block` Şeması (MiniSite içinde gömülü)
+```js
+{
+  id: String (uuid),
+  type: String,          // blok tipi (aşağıda detaylı)
+  order: Number,         // sıra numarası
+  visible: Boolean,
+  data: Mixed            // her blok tipine özel veri objesi
+}
+```
+
+---
+
+## 🧱 Blok Tipleri (Block Types)
+
+Her blok bir `type` string'e ve `data` objesine sahiptir:
+
+| type | Açıklama | data Alanları |
+|---|---|---|
+| `hero` | Büyük başlık + alt başlık + arka plan rengi | `title`, `subtitle`, `accentWord`, `accentColor`, `bgColor`, `textColor`, `alignment` |
+| `image` | Tek tam genişlik görsel | `src`, `alt`, `borderRadius`, `aspectRatio`, `link` |
+| `button` | CTA butonu | `label`, `url`, `style`: "filled"\|"outline"\|"ghost", `color`, `textColor`, `icon`, `target` |
+| `link_list` | Linktree tarzı buton listesi | `links[]`: [{label, url, icon, color}] |
+| `social_icons` | Sosyal medya ikonları satırı | `socials[]`: [{platform, url}] — otomatik ikon |
+| `text` | Zengin metin bloğu | `content` (HTML), `alignment`, `fontSize` |
+| `numbered_list` | Numaralı madde listesi (01, 02...) | `items[]`: [{number, title, description}], `accentColor` |
+| `image_gallery` | 2-3 kolonlu fotoğraf galerisi | `images[]`: [{src, alt}], `columns`, `gap`, `borderRadius` |
+| `video` | YouTube/Vimeo video gömme | `videoUrl`, `aspectRatio`, `autoPlay`, `muted` |
+| `profile` | Profil fotoğrafı + isim + unvan | `avatar`, `name`, `title`, `bio`, `shape`: "circle"\|"square" |
+| `countdown` | Geri sayım sayacı | `targetDate`, `label`, `style`, `showDays` |
+| `coupon` | İndirim kodu kutusu | `code`, `discount`, `description`, `expiryDate`, `copyable` |
+| `contact_form` | İletişim formu | `fields[]`, `submitLabel`, `recipientEmail` |
+| `map` | Gömülü Google Maps | `address`, `lat`, `lng`, `zoom`, `height` |
+| `divider` | Bölüm ayırıcı | `style`: "line"\|"dots"\|"wave"\|"space", `color`, `height` |
+| `product_card` | Ürün kartı (e-ticaret) | `image`, `name`, `price`, `originalPrice`, `buyUrl`, `currency` |
+| `faq` | Akordiyon SSS | `items[]`: [{question, answer}] |
+| `menu` | Restoran menüsü | `categories[]`: [{name, items[{name, price, description, image}]}]` |
+| `vcard` | Dijital kartvizit | `name`, `phone`, `email`, `company`, `website`, `downloadable` |
+| `spotify_embed` | Spotify parça/albüm gömme | `spotifyUrl`, `compact` |
+
+---
+
+## 🎨 Hazır Şablonlar
+
+Aşağıdaki hazır şablonları uygula; her şablon belirli blokların önceden doldurulmuş bir kombinasyonudur:
+
+| Şablon ID | İsim | Kullanım Amacı | Varsayılan Bloklar |
+|---|---|---|---|
+| `blank` | Boş Başlangıç | Serbest oluşturma | (boş) |
+| `linktree` | Link Sayfası | Sosyal medya linkleri | profile + link_list + social_icons |
+| `digital_card` | Dijital Kartvizit | Profesyonel tanıtım | profile + vcard + link_list + map |
+| `restaurant` | Restoran / Kafe | Menü ve rezervasyon | hero + image + menu + button + map |
+| `event` | Etkinlik Sayfası | Davet ve kayıt | hero + image + text + countdown + button |
+| `portfolio` | Portfolyo | Freelancer tanıtımı | profile + image_gallery + text + link_list |
+| `e_commerce` | Ürün Sayfası | Ürün satışı | hero + product_card + numbered_list + button |
+| `pdf_lead` | PDF / Kaynak | İçerik pazarlama | hero + text + numbered_list + button |
+| `coupon_page` | İndirim Kuponu | Promosyon | hero + coupon + countdown + button |
+
+---
+
+## 🖥 Uygulama Sayfaları & Bileşenler
+
+### 1. `/` — Anasayfa (Landing Page)
+- Şablon galerisi (kategori filtreli)
+- "Ücretsiz Başla" CTA butonu
+- Örnek mini siteler canlı önizlemesi (iframe veya screenshot)
+
+### 2. `/dashboard` — Kullanıcı Paneli
+- Oluşturduğu mini sitelerin listesi (kart grid view)
+- Her kart: thumbnail, isim, URL, görüntülenme sayısı, düzenle/sil/kopyala butonları
+- "Yeni Mini Site Oluştur" butonu
+
+### 3. `/builder/:siteId` — Builder (Düzenleyici)
+**3 panelli yapı:**
+
+#### Sol Panel — Blok Kütüphanesi
+- Kategorilere göre gruplu blok listesi
+- Her blok için küçük ikon + isim
+- Üstüne tıklayınca veya sürükle-bırak ile sağ panele ekle
+
+#### Orta Panel — Canvas (Önizleme)
+- 480px genişliğinde mobil simülatör çerçevesi
+- Bloklar sırayla render edilir
+- Her bloğun üzerinde hover'da: ↑↓ taşıma, ✏️ düzenle, 🗑 sil, 👁 göster/gizle ikonları
+- Gerçek zamanlı önizleme (anlık güncelleme)
+
+#### Sağ Panel — Özellik Düzenleyici
+- Seçili bloğun verilerini düzenleyen dinamik form
+- Blok seçilmediğinde: **Sayfa Ayarları** (tema rengi, font, arka plan, favicon, meta)
+
+### 4. `/p/:slug` — Public Mini Site (Yayınlanan Sayfa)
+- Şifre korumalıysa şifre giriş ekranı
+- Blokları sırayla render et
+- SEO meta tagları (og:title, og:description, og:image)
+- Analytics: her görüntülemede `views++`
+- Mobil-first, max-width 480px, merkezi hizalı
+
+### 5. `/builder/:siteId/qr` — QR Kod Oluşturma
+- QR kodu önizlemesi
+- Renk, arka plan, logo, boyut seçenekleri
+- PNG / SVG olarak indir
+- Mini site URL'si QR ile ilişkilendir
+
+---
+
+## 🏗 API Endpoint'leri
+
+### Auth
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+
+### Mini Siteler
+- `GET /api/sites` — kullanıcının siteleri
+- `POST /api/sites` — yeni site oluştur (şablondan başlatma)
+- `GET /api/sites/:id` — site detayı
+- `PUT /api/sites/:id` — tüm siteyi güncelle (bloklar dahil)
+- `DELETE /api/sites/:id` — siteyi sil
+- `POST /api/sites/:id/publish` — yayınla / yayından kaldır
+- `POST /api/sites/:id/duplicate` — kopyala
+
+### Bloklar
+- `POST /api/sites/:id/blocks` — yeni blok ekle
+- `PUT /api/sites/:id/blocks/:blockId` — blok güncelle
+- `DELETE /api/sites/:id/blocks/:blockId` — blok sil
+- `PUT /api/sites/:id/blocks/reorder` — sıralamayı güncelle
+
+### Public
+- `GET /api/public/:slug` — public mini site verisi al
+- `POST /api/public/:slug/view` — görüntülenme sayısını artır
+
+### Medya
+- `POST /api/media/upload` — görsel yükle (Cloudinary)
+
+---
+
+## 🎯 Özel Özellikler (Advanced Features)
+
+### Drag & Drop (Sürükle-Bırak)
+- `@dnd-kit/core` kullanarak canvas içinde blok sıralamasını değiştir
+- Blok kütüphanesinden canvas'a sürükle-bırak ile ekleme
+
+### Theme Sistemi
+```css
+:root {
+  --primary: #6366f1;
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --radius: 16px;
+  --font: 'Inter', sans-serif;
+}
+```
+Builder'da tema değişince tüm canvas anında güncellenir.
+
+### Şablon Galerisi
+- Kategoriler: Tümü, Linkler, Kartvizit, Restoran, Etkinlik, E-ticaret, Portfolyo
+- Her şablona tıklayınca canlı önizleme dialog'u açılır
+- "Bu Şablonu Kullan" butonu ile builder'a yönlendirme
+
+### Analytics Dashboard
+- Sayfa bazında: toplam görüntülenme, tekil ziyaretçi, tıklanma oranı
+- Grafik: Son 7/30 gün görüntülenme trendi (Recharts)
+
+### QR Entegrasyonu (mevcut projenle)
+- Her mini site kaydedildiğinde otomatik QR kodu oluştur
+- QR -> mini site URL'si yönlendirmesi
+- Tasarım seçenekleri: renk, logo, format
+
+---
+
+## 💎 Tasarım Gereksinimleri
+
+### Builder UI (Dashboard & Editor)
+- **Renk Paleti:** Koyu tema tercih edilir (#0f0f13 bg, #1a1a2e sidebar, #6366f1 accent)
+- **Font:** Google Fonts - Inter
+- **Glassmorphism:** Sidebar paneller için `backdrop-filter: blur(12px)`
+- **Animasyonlar:** Blok ekleme/silme için slide-in/fade-out, hover'da scale(1.02)
+- **Responsive Builder:** Tablet ve üzeri ekranlar için 3 panel, mobilde tab-based navigasyon
+
+### Public Mini Site Render
+- Max-width: 480px, margin: auto
+- Yuvarlak köşeler: border-radius 16-24px bloklar arası
+- Yumuşak geçişler ve hover efektleri butonlarda
+- `font-display: swap` ile hızlı yükleme
+
+---
+
+## 🔐 Güvenlik & Performans
+
+- JWT token ile korunan endpoint'ler
+- Rate limiting: `express-rate-limit`
+- Input sanitization: `DOMPurify` (HTML blok içerikleri için)
+- Görsel optimizasyonu: Cloudinary URL transform ile otomatik webp, boyutlandırma
+- Lazy loading: blok görsellerinde `loading="lazy"`
+- Şifre korumalı mini site: hash ile şifre doğrulama
+
+---
+
+## 📁 Proje Klasör Yapısı
+
+```
+project-root/
+├── backend/
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── MiniSite.js
+│   │   └── Block.js (MiniSite içinde subdocument)
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── sites.js
+│   │   ├── blocks.js
+│   │   ├── public.js
+│   │   └── media.js
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   └── rateLimit.js
+│   ├── utils/
+│   │   ├── cloudinary.js
+│   │   └── slugify.js
+│   └── server.js
+│
+├── frontend/src/
+│   ├── pages/
+│   │   ├── Landing.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Builder.jsx
+│   │   ├── PublicSite.jsx
+│   │   └── QRGenerator.jsx
+│   ├── components/
+│   │   ├── builder/
+│   │   │   ├── Canvas.jsx
+│   │   │   ├── BlockLibrary.jsx
+│   │   │   ├── PropertyPanel.jsx
+│   │   │   └── MobileFrame.jsx
+│   │   ├── blocks/
+│   │   │   ├── HeroBlock.jsx
+│   │   │   ├── ImageBlock.jsx
+│   │   │   ├── ButtonBlock.jsx
+│   │   │   ├── LinkListBlock.jsx
+│   │   │   ├── SocialIconsBlock.jsx
+│   │   │   ├── TextBlock.jsx
+│   │   │   ├── NumberedListBlock.jsx
+│   │   │   ├── ProfileBlock.jsx
+│   │   │   ├── CountdownBlock.jsx
+│   │   │   ├── CouponBlock.jsx
+│   │   │   ├── ProductCardBlock.jsx
+│   │   │   ├── VideoBlock.jsx
+│   │   │   ├── MapBlock.jsx
+│   │   │   ├── GalleryBlock.jsx
+│   │   │   ├── FAQBlock.jsx
+│   │   │   ├── MenuBlock.jsx
+│   │   │   └── VCardBlock.jsx
+│   │   └── shared/
+│   │       ├── Navbar.jsx
+│   │       ├── ThemeSelector.jsx
+│   │       └── TemplateGallery.jsx
+│   ├── store/
+│   │   ├── builderStore.js (Zustand)
+│   │   └── authStore.js
+│   └── styles/
+│       ├── index.css
+│       ├── builder.css
+│       └── blocks.css
+```
+
+---
+
+## ✅ Geliştirme Sırası (Uygulama Adımları)
+
+1. **Veritabanı & Auth** — User + MiniSite modelleri, JWT auth
+2. **API Katmanı** — CRUD endpoint'leri, slug üretimi, medya yükleme
+3. **Temel Blok Bileşenleri** — Her blok tipi için React bileşeni
+4. **Builder Canvas** — DnD, blok ekleme/sıralama/silme
+5. **Property Panel** — Her blok için dinamik form
+6. **Public Site Render** — `/p/:slug` rotası
+7. **Şablon Galerisi** — Landing page + dashboard entegrasyonu
+8. **QR Entegrasyonu** — Mevcut QR proje ile bağlantı
+9. **Analytics** — Görüntülenme takibi + grafik
+10. **Polish** — Animasyonlar, responsive, SEO meta tagları
+
+---
+
+> Bu prompt, me-qr.com'un MiniWeb özelliğine eşdeğer, tam kapsamlı bir **Mini Site Builder** platformu için hazırlanmıştır. Mevcut QR kod projenizle entegre çalışacak şekilde tasarlanmıştır.
