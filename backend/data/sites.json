@@ -1,939 +1,5 @@
 [
   {
-    "_id": "e839fa7c-827d-4e99-bf79-53823eb0ae5d",
-    "userId": "guest",
-    "title": "df",
-    "slug": "df-mnykvrk0",
-    "templateId": "linktree",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "393f3c9e-04e9-4f0e-be73-9401d02db638",
-        "type": "profile",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "avatar": "",
-          "name": "Adınız",
-          "title": "Unvanınız",
-          "bio": "Kısa biyografinizi buraya yazın.",
-          "shape": "circle"
-        }
-      },
-      {
-        "id": "4a288d6f-c7de-4e88-8175-04db23dfbf0f",
-        "type": "link_list",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "links": [
-            {
-              "label": "Web Sitem",
-              "url": "https://example.com",
-              "icon": "🌐",
-              "color": "#6366f1"
-            },
-            {
-              "label": "Instagram",
-              "url": "https://instagram.com",
-              "icon": "📸",
-              "color": "#E1306C"
-            },
-            {
-              "label": "Twitter",
-              "url": "https://twitter.com",
-              "icon": "🐦",
-              "color": "#1DA1F2"
-            },
-            {
-              "label": "YouTube",
-              "url": "https://youtube.com",
-              "icon": "🎬",
-              "color": "#FF0000"
-            }
-          ]
-        }
-      },
-      {
-        "id": "7b00e14b-e198-408a-8bea-ff4e47d56bb4",
-        "type": "social_icons",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "socials": [
-            {
-              "platform": "instagram",
-              "url": "https://instagram.com"
-            },
-            {
-              "platform": "twitter",
-              "url": "https://twitter.com"
-            },
-            {
-              "platform": "youtube",
-              "url": "https://youtube.com"
-            },
-            {
-              "platform": "linkedin",
-              "url": "https://linkedin.com"
-            }
-          ]
-        }
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.381Z",
-    "updatedAt": "2026-04-16T12:40:05.381Z"
-  },
-  {
-    "_id": "e839fa7c-827d-4e99-bf79-53823eb0ae5d",
-    "userId": "guest",
-    "title": "df",
-    "slug": "df-mnykvrk0",
-    "templateId": "linktree",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "393f3c9e-04e9-4f0e-be73-9401d02db638",
-        "type": "profile",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "avatar": "",
-          "name": "Adınız",
-          "title": "Unvanınız",
-          "bio": "Kısa biyografinizi buraya yazın.",
-          "shape": "circle"
-        }
-      },
-      {
-        "id": "4a288d6f-c7de-4e88-8175-04db23dfbf0f",
-        "type": "link_list",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "links": [
-            {
-              "label": "Web Sitem",
-              "url": "https://example.com",
-              "icon": "🌐",
-              "color": "#6366f1"
-            },
-            {
-              "label": "Instagram",
-              "url": "https://instagram.com",
-              "icon": "📸",
-              "color": "#E1306C"
-            },
-            {
-              "label": "Twitter",
-              "url": "https://twitter.com",
-              "icon": "🐦",
-              "color": "#1DA1F2"
-            },
-            {
-              "label": "YouTube",
-              "url": "https://youtube.com",
-              "icon": "🎬",
-              "color": "#FF0000"
-            }
-          ]
-        }
-      },
-      {
-        "id": "7b00e14b-e198-408a-8bea-ff4e47d56bb4",
-        "type": "social_icons",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "socials": [
-            {
-              "platform": "instagram",
-              "url": "https://instagram.com"
-            },
-            {
-              "platform": "twitter",
-              "url": "https://twitter.com"
-            },
-            {
-              "platform": "youtube",
-              "url": "https://youtube.com"
-            },
-            {
-              "platform": "linkedin",
-              "url": "https://linkedin.com"
-            }
-          ]
-        }
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.416Z",
-    "updatedAt": "2026-04-16T12:40:05.416Z"
-  },
-  {
-    "_id": "4ed4648b-7cb5-49d0-b455-734f50973bee",
-    "userId": "guest",
-    "title": "1",
-    "slug": "1-mnzzff2q",
-    "templateId": "e_commerce",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "2da8062a-aa2b-43b4-88d5-cade2d104f8e",
-        "type": "hero",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "title": "Yeni Koleksiyon",
-          "subtitle": "En trend ürünleri keşfedin",
-          "accentWord": "Koleksiyon",
-          "accentColor": "#6366f1",
-          "bgColor": "#0f0f13",
-          "textColor": "#ffffff",
-          "alignment": "center"
-        },
-        "marginTop": 8,
-        "marginBottom": 8
-      },
-      {
-        "id": "d9ed1aca-1240-4edd-9666-3965b752cf53",
-        "type": "product_card",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "image": "http://localhost:5000/uploads/images/1776254199461-209388.webp",
-          "name": "Siyah T-shirt",
-          "price": "299₺",
-          "originalPrice": "499₺",
-          "buyUrl": "https://www.grimelange.com.tr/solo-erkek-siyah-regular-fit-t-shirt-2654?srsltid=AfmBOoqR3Tm109FCvc9EzVaTW3HHlMNcj8HZpvjH95LIvYHJ9A8X6bX_",
-          "currency": "TL"
-        },
-        "marginTop": 16,
-        "marginBottom": 16
-      },
-      {
-        "id": "14111c05-d237-4703-bae5-bfddd99b7fb5",
-        "type": "numbered_list",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "items": [
-            {
-              "number": "01",
-              "title": "Hızlı Kargo",
-              "description": "Aynı gün kargo imkanı"
-            },
-            {
-              "number": "02",
-              "title": "Ücretsiz İade",
-              "description": "14 gün içinde koşulsuz iade"
-            },
-            {
-              "number": "03",
-              "title": "Güvenli Ödeme",
-              "description": "SSL ile korunan alışveriş"
-            }
-          ],
-          "accentColor": "#6366f1"
-        }
-      },
-      {
-        "id": "35877043-6a5f-4c1e-a1f4-061d93e9ee00",
-        "type": "divider",
-        "order": 3,
-        "visible": true,
-        "data": {}
-      },
-      {
-        "id": "a399d97d-9bb0-465a-9b89-4939d752177d",
-        "type": "social_icons",
-        "order": 4,
-        "visible": true,
-        "data": {}
-      },
-      {
-        "id": "d90e23ed-6a1d-4326-852c-03ea725bf8f4",
-        "type": "text",
-        "order": 5,
-        "visible": true,
-        "data": {}
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": true,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 14,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.422Z",
-    "updatedAt": "2026-04-16T12:40:05.422Z"
-  },
-  {
-    "_id": "4ed4648b-7cb5-49d0-b455-734f50973bee",
-    "userId": "guest",
-    "title": "1",
-    "slug": "1-mnzzff2q",
-    "templateId": "e_commerce",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "2da8062a-aa2b-43b4-88d5-cade2d104f8e",
-        "type": "hero",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "title": "Yeni Koleksiyon",
-          "subtitle": "En trend ürünleri keşfedin",
-          "accentWord": "Koleksiyon",
-          "accentColor": "#6366f1",
-          "bgColor": "#0f0f13",
-          "textColor": "#ffffff",
-          "alignment": "center"
-        },
-        "marginTop": 8,
-        "marginBottom": 8
-      },
-      {
-        "id": "d9ed1aca-1240-4edd-9666-3965b752cf53",
-        "type": "product_card",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "image": "http://localhost:5000/uploads/images/1776254199461-209388.webp",
-          "name": "Siyah T-shirt",
-          "price": "299₺",
-          "originalPrice": "499₺",
-          "buyUrl": "https://www.grimelange.com.tr/solo-erkek-siyah-regular-fit-t-shirt-2654?srsltid=AfmBOoqR3Tm109FCvc9EzVaTW3HHlMNcj8HZpvjH95LIvYHJ9A8X6bX_",
-          "currency": "TL"
-        },
-        "marginTop": 16,
-        "marginBottom": 16
-      },
-      {
-        "id": "14111c05-d237-4703-bae5-bfddd99b7fb5",
-        "type": "numbered_list",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "items": [
-            {
-              "number": "01",
-              "title": "Hızlı Kargo",
-              "description": "Aynı gün kargo imkanı"
-            },
-            {
-              "number": "02",
-              "title": "Ücretsiz İade",
-              "description": "14 gün içinde koşulsuz iade"
-            },
-            {
-              "number": "03",
-              "title": "Güvenli Ödeme",
-              "description": "SSL ile korunan alışveriş"
-            }
-          ],
-          "accentColor": "#6366f1"
-        }
-      },
-      {
-        "id": "35877043-6a5f-4c1e-a1f4-061d93e9ee00",
-        "type": "divider",
-        "order": 3,
-        "visible": true,
-        "data": {}
-      },
-      {
-        "id": "a399d97d-9bb0-465a-9b89-4939d752177d",
-        "type": "social_icons",
-        "order": 4,
-        "visible": true,
-        "data": {}
-      },
-      {
-        "id": "d90e23ed-6a1d-4326-852c-03ea725bf8f4",
-        "type": "text",
-        "order": 5,
-        "visible": true,
-        "data": {}
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": true,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 10,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.427Z",
-    "updatedAt": "2026-04-16T12:40:05.427Z"
-  },
-  {
-    "_id": "2cdb665d-a338-45a2-bd14-944cdbd777ec",
-    "userId": "guest",
-    "title": "Yeni Site - restaurant",
-    "slug": "yeni-site-restaurant-mo04skuz",
-    "templateId": "restaurant",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "ee5d0074-138a-45bc-8fff-268830a53073",
-        "type": "hero",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "title": "Restoran Adı",
-          "subtitle": "Lezzet dolu bir deneyim",
-          "accentWord": "Lezzet",
-          "accentColor": "#f59e0b",
-          "bgColor": "#1a1a2e",
-          "textColor": "#ffffff",
-          "alignment": "center"
-        }
-      },
-      {
-        "id": "a1a97488-fb13-4487-b751-b889e0339bf2",
-        "type": "image",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "src": "",
-          "alt": "Restoran kapak fotoğrafı",
-          "borderRadius": "16px",
-          "aspectRatio": "16/9",
-          "link": ""
-        }
-      },
-      {
-        "id": "a4cc02d1-0a88-48e4-a7b7-78ff028b43da",
-        "type": "menu",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "categories": [
-            {
-              "name": "Ana Yemekler",
-              "items": [
-                {
-                  "name": "Izgara Köfte",
-                  "price": "120₺",
-                  "description": "El yapımı özel köfte",
-                  "image": ""
-                },
-                {
-                  "name": "Kuzu Tandır",
-                  "price": "180₺",
-                  "description": "Fırında 6 saat pişirilen kuzu",
-                  "image": ""
-                }
-              ]
-            },
-            {
-              "name": "İçecekler",
-              "items": [
-                {
-                  "name": "Taze Limonata",
-                  "price": "40₺",
-                  "description": "Ev yapımı",
-                  "image": ""
-                },
-                {
-                  "name": "Türk Kahvesi",
-                  "price": "30₺",
-                  "description": "Geleneksel",
-                  "image": ""
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "id": "addc86ee-b9ea-4dc6-8b9d-0a9c6da97dc7",
-        "type": "button",
-        "order": 3,
-        "visible": true,
-        "data": {
-          "label": "Rezervasyon Yap",
-          "url": "tel:+905551234567",
-          "style": "filled",
-          "color": "#f59e0b",
-          "textColor": "#ffffff",
-          "icon": "📞",
-          "target": "_self"
-        }
-      },
-      {
-        "id": "1839b540-fce0-4436-b3df-39477afd661d",
-        "type": "map",
-        "order": 4,
-        "visible": true,
-        "data": {
-          "address": "İstanbul, Türkiye",
-          "lat": 41.0082,
-          "lng": 28.9784,
-          "zoom": 15,
-          "height": 200
-        }
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.700Z",
-    "updatedAt": "2026-04-16T12:40:05.700Z"
-  },
-  {
-    "_id": "2cdb665d-a338-45a2-bd14-944cdbd777ec",
-    "userId": "guest",
-    "title": "Yeni Site - restaurant",
-    "slug": "yeni-site-restaurant-mo04skuz",
-    "templateId": "restaurant",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "ee5d0074-138a-45bc-8fff-268830a53073",
-        "type": "hero",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "title": "Restoran Adı",
-          "subtitle": "Lezzet dolu bir deneyim",
-          "accentWord": "Lezzet",
-          "accentColor": "#f59e0b",
-          "bgColor": "#1a1a2e",
-          "textColor": "#ffffff",
-          "alignment": "center"
-        }
-      },
-      {
-        "id": "a1a97488-fb13-4487-b751-b889e0339bf2",
-        "type": "image",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "src": "",
-          "alt": "Restoran kapak fotoğrafı",
-          "borderRadius": "16px",
-          "aspectRatio": "16/9",
-          "link": ""
-        }
-      },
-      {
-        "id": "a4cc02d1-0a88-48e4-a7b7-78ff028b43da",
-        "type": "menu",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "categories": [
-            {
-              "name": "Ana Yemekler",
-              "items": [
-                {
-                  "name": "Izgara Köfte",
-                  "price": "120₺",
-                  "description": "El yapımı özel köfte",
-                  "image": ""
-                },
-                {
-                  "name": "Kuzu Tandır",
-                  "price": "180₺",
-                  "description": "Fırında 6 saat pişirilen kuzu",
-                  "image": ""
-                }
-              ]
-            },
-            {
-              "name": "İçecekler",
-              "items": [
-                {
-                  "name": "Taze Limonata",
-                  "price": "40₺",
-                  "description": "Ev yapımı",
-                  "image": ""
-                },
-                {
-                  "name": "Türk Kahvesi",
-                  "price": "30₺",
-                  "description": "Geleneksel",
-                  "image": ""
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "id": "addc86ee-b9ea-4dc6-8b9d-0a9c6da97dc7",
-        "type": "button",
-        "order": 3,
-        "visible": true,
-        "data": {
-          "label": "Rezervasyon Yap",
-          "url": "tel:+905551234567",
-          "style": "filled",
-          "color": "#f59e0b",
-          "textColor": "#ffffff",
-          "icon": "📞",
-          "target": "_self"
-        }
-      },
-      {
-        "id": "1839b540-fce0-4436-b3df-39477afd661d",
-        "type": "map",
-        "order": 4,
-        "visible": true,
-        "data": {
-          "address": "İstanbul, Türkiye",
-          "lat": 41.0082,
-          "lng": 28.9784,
-          "zoom": 15,
-          "height": 200
-        }
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.743Z",
-    "updatedAt": "2026-04-16T12:40:05.743Z"
-  },
-  {
-    "_id": "ca5bf285-059c-4c3d-a4e1-f9a764b05a1a",
-    "userId": "guest",
-    "title": "Yeni Site - coupon_page",
-    "slug": "yeni-site-coupon-page-mo04sxlu",
-    "templateId": "coupon_page",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "bfc039f9-6ac2-4370-bb7b-8251c65cde5a",
-        "type": "hero",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "title": "%50 İndirim!",
-          "subtitle": "Sınırlı süreli özel kampanya",
-          "accentWord": "%50",
-          "accentColor": "#ef4444",
-          "bgColor": "#0f0f13",
-          "textColor": "#ffffff",
-          "alignment": "center"
-        }
-      },
-      {
-        "id": "2c1daeed-2b5a-4ff3-91fd-ebb263f2645a",
-        "type": "coupon",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "code": "SUPER50",
-          "discount": "%50",
-          "description": "Tüm ürünlerde geçerli indirim kuponu",
-          "expiryDate": "2026-04-22T14:14:14.562Z",
-          "copyable": true
-        }
-      },
-      {
-        "id": "71a478af-a8f1-48d2-b55e-a09dd4d1f00e",
-        "type": "countdown",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "targetDate": "2026-04-22T14:14:14.562Z",
-          "label": "Kampanya Bitimine Kalan Süre",
-          "style": "card",
-          "showDays": true
-        }
-      },
-      {
-        "id": "0616dd39-c20c-4702-baa8-e787c7b925da",
-        "type": "button",
-        "order": 3,
-        "visible": true,
-        "data": {
-          "label": "Alışverişe Başla",
-          "url": "#",
-          "style": "filled",
-          "color": "#ef4444",
-          "textColor": "#ffffff",
-          "icon": "🛍️",
-          "target": "_blank"
-        }
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:05.746Z",
-    "updatedAt": "2026-04-16T12:40:05.746Z"
-  },
-  {
-    "_id": "ca5bf285-059c-4c3d-a4e1-f9a764b05a1a",
-    "userId": "guest",
-    "title": "Yeni Site - coupon_page",
-    "slug": "yeni-site-coupon-page-mo04sxlu",
-    "templateId": "coupon_page",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [
-      {
-        "id": "bfc039f9-6ac2-4370-bb7b-8251c65cde5a",
-        "type": "hero",
-        "order": 0,
-        "visible": true,
-        "data": {
-          "title": "%50 İndirim!",
-          "subtitle": "Sınırlı süreli özel kampanya",
-          "accentWord": "%50",
-          "accentColor": "#ef4444",
-          "bgColor": "#0f0f13",
-          "textColor": "#ffffff",
-          "alignment": "center"
-        }
-      },
-      {
-        "id": "2c1daeed-2b5a-4ff3-91fd-ebb263f2645a",
-        "type": "coupon",
-        "order": 1,
-        "visible": true,
-        "data": {
-          "code": "SUPER50",
-          "discount": "%50",
-          "description": "Tüm ürünlerde geçerli indirim kuponu",
-          "expiryDate": "2026-04-22T14:14:14.562Z",
-          "copyable": true
-        }
-      },
-      {
-        "id": "71a478af-a8f1-48d2-b55e-a09dd4d1f00e",
-        "type": "countdown",
-        "order": 2,
-        "visible": true,
-        "data": {
-          "targetDate": "2026-04-22T14:14:14.562Z",
-          "label": "Kampanya Bitimine Kalan Süre",
-          "style": "card",
-          "showDays": true
-        }
-      },
-      {
-        "id": "0616dd39-c20c-4702-baa8-e787c7b925da",
-        "type": "button",
-        "order": 3,
-        "visible": true,
-        "data": {
-          "label": "Alışverişe Başla",
-          "url": "#",
-          "style": "filled",
-          "color": "#ef4444",
-          "textColor": "#ffffff",
-          "icon": "🛍️",
-          "target": "_blank"
-        }
-      }
-    ],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:06.020Z",
-    "updatedAt": "2026-04-16T12:40:06.020Z"
-  },
-  {
-    "_id": "41c5bb62-6963-47db-aeef-1fda0833932d",
-    "userId": "guest",
-    "title": "Yeni Site - blank",
-    "slug": "yeni-site-blank-mo04t2pv",
-    "templateId": "blank",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:06.062Z",
-    "updatedAt": "2026-04-16T12:40:06.062Z"
-  },
-  {
-    "_id": "41c5bb62-6963-47db-aeef-1fda0833932d",
-    "userId": "guest",
-    "title": "Yeni Site - blank",
-    "slug": "yeni-site-blank-mo04t2pv",
-    "templateId": "blank",
-    "theme": {
-      "primaryColor": "#6366f1",
-      "backgroundColor": "#ffffff",
-      "textColor": "#1a1a1a",
-      "fontFamily": "Inter",
-      "backgroundType": "solid"
-    },
-    "blocks": [],
-    "settings": {
-      "metaTitle": "",
-      "metaDescription": "",
-      "isPublished": false,
-      "passwordProtected": false,
-      "password": "",
-      "analytics": {
-        "views": 0,
-        "uniqueViews": 0
-      }
-    },
-    "qrCode": {
-      "generated": false
-    },
-    "createdAt": "2026-04-16T12:40:06.065Z",
-    "updatedAt": "2026-04-16T12:40:06.065Z"
-  },
-  {
     "_id": "74d1cbd8-c140-454b-ba54-0163412b5d05",
     "userId": "guest",
     "title": "Yeni Site - e_commerce",
@@ -2546,5 +1612,1332 @@
     },
     "createdAt": "2026-04-16T12:40:07.937Z",
     "updatedAt": "2026-04-16T12:40:07.937Z"
+  },
+  {
+    "_id": "0f6dcce9-a076-4b65-b020-1b44eeeee7c8",
+    "userId": "guest",
+    "title": "link",
+    "slug": "link-mo8vzcgy",
+    "templateId": "linktree",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "6d2c1d89-0178-4e92-b869-a22ed38a0233",
+        "type": "profile",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "avatar": "",
+          "name": "Adınız",
+          "title": "Unvanınız",
+          "bio": "Kısa biyografinizi buraya yazın.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "72f1bec2-cb84-43b7-a185-b22afbed290b",
+        "type": "link_list",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "Web Sitem",
+              "url": "https://example.com",
+              "icon": "🌐",
+              "color": "#6366f1"
+            },
+            {
+              "label": "Instagram",
+              "url": "https://instagram.com",
+              "icon": "📸",
+              "color": "#E1306C"
+            },
+            {
+              "label": "Twitter",
+              "url": "https://twitter.com",
+              "icon": "🐦",
+              "color": "#1DA1F2"
+            },
+            {
+              "label": "YouTube",
+              "url": "https://youtube.com",
+              "icon": "🎬",
+              "color": "#FF0000"
+            }
+          ]
+        }
+      },
+      {
+        "id": "7264c662-1ff9-4166-922e-08677672bfc3",
+        "type": "social_icons",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "socials": [
+            {
+              "platform": "instagram",
+              "url": "https://instagram.com"
+            },
+            {
+              "platform": "twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "platform": "youtube",
+              "url": "https://youtube.com"
+            },
+            {
+              "platform": "linkedin",
+              "url": "https://linkedin.com"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T17:17:13.141Z",
+    "updatedAt": "2026-04-21T17:17:13.141Z"
+  },
+  {
+    "_id": "15761c32-a284-40a1-9f06-2957353e42a5",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-mo8vzzne",
+    "templateId": "event",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "2370dfa2-1549-4d6c-a0be-ab5b08bbaf0f",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Etkinlik Adı",
+          "subtitle": "15 Mayıs 2025 — İstanbul",
+          "accentWord": "Etkinlik",
+          "accentColor": "#ec4899",
+          "bgColor": "#0f0f13",
+          "textColor": "#ffffff",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "fc792971-24b0-40e8-8e22-104ea899497c",
+        "type": "image",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "src": "",
+          "alt": "Etkinlik görseli",
+          "borderRadius": "16px",
+          "aspectRatio": "16/9",
+          "link": ""
+        }
+      },
+      {
+        "id": "1ca73a91-658c-46a0-898c-f5223238b6d7",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<p>Etkinlik hakkında detaylı bilgiyi buraya yazın. Konuşmacılar, program, mekan bilgileri ve daha fazlası.</p>",
+          "alignment": "left",
+          "fontSize": "16px"
+        }
+      },
+      {
+        "id": "cacd6b4e-580b-4946-91de-53e43e944e57",
+        "type": "countdown",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "targetDate": "2026-05-21T17:17:42.842Z",
+          "label": "Etkinliğe Kalan Süre",
+          "style": "card",
+          "showDays": true
+        }
+      },
+      {
+        "id": "d768077f-29d3-4021-9fb6-6a829327b61a",
+        "type": "button",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "label": "Kayıt Ol",
+          "url": "#",
+          "style": "filled",
+          "color": "#ec4899",
+          "textColor": "#ffffff",
+          "icon": "🎫",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T17:17:42.867Z",
+    "updatedAt": "2026-04-21T17:17:42.867Z"
+  },
+  {
+    "_id": "678e8156-bc58-4087-ac8f-a330117be49d",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-mo8w0lu2",
+    "templateId": "portfolio",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "f5a42dae-35d1-4644-b11b-1d32e1a05585",
+        "type": "profile",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "avatar": "",
+          "name": "Ad Soyad",
+          "title": "UI/UX Designer & Developer",
+          "bio": "Dijital deneyimler tasarlıyorum ve kodluyorum.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "d85e8636-1262-4e5f-85bb-69b874ba72e3",
+        "type": "image_gallery",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "images": [
+            {
+              "src": "",
+              "alt": "Proje 1"
+            },
+            {
+              "src": "",
+              "alt": "Proje 2"
+            },
+            {
+              "src": "",
+              "alt": "Proje 3"
+            },
+            {
+              "src": "",
+              "alt": "Proje 4"
+            }
+          ],
+          "columns": 2,
+          "gap": "8px",
+          "borderRadius": "12px"
+        }
+      },
+      {
+        "id": "942ffd75-237e-4f34-b1c3-661268699be4",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<h3>Hakkımda</h3><p>Deneyimlerinizi ve yeteneklerinizi buraya yazın.</p>",
+          "alignment": "left",
+          "fontSize": "16px"
+        }
+      },
+      {
+        "id": "6177c447-5f37-4a1c-a596-f4d94e1f6f82",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "GitHub",
+              "url": "#",
+              "icon": "💻",
+              "color": "#333"
+            },
+            {
+              "label": "Dribbble",
+              "url": "#",
+              "icon": "🎨",
+              "color": "#ea4c89"
+            },
+            {
+              "label": "Behance",
+              "url": "#",
+              "icon": "🅱️",
+              "color": "#1769ff"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T17:18:11.615Z",
+    "updatedAt": "2026-04-21T17:18:11.615Z"
+  },
+  {
+    "_id": "d6c7b732-18d2-45d5-a574-fd6f83d32bee",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-mo8w0x22",
+    "templateId": "e_commerce",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "d8808bd1-ab86-44b0-9fca-c2b26c64c635",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Yeni Koleksiyon",
+          "subtitle": "En trend ürünleri keşfedin",
+          "accentWord": "Koleksiyon",
+          "accentColor": "#6366f1",
+          "bgColor": "#0f0f13",
+          "textColor": "#ffffff",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "c7809627-eabd-4e0a-a63a-b33cec1bca0c",
+        "type": "product_card",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "image": "",
+          "name": "Ürün Adı",
+          "price": "299₺",
+          "originalPrice": "499₺",
+          "buyUrl": "#",
+          "currency": "₺"
+        }
+      },
+      {
+        "id": "27ae2c51-b0e1-4c65-a3d5-631b166e3e97",
+        "type": "numbered_list",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "items": [
+            {
+              "number": "01",
+              "title": "Hızlı Kargo",
+              "description": "Aynı gün kargo imkanı"
+            },
+            {
+              "number": "02",
+              "title": "Ücretsiz İade",
+              "description": "14 gün içinde koşulsuz iade"
+            },
+            {
+              "number": "03",
+              "title": "Güvenli Ödeme",
+              "description": "SSL ile korunan alışveriş"
+            }
+          ],
+          "accentColor": "#6366f1"
+        }
+      },
+      {
+        "id": "5e8decd0-4a0d-4a58-91e2-adacf327306c",
+        "type": "button",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "label": "Hemen Satın Al",
+          "url": "#",
+          "style": "filled",
+          "color": "#6366f1",
+          "textColor": "#ffffff",
+          "icon": "🛒",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T17:18:26.462Z",
+    "updatedAt": "2026-04-21T17:18:26.462Z"
+  },
+  {
+    "_id": "06cbd92b-b885-46f4-bf58-cfe36f69116f",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-mo8w12dm",
+    "templateId": "coupon_page",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "aabddd62-29ee-4ad6-a663-ff725be965c6",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "%50 İndirim!",
+          "subtitle": "Sınırlı süreli özel kampanya",
+          "accentWord": "%50",
+          "accentColor": "#ef4444",
+          "bgColor": "#0f0f13",
+          "textColor": "#ffffff",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "3754bf30-8751-40f4-a9ad-619d493fa4c8",
+        "type": "coupon",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "code": "SUPER50",
+          "discount": "%50",
+          "description": "Tüm ürünlerde geçerli indirim kuponu",
+          "expiryDate": "2026-04-28T17:18:33.034Z",
+          "copyable": true
+        }
+      },
+      {
+        "id": "b09428f0-ebd5-4e12-abd0-bef0ac6e02f2",
+        "type": "countdown",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "targetDate": "2026-04-28T17:18:33.034Z",
+          "label": "Kampanya Bitimine Kalan Süre",
+          "style": "card",
+          "showDays": true
+        }
+      },
+      {
+        "id": "cd86f5c7-5329-453d-afcf-a7da34085725",
+        "type": "button",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "label": "Alışverişe Başla",
+          "url": "#",
+          "style": "filled",
+          "color": "#ef4444",
+          "textColor": "#ffffff",
+          "icon": "🛍️",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T17:18:33.047Z",
+    "updatedAt": "2026-04-21T17:18:33.047Z"
+  },
+  {
+    "_id": "5ec4aaf1-5098-4039-8aeb-2d55b2bed569",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-mo8w1gcy",
+    "templateId": "e_commerce",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "ee4ab710-b2b8-426c-b3e0-a4d7bc889dfd",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Yeni Koleksiyon",
+          "subtitle": "En trend ürünleri keşfedin",
+          "accentWord": "Koleksiyon",
+          "accentColor": "#6366f1",
+          "bgColor": "#0f0f13",
+          "textColor": "#ffffff",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "b50fc39e-d98b-4cda-9058-a6cc6b600bbb",
+        "type": "product_card",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "image": "",
+          "name": "Ürün Adı",
+          "price": "299₺",
+          "originalPrice": "499₺",
+          "buyUrl": "#",
+          "currency": "₺"
+        }
+      },
+      {
+        "id": "fddafaac-4797-4f83-83c5-fe281c3f452d",
+        "type": "numbered_list",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "items": [
+            {
+              "number": "01",
+              "title": "Hızlı Kargo",
+              "description": "Aynı gün kargo imkanı"
+            },
+            {
+              "number": "02",
+              "title": "Ücretsiz İade",
+              "description": "14 gün içinde koşulsuz iade"
+            },
+            {
+              "number": "03",
+              "title": "Güvenli Ödeme",
+              "description": "SSL ile korunan alışveriş"
+            }
+          ],
+          "accentColor": "#6366f1"
+        }
+      },
+      {
+        "id": "92899af6-b1f1-49ef-b8bf-0721f7d9dcfe",
+        "type": "button",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "label": "Hemen Satın Al",
+          "url": "#",
+          "style": "filled",
+          "color": "#6366f1",
+          "textColor": "#ffffff",
+          "icon": "🛒",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T17:18:51.174Z",
+    "updatedAt": "2026-04-21T17:18:51.174Z"
+  },
+  {
+    "_id": "f4120cfa-3ed7-4ed5-af62-d1c6633cb471",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-mo8z4x0a",
+    "templateId": "travel_itinerary",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "966f25db-79ee-4140-bf21-8f15daa26942",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "48 HOURS IN CHICAGO",
+          "subtitle": "Food, Architecture & Lakefront Fun",
+          "badgeText": "Weekend Guide",
+          "bgImage": "https://images.unsplash.com/photo-1494522855154-9297ac14b55f?q=80&w=2070&auto=format&fit=crop",
+          "ctaText": "Get Itinerary",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.4,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#f2f2f2",
+          "buttonTextColor": "#1a1a1a"
+        }
+      },
+      {
+        "id": "72dcb196-e41a-456a-a656-d21940501c95",
+        "type": "timeline",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "title": "Day 1",
+          "cards": [
+            {
+              "time": "10:00 AM",
+              "title": "Architecture River Tour",
+              "description": "See the city from the water.",
+              "bgColor": "#8b5cf6",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "01:00 PM",
+              "title": "Deep Dish Pizza",
+              "description": "Lou Malnati's or Giordano's.",
+              "bgColor": "#ea580c",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "04:30 PM",
+              "title": "360 Chicago",
+              "description": "Incredible views from the 94th floor.",
+              "bgColor": "#f472b6",
+              "textColor": "#ffffff"
+            }
+          ]
+        }
+      },
+      {
+        "id": "24fa3ce2-fed2-4cd9-af67-b93b6143e3d6",
+        "type": "image",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "src": "https://images.unsplash.com/photo-1542459438-e6dcf3519fbb?w=500&auto=format&fit=crop&q=60",
+          "alt": "Chicago Theater Sign",
+          "borderRadius": 12,
+          "link": ""
+        }
+      },
+      {
+        "id": "78e55ea0-4897-4f1d-8c57-2d47b0f9b5b3",
+        "type": "timeline",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "title": "Day 2",
+          "cards": [
+            {
+              "time": "09:00 AM",
+              "title": "Lakefront Jog",
+              "description": "Run along Lake Michigan.",
+              "bgColor": "#8b5cf6",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "11:00 AM",
+              "title": "Millennium Park",
+              "description": "Cloud Gate & Crown Fountain.",
+              "bgColor": "#0ea5e9",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "02:00 PM",
+              "title": "Art Institute",
+              "description": "World-class art museum.",
+              "bgColor": "#2563eb",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "07:00 PM",
+              "title": "Rooftop Cocktails",
+              "description": "Drinks with a view.",
+              "bgColor": "#f59e0b",
+              "textColor": "#ffffff"
+            }
+          ]
+        }
+      },
+      {
+        "id": "ef91d3a6-eff3-4b2c-be57-61c47b703147",
+        "type": "checklist",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "title": "Packing Checklist",
+          "checkColor": "#9ca3af",
+          "items": [
+            {
+              "text": "Comfortable walking shoes"
+            },
+            {
+              "text": "Light jacket or layers"
+            },
+            {
+              "text": "Portable phone charger"
+            },
+            {
+              "text": "Reusable water bottle"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-21T18:45:31.573Z",
+    "updatedAt": "2026-04-21T18:45:31.573Z"
+  },
+  {
+    "_id": "483b13ef-bafd-4ed5-a497-bd456254d320",
+    "userId": "guest",
+    "title": "hızlı",
+    "slug": "hizli-moa3e104",
+    "templateId": "simple_download",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "c5e81781-adb7-44ad-a5b4-4f427e9a3863",
+        "type": "button",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "label": "Get Checklist",
+          "url": "https://cdn3.me-qr.com/constructor/user/55/1750976312.pdf",
+          "style": "filled",
+          "color": "#000000",
+          "textColor": "#ffffff",
+          "icon": "",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:32:21.614Z",
+    "updatedAt": "2026-04-22T13:32:21.614Z"
+  },
+  {
+    "_id": "1103d081-fb47-4ac6-8cfe-731118623cbc",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-moa3e9qj",
+    "templateId": "simple_download",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "2ce2167e-d1b5-4f21-a18f-b33d0f8ebc46",
+        "type": "button",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "label": "Get Checklist",
+          "url": "https://cdn3.me-qr.com/constructor/user/55/1750976312.pdf",
+          "style": "filled",
+          "color": "#000000",
+          "textColor": "#ffffff",
+          "icon": "",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:32:32.604Z",
+    "updatedAt": "2026-04-22T13:32:32.604Z"
+  },
+  {
+    "_id": "08808cf3-60a1-45b2-82dc-001e448e4bda",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-moa3fusc",
+    "templateId": "portfolio",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "c50e900e-1fa3-4839-b4eb-40e227abace9",
+        "type": "profile",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "avatar": "",
+          "name": "Ad Soyad",
+          "title": "UI/UX Designer & Developer",
+          "bio": "Dijital deneyimler tasarlıyorum ve kodluyorum.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "6f6e3a8d-808c-41e5-bd95-0a56abfbd0ab",
+        "type": "image_gallery",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "images": [
+            {
+              "src": "",
+              "alt": "Proje 1"
+            },
+            {
+              "src": "",
+              "alt": "Proje 2"
+            },
+            {
+              "src": "",
+              "alt": "Proje 3"
+            },
+            {
+              "src": "",
+              "alt": "Proje 4"
+            }
+          ],
+          "columns": 2,
+          "gap": "8px",
+          "borderRadius": "12px"
+        }
+      },
+      {
+        "id": "c9781b85-9b41-4e64-bc26-adedf36b3248",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<h3>Hakkımda</h3><p>Deneyimlerinizi ve yeteneklerinizi buraya yazın.</p>",
+          "alignment": "left",
+          "fontSize": "16px"
+        }
+      },
+      {
+        "id": "53612e98-f0bb-4f0f-aee6-e9cf1b8951c6",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "GitHub",
+              "url": "#",
+              "icon": "💻",
+              "color": "#333"
+            },
+            {
+              "label": "Dribbble",
+              "url": "#",
+              "icon": "🎨",
+              "color": "#ea4c89"
+            },
+            {
+              "label": "Behance",
+              "url": "#",
+              "icon": "🅱️",
+              "color": "#1769ff"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:33:46.545Z",
+    "updatedAt": "2026-04-22T13:33:46.546Z"
+  },
+  {
+    "_id": "c057f627-f03a-4c73-8b9f-a99a642b0385",
+    "userId": "guest",
+    "title": "123",
+    "slug": "123-moa3qkv8",
+    "templateId": "simple_download",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "e1774fa9-d597-482a-af3b-fa155f8f218f",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "KONTROL LİSTESİ",
+          "subtitle": "Hemen indirin ve incelemeye başlayın.",
+          "badgeText": "Ücretsiz PDF",
+          "bgImage": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+          "ctaText": "Get Checklist",
+          "ctaLink": "https://cdn3.me-qr.com/constructor/user/55/1750976312.pdf",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.7,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#3b82f6",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "100vh"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:42:07.212Z",
+    "updatedAt": "2026-04-22T13:42:07.212Z"
+  },
+  {
+    "_id": "c27e5eb6-4786-4c4b-b631-5f7d7ecab458",
+    "userId": "guest",
+    "title": "343",
+    "slug": "343-moa3qp70",
+    "templateId": "simple_download",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "1751c7ad-f384-4f19-bf78-09cd7d63eba7",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "KONTROL LİSTESİ",
+          "subtitle": "Hemen indirin ve incelemeye başlayın.",
+          "badgeText": "Ücretsiz PDF",
+          "bgImage": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
+          "ctaText": "Get Checklist",
+          "ctaLink": "https://cdn3.me-qr.com/constructor/user/55/1750976312.pdf",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.7,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#3b82f6",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "100vh"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:42:12.507Z",
+    "updatedAt": "2026-04-22T13:42:12.507Z"
+  },
+  {
+    "_id": "3253f8b8-1895-47b7-b722-9774680700df",
+    "userId": "guest",
+    "title": "fdg",
+    "slug": "fdg-moa4cynx",
+    "templateId": "podcast_launch",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "14015fc1-7bc7-451c-81fd-04bc11a46d12",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "YENİ BÖLÜM YAYINDA",
+          "subtitle": "Bölüm 42: Geleceğin Teknolojileri",
+          "badgeText": "Podcast",
+          "bgImage": "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070&auto=format&fit=crop",
+          "ctaText": "Hemen Dinle",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.6,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#1db954",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "60vh"
+        }
+      },
+      {
+        "id": "47b9c450-70bc-4746-b748-f6a10e1e7bcc",
+        "type": "spotify",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "spotifyUrl": "https://open.spotify.com/episode/7makk4oTQel546B0PZlVR5",
+          "compact": false
+        }
+      },
+      {
+        "id": "e65cd527-86f5-40e1-826c-032778d74aed",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<h3>Bu Bölümde Neler Konuştuk?</h3><p>Bu haftaki bölümümüzde yapay zeka, uzay araştırmaları ve geleceğin teknolojilerini derinlemesine inceliyoruz. Sürpriz konuğumuzla kaçırmamanız gereken harika bir sohbet oldu!</p>",
+          "alignment": "left",
+          "fontSize": "16px"
+        }
+      },
+      {
+        "id": "ee47ed12-4605-4ce6-b99a-a39d18f104b1",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "Spotify'da Dinle",
+              "url": "#",
+              "icon": "🎧",
+              "color": "#1DB954"
+            },
+            {
+              "label": "Apple Podcasts",
+              "url": "#",
+              "icon": "🎙️",
+              "color": "#872ec4"
+            },
+            {
+              "label": "YouTube İzle",
+              "url": "#",
+              "icon": "📺",
+              "color": "#FF0000"
+            }
+          ]
+        }
+      },
+      {
+        "id": "350e82dd-31c4-413e-9a9f-42cdccdc1b5e",
+        "type": "social_icons",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "socials": [
+            {
+              "platform": "instagram",
+              "url": "https://instagram.com"
+            },
+            {
+              "platform": "twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "platform": "youtube",
+              "url": "https://youtube.com"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:59:31.519Z",
+    "updatedAt": "2026-04-22T13:59:31.519Z"
+  },
+  {
+    "_id": "2c87df93-f7e4-4fca-a036-5a997386a203",
+    "userId": "guest",
+    "title": "dfg",
+    "slug": "dfg-moa4d3t7",
+    "templateId": "podcast_launch",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "445cdbb1-c61a-415d-b0ab-4fd5d52a4912",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "YENİ BÖLÜM YAYINDA",
+          "subtitle": "Bölüm 42: Geleceğin Teknolojileri",
+          "badgeText": "Podcast",
+          "bgImage": "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070&auto=format&fit=crop",
+          "ctaText": "Hemen Dinle",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.6,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#1db954",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "60vh"
+        }
+      },
+      {
+        "id": "21921c79-9092-4562-9b48-e295f52187f7",
+        "type": "spotify",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "spotifyUrl": "https://open.spotify.com/episode/7makk4oTQel546B0PZlVR5",
+          "compact": false
+        }
+      },
+      {
+        "id": "1b348059-3205-4e36-ae17-1160f44bec95",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<h3>Bu Bölümde Neler Konuştuk?</h3><p>Bu haftaki bölümümüzde yapay zeka, uzay araştırmaları ve geleceğin teknolojilerini derinlemesine inceliyoruz. Sürpriz konuğumuzla kaçırmamanız gereken harika bir sohbet oldu!</p>",
+          "alignment": "left",
+          "fontSize": "16px"
+        }
+      },
+      {
+        "id": "4d82af8d-4066-4578-8d9d-ad2646bb4314",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "Spotify'da Dinle",
+              "url": "#",
+              "icon": "🎧",
+              "color": "#1DB954"
+            },
+            {
+              "label": "Apple Podcasts",
+              "url": "#",
+              "icon": "🎙️",
+              "color": "#872ec4"
+            },
+            {
+              "label": "YouTube İzle",
+              "url": "#",
+              "icon": "📺",
+              "color": "#FF0000"
+            }
+          ]
+        }
+      },
+      {
+        "id": "0f656e69-26ec-4dbc-8445-91e648d43405",
+        "type": "social_icons",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "socials": [
+            {
+              "platform": "instagram",
+              "url": "https://instagram.com"
+            },
+            {
+              "platform": "twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "platform": "youtube",
+              "url": "https://youtube.com"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-22T13:59:37.886Z",
+    "updatedAt": "2026-04-22T13:59:37.886Z"
   }
 ]

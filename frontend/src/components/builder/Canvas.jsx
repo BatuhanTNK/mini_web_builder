@@ -23,6 +23,11 @@ import SpotifyBlock from '../blocks/SpotifyBlock';
 import DividerBlock from '../blocks/DividerBlock';
 import ContactFormBlock from '../blocks/ContactFormBlock';
 
+// New Travel Iterinary Blocks
+import CoverBlock from '../blocks/CoverBlock';
+import TimelineBlock from '../blocks/TimelineBlock';
+import ChecklistBlock from '../blocks/ChecklistBlock';
+
 const BLOCK_COMPONENTS = {
   hero: HeroBlock,
   image: ImageBlock,
@@ -44,6 +49,9 @@ const BLOCK_COMPONENTS = {
   spotify_embed: SpotifyBlock,
   divider: DividerBlock,
   contact_form: ContactFormBlock,
+  cover: CoverBlock,
+  timeline: TimelineBlock,
+  checklist: ChecklistBlock,
 };
 
 function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleVisibility }) {

@@ -340,6 +340,93 @@ const templateDefinitions = {
       label: 'Alışverişe Başla', url: '#', style: 'filled',
       color: '#ef4444', textColor: '#ffffff', icon: '🛍️', target: '_blank'
     }, 3)
+  ],
+
+  travel_itinerary: () => [
+    makeBlock('cover', {
+      title: '48 HOURS IN CHICAGO', subtitle: 'Food, Architecture & Lakefront Fun',
+      badgeText: 'Weekend Guide',
+      bgImage: 'https://images.unsplash.com/photo-1494522855154-9297ac14b55f?q=80&w=2070&auto=format&fit=crop',
+      ctaText: 'Get Itinerary', ctaLink: '#',
+      textColor: '#ffffff', overlayOpacity: 0.4, overlayColor: '#000000',
+      alignment: 'center', buttonColor: '#f2f2f2', buttonTextColor: '#1a1a1a'
+    }, 0),
+    makeBlock('timeline', {
+      title: 'Day 1',
+      cards: [
+        { time: '10:00 AM', title: 'Architecture River Tour', description: 'See the city from the water.', bgColor: '#8b5cf6', textColor: '#ffffff' },
+        { time: '01:00 PM', title: 'Deep Dish Pizza', description: 'Lou Malnati\'s or Giordano\'s.', bgColor: '#ea580c', textColor: '#ffffff' },
+        { time: '04:30 PM', title: '360 Chicago', description: 'Incredible views from the 94th floor.', bgColor: '#f472b6', textColor: '#ffffff' }
+      ]
+    }, 1),
+    makeBlock('image', {
+      src: 'https://images.unsplash.com/photo-1542459438-e6dcf3519fbb?w=500&auto=format&fit=crop&q=60',
+      alt: 'Chicago Theater Sign', borderRadius: 12, link: ''
+    }, 2),
+    makeBlock('timeline', {
+      title: 'Day 2',
+      cards: [
+        { time: '09:00 AM', title: 'Lakefront Jog', description: 'Run along Lake Michigan.', bgColor: '#8b5cf6', textColor: '#ffffff' },
+        { time: '11:00 AM', title: 'Millennium Park', description: 'Cloud Gate & Crown Fountain.', bgColor: '#0ea5e9', textColor: '#ffffff' },
+        { time: '02:00 PM', title: 'Art Institute', description: 'World-class art museum.', bgColor: '#2563eb', textColor: '#ffffff' },
+        { time: '07:00 PM', title: 'Rooftop Cocktails', description: 'Drinks with a view.', bgColor: '#f59e0b', textColor: '#ffffff' }
+      ]
+    }, 3),
+    makeBlock('checklist', {
+      title: 'Packing Checklist',
+      checkColor: '#9ca3af',
+      items: [
+        { text: 'Comfortable walking shoes' },
+        { text: 'Light jacket or layers' },
+        { text: 'Portable phone charger' },
+        { text: 'Reusable water bottle' }
+      ]
+    }, 4)
+  ],
+
+  simple_download: () => [
+    makeBlock('cover', {
+      title: 'KONTROL LİSTESİ', subtitle: 'Hemen indirin ve incelemeye başlayın.',
+      badgeText: 'Ücretsiz PDF',
+      bgImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop',
+      ctaText: 'Get Checklist', ctaLink: 'https://cdn3.me-qr.com/constructor/user/55/1750976312.pdf',
+      textColor: '#ffffff', overlayOpacity: 0.7, overlayColor: '#000000',
+      alignment: 'center', buttonColor: '#3b82f6', buttonTextColor: '#ffffff', minHeight: '100vh'
+    }, 0)
+  ],
+
+  podcast_launch: () => [
+    makeBlock('cover', {
+      title: 'YENİ BÖLÜM YAYINDA',
+      subtitle: 'Bölüm 42: Geleceğin Teknolojileri',
+      badgeText: 'Podcast',
+      bgImage: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070&auto=format&fit=crop',
+      ctaText: 'Hemen Dinle', ctaLink: '#',
+      textColor: '#ffffff', overlayOpacity: 0.6, overlayColor: '#000000',
+      alignment: 'center', buttonColor: '#1db954', buttonTextColor: '#ffffff', minHeight: '60vh'
+    }, 0),
+    makeBlock('spotify', {
+      spotifyUrl: 'https://open.spotify.com/episode/7makk4oTQel546B0PZlVR5',
+      compact: false
+    }, 1),
+    makeBlock('text', {
+      content: '<h3>Bu Bölümde Neler Konuştuk?</h3><p>Bu haftaki bölümümüzde yapay zeka, uzay araştırmaları ve geleceğin teknolojilerini derinlemesine inceliyoruz. Sürpriz konuğumuzla kaçırmamanız gereken harika bir sohbet oldu!</p>',
+      alignment: 'left', fontSize: '16px'
+    }, 2),
+    makeBlock('link_list', {
+      links: [
+        { label: 'Spotify\'da Dinle', url: '#', icon: '🎧', color: '#1DB954' },
+        { label: 'Apple Podcasts', url: '#', icon: '🎙️', color: '#872ec4' },
+        { label: 'YouTube İzle', url: '#', icon: '📺', color: '#FF0000' }
+      ]
+    }, 3),
+    makeBlock('social_icons', {
+      socials: [
+        { platform: 'instagram', url: 'https://instagram.com' },
+        { platform: 'twitter', url: 'https://twitter.com' },
+        { platform: 'youtube', url: 'https://youtube.com' }
+      ]
+    }, 4)
   ]
 };
 

@@ -12,6 +12,9 @@ const TEMPLATES = [
   { id: 'portfolio', name: 'Portfolyo', icon: '🎨', desc: 'Freelancer tanıtımı', color: '#10b981' },
   { id: 'e_commerce', name: 'Ürün Sayfası', icon: '🛍️', desc: 'Ürün satışı', color: '#f43f5e' },
   { id: 'coupon_page', name: 'İndirim Kuponu', icon: '🏷️', desc: 'Promosyon sayfası', color: '#84cc16' },
+  { id: 'travel_itinerary', name: 'Gezi Programı', icon: '✈️', desc: 'Seyahat planı', color: '#3b82f6' },
+  { id: 'simple_download', name: 'Hızlı İndirme', icon: '📄', desc: 'Basit dosya linki', color: '#64748b' },
+  { id: 'podcast_launch', name: 'Podcast & Müzik', icon: '🎙️', desc: 'Yeni bölüm tanıtımı', color: '#1db954' },
 ];
 
 export default function Dashboard() {

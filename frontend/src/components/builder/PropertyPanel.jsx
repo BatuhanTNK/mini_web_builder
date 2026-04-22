@@ -912,6 +912,103 @@ function ContactFormForm({ block, updateBlock }) {
   );
 }
 
+function CoverForm({ block, updateBlock }) {
+  const d = block.data;
+  return (
+    <>
+      <Field label="Başlık"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="48 HOURS IN CHICAGO" /></Field>
+      <Field label="Alt Başlık"><input className="property-panel__input" value={d.subtitle || ''} onChange={e => updateBlock(block.id, { subtitle: e.target.value })} placeholder="Food & Architecture" /></Field>
+      <Field label="Rozet/Etiket"><input className="property-panel__input" value={d.badgeText || ''} onChange={e => updateBlock(block.id, { badgeText: e.target.value })} placeholder="Weekend Guide" /></Field>
+      <Field label="Arka Plan Görseli"><ImageUploader value={d.bgImage || ''} onChange={v => updateBlock(block.id, { bgImage: v })} label="Kapak" /></Field>
+      <Field label="Buton Metni"><input className="property-panel__input" value={d.ctaText || ''} onChange={e => updateBlock(block.id, { ctaText: e.target.value })} placeholder="Get Itinerary" /></Field>
+      <Field label="Buton URL"><input className="property-panel__input" value={d.ctaLink || ''} onChange={e => updateBlock(block.id, { ctaLink: e.target.value })} placeholder="#" /></Field>
+      <Field label="Yazı Rengi"><ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} /></Field>
+      <Field label="Buton Arka Plan Rengi"><ColorRow value={d.buttonColor || '#f2f2f2'} onChange={v => updateBlock(block.id, { buttonColor: v })} /></Field>
+      <Field label="Buton Yazı Rengi"><ColorRow value={d.buttonTextColor || '#1a1a1a'} onChange={v => updateBlock(block.id, { buttonTextColor: v })} /></Field>
+      <Field label="Örtü (Overlay) Rengi"><ColorRow value={d.overlayColor || '#000000'} onChange={v => updateBlock(block.id, { overlayColor: v })} /></Field>
+      <Field label="Örtü Saydamlığı (0-1)"><input className="property-panel__input" type="number" step="0.1" min="0" max="1" value={d.overlayOpacity || 0} onChange={e => updateBlock(block.id, { overlayOpacity: parseFloat(e.target.value) })} /></Field>
+      <Field label="Hizalama"><AlignRow value={d.alignment || 'center'} onChange={v => updateBlock(block.id, { alignment: v })} /></Field>
+    </>
+  );
+}
+
+function TimelineForm({ block, updateBlock }) {
+  const d = block.data;
+  const cards = d.cards || [];
+
+  const updateCard = (index, field, value) => {
+    const newCards = cards.map((c, i) => i === index ? { ...c, [field]: value } : c);
+    updateBlock(block.id, { cards: newCards });
+  };
+
+  const addCard = () => {
+    updateBlock(block.id, { cards: [...cards, { time: '10:00 AM', title: 'Yeni Etkinlik', bgColor: '#6366f1', textColor: '#ffffff' }] });
+  };
+
+  const removeCard = (index) => {
+    updateBlock(block.id, { cards: cards.filter((_, i) => i !== index) });
+  };
+
+  return (
+    <>
+      <Field label="Bölüm Başlığı"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Day 1" /></Field>
+      <div className="property-panel__list-header">
+        <span>Kartlar ({cards.length})</span>
+        <button className="property-panel__add-btn" onClick={addCard}>+ Ekle</button>
+      </div>
+      {cards.map((c, i) => (
+        <div key={i} className="property-panel__list-item">
+          <div className="property-panel__list-item-header">
+            <span>{c.time || `Kart ${i + 1}`}</span>
+            <button className="property-panel__remove-btn" onClick={() => removeCard(i)}>✕</button>
+          </div>
+          <Field label="Zaman"><input className="property-panel__input" value={c.time || ''} onChange={e => updateCard(i, 'time', e.target.value)} placeholder="09:00 AM" /></Field>
+          <Field label="Başlık"><input className="property-panel__input" value={c.title || ''} onChange={e => updateCard(i, 'title', e.target.value)} placeholder="Aktivite..." /></Field>
+          <Field label="Açıklama"><textarea className="property-panel__textarea" rows={2} value={c.description || ''} onChange={e => updateCard(i, 'description', e.target.value)} placeholder="Açıklama" /></Field>
+          <Field label="Arka Plan Rengi"><ColorRow value={c.bgColor || '#6366f1'} onChange={v => updateCard(i, 'bgColor', v)} /></Field>
+          <Field label="Yazı Rengi"><ColorRow value={c.textColor || '#ffffff'} onChange={v => updateCard(i, 'textColor', v)} /></Field>
+          <Field label="Görsel"><ImageUploader value={c.image || ''} onChange={v => updateCard(i, 'image', v)} label="Kart Görseli" /></Field>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function ChecklistForm({ block, updateBlock }) {
+  const d = block.data;
+  const items = d.items || [];
+
+  const updateItem = (index, value) => {
+    const newItems = items.map((item, i) => i === index ? { ...item, text: value } : item);
+    updateBlock(block.id, { items: newItems });
+  };
+
+  const addItem = () => {
+    updateBlock(block.id, { items: [...items, { text: '' }] });
+  };
+
+  const removeItem = (index) => {
+    updateBlock(block.id, { items: items.filter((_, i) => i !== index) });
+  };
+
+  return (
+    <>
+      <Field label="Bölüm Başlığı"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Packing List" /></Field>
+      <Field label="İkon Rengi"><ColorRow value={d.checkColor || '#9ca3af'} onChange={v => updateBlock(block.id, { checkColor: v })} /></Field>
+      <div className="property-panel__list-header">
+        <span>Maddeler ({items.length})</span>
+        <button className="property-panel__add-btn" onClick={addItem}>+ Ekle</button>
+      </div>
+      {items.map((item, i) => (
+        <div key={i} className="property-panel__list-item" style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+           <input className="property-panel__input" style={{flex: 1}} value={item.text || ''} onChange={e => updateItem(i, e.target.value)} placeholder="Eşya..." />
+           <button className="property-panel__remove-btn" onClick={() => removeItem(i)}>✕</button>
+        </div>
+      ))}
+    </>
+  );
+}
+
 function GenericForm({ block }) {
   return (
     <div className="property-panel__generic">
@@ -1010,6 +1107,9 @@ const BLOCK_FORMS = {
   faq: FAQForm,
   menu: MenuForm,
   contact_form: ContactFormForm,
+  cover: CoverForm,
+  timeline: TimelineForm,
+  checklist: ChecklistForm,
 };
 
 const BLOCK_TYPE_LABELS = {
@@ -1033,6 +1133,9 @@ const BLOCK_TYPE_LABELS = {
   contact_form: '📬 İletişim Formu',
   map: '📍 Harita',
   numbered_list: '📊 Numaralı Liste',
+  cover: '🖼️ Kapak Görseli',
+  timeline: '🗓️ Zaman Çizelgesi',
+  checklist: '✅ Kontrol Listesi',
 };
 
 const BLOCK_TYPE_COLORS = {
@@ -1056,6 +1159,9 @@ const BLOCK_TYPE_COLORS = {
   contact_form: '#3b82f6',
   map: '#10b981',
   numbered_list: '#06b6d4',
+  cover: '#8b5cf6',
+  timeline: '#6366f1',
+  checklist: '#10b981',
 };
 
 // ─── Spacing Controls ─────────────────────────────────────────────────────────

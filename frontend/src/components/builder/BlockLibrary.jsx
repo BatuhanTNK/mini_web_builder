@@ -63,6 +63,16 @@ const BLOCK_CATEGORIES = [
       { type: 'numbered_list', label: 'Liste', icon: '📊', description: 'Adım adım liste', color: '#06b6d4' },
     ]
   },
+  {
+    id: 'travel',
+    label: 'Seyahat',
+    icon: '✈️',
+    blocks: [
+      { type: 'cover', label: 'Kapak Görseli', icon: '🖼️', description: 'Tam ekran kapak', color: '#8b5cf6' },
+      { type: 'timeline', label: 'Zaman Çizelgesi', icon: '🗓️', description: 'Gün gün etkinlikler', color: '#6366f1' },
+      { type: 'checklist', label: 'Kontrol Listesi', icon: '✅', description: 'Hazırlık check list', color: '#10b981' }
+    ]
+  }
 ];
 
 // All blocks flattened for "all" tab and search
