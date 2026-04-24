@@ -427,6 +427,198 @@ const templateDefinitions = {
         { platform: 'youtube', url: 'https://youtube.com' }
       ]
     }, 4)
+  ],
+
+  digital_rsvp: () => [
+    makeBlock('cover', {
+      title: 'Ayşe & Ali', subtitle: 'Evleniyoruz! / 25 Ağustos 2026',
+      badgeText: 'Sonsuzluğa İlk Adım',
+      bgImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop',
+      ctaText: 'LCV Bildir', ctaLink: '#',
+      textColor: '#ffffff', overlayOpacity: 0.5, overlayColor: '#000000',
+      alignment: 'center', buttonColor: '#ffffff', buttonTextColor: '#1a1a1a', minHeight: '100vh'
+    }, 0),
+    makeBlock('countdown', {
+      targetDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
+      label: 'Büyük Güne Kalan Süre', style: 'card', showDays: true
+    }, 1),
+    makeBlock('text', {
+      content: '<p style="text-align: center;">Hayatımızı birleştireceğimiz bu en mutlu günümüzde siz değerli dostlarımızı da aramızda görmekten onur duyarız.</p>',
+      alignment: 'center', fontSize: '18px'
+    }, 2),
+    makeBlock('timeline', {
+      title: 'Etkinlik Akışı',
+      cards: [
+        { time: '19:00', title: 'Karşılama ve Kokteyl', description: 'Hoşgeldiniz içecekleri eşliğinde', bgColor: '#f472b6', textColor: '#ffffff' },
+        { time: '20:00', title: 'Nikah Töreni', description: 'Evet dediğimiz an', bgColor: '#ec4899', textColor: '#ffffff' },
+        { time: '20:30', title: 'İlk Dans', description: 'Gecenin en romantik anı', bgColor: '#db2777', textColor: '#ffffff' },
+        { time: '21:00', title: 'Akşam Yemeği ve Eğlence', description: 'Sabaha kadar dans', bgColor: '#be185d', textColor: '#ffffff' }
+      ]
+    }, 3),
+    makeBlock('map', {
+      address: 'Kır Bahçesi, İstanbul', lat: 41.0082, lng: 28.9784, zoom: 15, height: 250
+    }, 4),
+    makeBlock('button', {
+      label: 'Katılım Durumunu Bildir (LCV)', url: 'https://wa.me/?text=Düğüne+katılıyorum', style: 'filled',
+      color: '#db2777', textColor: '#ffffff', icon: '💌', target: '_blank'
+    }, 5)
+  ],
+
+  real_estate: () => [
+    makeBlock('cover', {
+      title: 'Bodrum Yalıkavak\'ta Lüks Villa', subtitle: 'Panoramik Deniz Manzaralı, Özel Havuzlu',
+      badgeText: 'Satılık • 25.000.000 ₺',
+      bgImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
+      ctaText: 'İncele', ctaLink: '#',
+      textColor: '#ffffff', overlayOpacity: 0.4, overlayColor: '#000000',
+      alignment: 'center', buttonColor: '#f59e0b', buttonTextColor: '#ffffff', minHeight: '80vh'
+    }, 0),
+    makeBlock('image_gallery', {
+      images: [
+        { src: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop', alt: 'Salon' },
+        { src: 'https://images.unsplash.com/photo-1600566753086-00f18efc2294?q=80&w=2070&auto=format&fit=crop', alt: 'Mutfak' },
+        { src: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070&auto=format&fit=crop', alt: 'Banyo' },
+        { src: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop', alt: 'Dış Cephe' }
+      ],
+      columns: 2, gap: '12px', borderRadius: '12px'
+    }, 1),
+    makeBlock('checklist', {
+      title: 'Öne Çıkan Özellikler',
+      checkColor: '#f59e0b',
+      items: [
+        { text: '4+2, 350m² Net Kullanım Alanı' },
+        { text: 'Yerden Isıtma ve Akıllı Ev Sistemi' },
+        { text: '2 Araçlık Kapalı Otopark' },
+        { text: '7/24 Güvenlikli Site İçi' }
+      ]
+    }, 2),
+    makeBlock('map', {
+      address: 'Yalıkavak, Bodrum, Muğla', lat: 37.1044, lng: 27.2913, zoom: 14, height: 250
+    }, 3),
+    makeBlock('profile', {
+      avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop', 
+      name: 'Burak Yılmaz', title: 'Lüks Konut Uzmanı',
+      bio: 'Bu özel mülkü yerinde görmek ve detaylı bilgi almak için bana ulaşabilirsiniz.', shape: 'circle'
+    }, 4),
+    makeBlock('button', {
+      label: 'WhatsApp\'tan Bilgi Al', url: 'https://wa.me/905551234567', style: 'filled',
+      color: '#25D366', textColor: '#ffffff', icon: '💬', target: '_blank'
+    }, 5)
+  ],
+
+  course_registration: () => [
+    makeBlock('hero', {
+      title: '6 Haftada Kendi Web Uygulamanızı Geliştirin', subtitle: 'Sıfırdan İleri Seviyeye, Gerçek Projelerle Web Geliştirme',
+      accentWord: 'Geliştirin', accentColor: '#8b5cf6',
+      bgColor: '#1e1b4b', textColor: '#ffffff', alignment: 'center'
+    }, 0),
+    makeBlock('video', {
+      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      autoplay: false, controls: true
+    }, 1),
+    makeBlock('profile', {
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop', 
+      name: 'Ayşe Yılmaz', title: 'Kıdemli Yazılım Eğitmeni',
+      bio: 'Sektörde 10+ yıl deneyim. Bugüne kadar 50.000\'den fazla öğrenciye sıfırdan kodlamayı öğrettim.', shape: 'circle'
+    }, 2),
+    makeBlock('checklist', {
+      title: 'Bu Eğitimde Neler Öğreneceksiniz?',
+      checkColor: '#8b5cf6',
+      items: [
+        { text: 'Modern JavaScript (ES6+) ve React Temelleri' },
+        { text: 'Responsive (Mobil Uyumlu) Tasarım Geliştirme' },
+        { text: 'Gerçek Zamanlı Veritabanı ve API Entegrasyonu' },
+        { text: 'Projeleri Canlıya Alma (Deployment) Stratejileri' }
+      ]
+    }, 3),
+    makeBlock('countdown', {
+      targetDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+      label: 'Erken Kayıt İndiriminin Bitmesine Kalan Süre', style: 'card', showDays: true
+    }, 4),
+    makeBlock('button', {
+      label: 'Hemen Kaydol - %50 İndirimli', url: '#', style: 'filled',
+      color: '#8b5cf6', textColor: '#ffffff', icon: '🚀', target: '_blank'
+    }, 5)
+  ],
+
+  faq_support: () => [
+    makeBlock('hero', {
+      title: 'Size Nasıl Yardımcı Olabiliriz?', subtitle: 'Sıkça sorulan soruların cevaplarını aşağıda bulabilir veya destek ekibimizle iletişime geçebilirsiniz.',
+      accentWord: 'Yardımcı', accentColor: '#3b82f6',
+      bgColor: '#f8fafc', textColor: '#0f172a', alignment: 'center'
+    }, 0),
+    makeBlock('faq', {
+      title: 'Sıkça Sorulan Sorular',
+      accentColor: '#3b82f6',
+      faqs: [
+        { question: 'Siparişim kaç günde kargoya verilir?', answer: 'Siparişleriniz onaylandıktan sonra en geç 24 saat içerisinde (iş günlerinde) kargoya teslim edilmektedir.' },
+        { question: 'İade ve değişim şartlarınız nelerdir?', answer: 'Kullanılmamış ve ambalajı bozulmamış ürünleri teslim aldığınız tarihten itibaren 14 gün içerisinde koşulsuz iade edebilirsiniz.' },
+        { question: 'Hangi kargo şirketleri ile çalışıyorsunuz?', answer: 'Yurtiçi Kargo ve Aras Kargo ile anlaşmamız bulunmaktadır. Sipariş ekranında kargo şirketinizi seçebilirsiniz.' },
+        { question: 'Taksit seçeneği var mı?', answer: 'Evet, tüm kredi kartlarına vade farksız 3 taksit, dilerseniz 12 aya varan taksit seçeneklerimiz mevcuttur.' }
+      ]
+    }, 1),
+    makeBlock('text', {
+      content: '<p style="text-align: center;"><strong>Çalışma Saatlerimiz:</strong><br>Hafta içi: 09:00 - 18:00<br>Müşteri temsilcilerimiz mesai saatleri içinde mesajlarınıza en geç 2 saat içerisinde dönüş yapmaktadır.</p>',
+      alignment: 'center', fontSize: '15px'
+    }, 2),
+    makeBlock('link_list', {
+      links: [
+        { label: 'WhatsApp Canlı Destek', url: 'https://wa.me/905551234567', icon: '💬', color: '#25D366' },
+        { label: 'Bize E-Posta Gönderin', url: 'mailto:destek@firma.com', icon: '📧', color: '#3b82f6' },
+        { label: 'Kargomu Takip Et', url: '#', icon: '📦', color: '#64748b' }
+      ]
+    }, 3),
+    makeBlock('social_icons', {
+      socials: [
+        { platform: 'instagram', url: 'https://instagram.com' },
+        { platform: 'twitter', url: 'https://twitter.com' },
+        { platform: 'facebook', url: 'https://facebook.com' }
+      ]
+    }, 4)
+  ],
+
+  personal_trainer: () => [
+    makeBlock('cover', {
+      title: 'DAHA GÜÇLÜ BİR SEN', subtitle: 'Kişiye özel antrenman ve beslenme programlarıyla hedeflerine ulaş.',
+      badgeText: 'ONLINE KOÇLUK',
+      bgImage: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop',
+      ctaText: 'Değişime Başla', ctaLink: '#paketler',
+      textColor: '#ffffff', overlayOpacity: 0.7, overlayColor: '#000000',
+      alignment: 'center', buttonColor: '#ef4444', buttonTextColor: '#ffffff', minHeight: '80vh'
+    }, 0),
+    makeBlock('profile', {
+      avatar: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop', 
+      name: 'Caner Şahin', title: 'Milli Sporcu & Fitness Koçu',
+      bio: 'Sertifikalı Personal Trainer. Vücut geliştirme ve fonksiyonel antrenman uzmanı. Bugüne kadar 500+ öğrencinin değişimine rehberlik ettim.', shape: 'circle'
+    }, 1),
+    makeBlock('video', {
+      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      autoplay: false, controls: true
+    }, 2),
+    makeBlock('text', {
+      content: '<h2 style="text-align: center; margin: 0; padding-top: 10px;">Hizmet Paketleri</h2>',
+      alignment: 'center', fontSize: '16px'
+    }, 3),
+    makeBlock('product_card', {
+      name: '1 Aylık Online Koçluk',
+      description: 'Kişiye özel antrenman planı, kalori takibi ve haftalık form kontrolü.',
+      price: '1.500', currency: '₺', originalPrice: '2.000',
+      image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=600&auto=format&fit=crop',
+      buttonText: 'Hemen Başla', buttonColor: '#ef4444', priceColor: '#ef4444',
+      buyUrl: 'https://wa.me/905551234567'
+    }, 4),
+    makeBlock('product_card', {
+      name: '10 Derslik Stüdyo Paketi',
+      description: 'Birebir özel stüdyo dersi. Postür analizi, esneklik ve ağırlık idmanları.',
+      price: '8.000', currency: '₺',
+      image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop',
+      buttonText: 'Randevu Al', buttonColor: '#ef4444', priceColor: '#ef4444',
+      buyUrl: 'https://wa.me/905551234567'
+    }, 5),
+    makeBlock('button', {
+      label: 'WhatsApp\'tan Bilgi Al', url: 'https://wa.me/905551234567', style: 'filled',
+      color: '#25D366', textColor: '#ffffff', icon: '💬', target: '_blank'
+    }, 6)
   ]
 };
 

@@ -12,7 +12,7 @@ const blockSchema = new mongoose.Schema({
       'hero', 'image', 'button', 'link_list', 'social_icons', 'text',
       'numbered_list', 'image_gallery', 'video', 'profile', 'countdown',
       'coupon', 'contact_form', 'map', 'divider', 'product_card',
-      'faq', 'menu', 'vcard', 'spotify_embed'
+      'faq', 'menu', 'vcard', 'spotify_embed', 'cover', 'timeline', 'checklist', 'spotify'
     ]
   },
   order: {
@@ -48,7 +48,12 @@ const miniSiteSchema = new mongoose.Schema({
   },
   templateId: {
     type: String,
-    enum: ['blank', 'linktree', 'digital_card', 'restaurant', 'event', 'portfolio', 'e_commerce', 'pdf_lead', 'coupon_page'],
+    enum: [
+      'blank', 'linktree', 'digital_card', 'restaurant', 'event', 'portfolio', 
+      'e_commerce', 'pdf_lead', 'coupon_page', 'travel_itinerary', 
+      'simple_download', 'podcast_launch', 'digital_rsvp', 'real_estate', 
+      'course_registration', 'faq_support', 'personal_trainer'
+    ],
     default: 'blank'
   },
   theme: {

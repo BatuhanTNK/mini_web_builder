@@ -161,20 +161,30 @@ app.get('/api/sites', (req, res) => {
 
 // POST create site
 app.post('/api/sites', (req, res) => {
-  const userId = req.headers['x-user-id'];
-  if (!userId) return res.status(401).json({ message: 'Unauthorized' });
-  const site = { ...req.body, userId, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-  const sites = readSites();
-  sites.push(site);
-  writeSites(sites);
-  res.json({ success: true, site });
+  try {
+    const userId = req.headers['x-user-id'];
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+    const site = { ...req.body, userId, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    const sites = readSites();
+    sites.push(site);
+    writeSites(sites);
+    res.json({ success: true, site });
+  } catch (error) {
+    console.error('Error in POST /api/sites:', error);
+    res.status(500).json({ message: 'Server error creating site', error: error.message });
+  }
 });
 
 // GET single site by id
 app.get('/api/sites/:id', (req, res) => {
-  const site = readSites().find(s => s._id === req.params.id);
-  if (!site) return res.status(404).json({ message: 'Site bulunamadı' });
-  res.json({ site });
+  try {
+    const site = readSites().find(s => s._id === req.params.id);
+    if (!site) return res.status(404).json({ message: 'Site bulunamadı' });
+    res.json({ site });
+  } catch (error) {
+    console.error('Error in GET /api/sites/:id:', error);
+    res.status(500).json({ message: 'Server error fetching site', error: error.message });
+  }
 });
 
 // PUT update site

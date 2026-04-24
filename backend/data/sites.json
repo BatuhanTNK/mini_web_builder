@@ -2939,5 +2939,1332 @@
     },
     "createdAt": "2026-04-22T13:59:37.886Z",
     "updatedAt": "2026-04-22T13:59:37.886Z"
+  },
+  {
+    "_id": "96686ba5-81c9-453a-bc22-bbc7cf0ef9cd",
+    "userId": "guest",
+    "title": "davetiye",
+    "slug": "davetiye-mocy8vgn",
+    "templateId": "digital_rsvp",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "40b37331-14c3-4252-9125-6760c2d994f1",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Ayşe & Ali",
+          "subtitle": "Evleniyoruz! / 25 Ağustos 2026",
+          "badgeText": "Sonsuzluğa İlk Adım",
+          "bgImage": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop",
+          "ctaText": "LCV Bildir",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.5,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#ffffff",
+          "buttonTextColor": "#1a1a1a",
+          "minHeight": "100vh"
+        }
+      },
+      {
+        "id": "f97a16c9-7161-4b0f-a5ca-4d7c3e68db14",
+        "type": "countdown",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "targetDate": "2026-06-23T13:31:41.255Z",
+          "label": "Büyük Güne Kalan Süre",
+          "style": "card",
+          "showDays": true
+        }
+      },
+      {
+        "id": "31579a5b-7a77-41a9-95e0-11a2d6a26f9e",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<p style=\"text-align: center;\">Hayatımızı birleştireceğimiz bu en mutlu günümüzde siz değerli dostlarımızı da aramızda görmekten onur duyarız.</p>",
+          "alignment": "center",
+          "fontSize": "18px"
+        }
+      },
+      {
+        "id": "11c387b0-fbcc-4cc0-a94c-220edc3ccc13",
+        "type": "timeline",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "title": "Etkinlik Akışı",
+          "cards": [
+            {
+              "time": "19:00",
+              "title": "Karşılama ve Kokteyl",
+              "description": "Hoşgeldiniz içecekleri eşliğinde",
+              "bgColor": "#f472b6",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "20:00",
+              "title": "Nikah Töreni",
+              "description": "Evet dediğimiz an",
+              "bgColor": "#ec4899",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "20:30",
+              "title": "İlk Dans",
+              "description": "Gecenin en romantik anı",
+              "bgColor": "#db2777",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "21:00",
+              "title": "Akşam Yemeği ve Eğlence",
+              "description": "Sabaha kadar dans",
+              "bgColor": "#be185d",
+              "textColor": "#ffffff"
+            }
+          ]
+        }
+      },
+      {
+        "id": "d02a80c1-ec31-4a1f-b8a9-04fa45d1c910",
+        "type": "map",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "address": "Kır Bahçesi, İstanbul",
+          "lat": 41.0082,
+          "lng": 28.9784,
+          "zoom": 15,
+          "height": 250
+        }
+      },
+      {
+        "id": "327726db-cd15-45bf-91ce-5af217d58921",
+        "type": "button",
+        "order": 5,
+        "visible": true,
+        "data": {
+          "label": "Katılım Durumunu Bildir (LCV)",
+          "url": "https://wa.me/?text=Düğüne+katılıyorum",
+          "style": "filled",
+          "color": "#db2777",
+          "textColor": "#ffffff",
+          "icon": "💌",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:31:41.602Z",
+    "updatedAt": "2026-04-24T13:31:41.602Z"
+  },
+  {
+    "_id": "9ca43111-bd3b-4548-b481-729ca48d6cad",
+    "userId": "guest",
+    "title": "davetiye",
+    "slug": "davetiye-mocy95lf",
+    "templateId": "digital_rsvp",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "52683564-a51a-4c92-83f1-bcea95bc3c75",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Ayşe & Ali",
+          "subtitle": "Evleniyoruz! / 25 Ağustos 2026",
+          "badgeText": "Sonsuzluğa İlk Adım",
+          "bgImage": "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop",
+          "ctaText": "LCV Bildir",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.5,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#ffffff",
+          "buttonTextColor": "#1a1a1a",
+          "minHeight": "100vh"
+        }
+      },
+      {
+        "id": "f03a2245-8337-4532-b358-c4bc44d387bc",
+        "type": "countdown",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "targetDate": "2026-06-23T13:31:54.387Z",
+          "label": "Büyük Güne Kalan Süre",
+          "style": "card",
+          "showDays": true
+        }
+      },
+      {
+        "id": "576ef665-8074-45ae-8d04-2abd646133ea",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<p style=\"text-align: center;\">Hayatımızı birleştireceğimiz bu en mutlu günümüzde siz değerli dostlarımızı da aramızda görmekten onur duyarız.</p>",
+          "alignment": "center",
+          "fontSize": "18px"
+        }
+      },
+      {
+        "id": "150016a2-0bba-440a-94f3-bcdca36e0ccb",
+        "type": "timeline",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "title": "Etkinlik Akışı",
+          "cards": [
+            {
+              "time": "19:00",
+              "title": "Karşılama ve Kokteyl",
+              "description": "Hoşgeldiniz içecekleri eşliğinde",
+              "bgColor": "#f472b6",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "20:00",
+              "title": "Nikah Töreni",
+              "description": "Evet dediğimiz an",
+              "bgColor": "#ec4899",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "20:30",
+              "title": "İlk Dans",
+              "description": "Gecenin en romantik anı",
+              "bgColor": "#db2777",
+              "textColor": "#ffffff"
+            },
+            {
+              "time": "21:00",
+              "title": "Akşam Yemeği ve Eğlence",
+              "description": "Sabaha kadar dans",
+              "bgColor": "#be185d",
+              "textColor": "#ffffff"
+            }
+          ]
+        }
+      },
+      {
+        "id": "7e08280a-9b69-4df5-b48a-c232356d7896",
+        "type": "map",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "address": "Kır Bahçesi, İstanbul",
+          "lat": 41.0082,
+          "lng": 28.9784,
+          "zoom": 15,
+          "height": 250
+        }
+      },
+      {
+        "id": "57e3a257-6bd5-4ef4-b98c-23eab2ee98e2",
+        "type": "button",
+        "order": 5,
+        "visible": true,
+        "data": {
+          "label": "Katılım Durumunu Bildir (LCV)",
+          "url": "https://wa.me/?text=Düğüne+katılıyorum",
+          "style": "filled",
+          "color": "#db2777",
+          "textColor": "#ffffff",
+          "icon": "💌",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:31:54.410Z",
+    "updatedAt": "2026-04-24T13:31:54.410Z"
+  },
+  {
+    "_id": "f36b88a7-3bd0-4c60-b4a2-1df897b54212",
+    "userId": "guest",
+    "title": "emlak",
+    "slug": "emlak-mocygzfn",
+    "templateId": "real_estate",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "70ec3bb5-8aa2-4747-a9ea-ff47633a62e0",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Bodrum Yalıkavak'ta Lüks Villa",
+          "subtitle": "Panoramik Deniz Manzaralı, Özel Havuzlu",
+          "badgeText": "Satılık • 25.000.000 ₺",
+          "bgImage": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop",
+          "ctaText": "İncele",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.4,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#f59e0b",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "80vh"
+        }
+      },
+      {
+        "id": "6814f867-97d4-413f-95be-bd39c15a914b",
+        "type": "image_gallery",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "images": [
+            {
+              "src": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop",
+              "alt": "Salon"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1600566753086-00f18efc2294?q=80&w=2070&auto=format&fit=crop",
+              "alt": "Mutfak"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070&auto=format&fit=crop",
+              "alt": "Banyo"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop",
+              "alt": "Dış Cephe"
+            }
+          ],
+          "columns": 2,
+          "gap": "12px",
+          "borderRadius": "12px"
+        }
+      },
+      {
+        "id": "0743d380-5e05-46b6-a8d7-8c363ae5c3af",
+        "type": "checklist",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "title": "Öne Çıkan Özellikler",
+          "checkColor": "#f59e0b",
+          "items": [
+            {
+              "text": "4+2, 350m² Net Kullanım Alanı"
+            },
+            {
+              "text": "Yerden Isıtma ve Akıllı Ev Sistemi"
+            },
+            {
+              "text": "2 Araçlık Kapalı Otopark"
+            },
+            {
+              "text": "7/24 Güvenlikli Site İçi"
+            }
+          ]
+        }
+      },
+      {
+        "id": "e823f03a-2e1e-4246-80a9-e4b0ece32ad8",
+        "type": "map",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "address": "Yalıkavak, Bodrum, Muğla",
+          "lat": 37.1044,
+          "lng": 27.2913,
+          "zoom": 14,
+          "height": 250
+        }
+      },
+      {
+        "id": "78b0357d-3467-42ed-8f2a-2c548842d9d7",
+        "type": "profile",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop",
+          "name": "Burak Yılmaz",
+          "title": "Lüks Konut Uzmanı",
+          "bio": "Bu özel mülkü yerinde görmek ve detaylı bilgi almak için bana ulaşabilirsiniz.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "52afabef-29c7-4090-ad0b-3ce24701af32",
+        "type": "button",
+        "order": 5,
+        "visible": true,
+        "data": {
+          "label": "WhatsApp'tan Bilgi Al",
+          "url": "https://wa.me/905551234567",
+          "style": "filled",
+          "color": "#25D366",
+          "textColor": "#ffffff",
+          "icon": "💬",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:37:59.983Z",
+    "updatedAt": "2026-04-24T13:37:59.983Z"
+  },
+  {
+    "_id": "aeb6143c-81cc-4f95-8684-1ab5b69a31e0",
+    "userId": "guest",
+    "title": "emlak",
+    "slug": "emlak-mocyh7gz",
+    "templateId": "real_estate",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "5770b9b8-210d-4b35-9fd4-76f815d0dd82",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Bodrum Yalıkavak'ta Lüks Villa",
+          "subtitle": "Panoramik Deniz Manzaralı, Özel Havuzlu",
+          "badgeText": "Satılık • 25.000.000 ₺",
+          "bgImage": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop",
+          "ctaText": "İncele",
+          "ctaLink": "#",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.4,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#f59e0b",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "80vh"
+        }
+      },
+      {
+        "id": "25a54c78-0193-43b7-b3fd-662e30642970",
+        "type": "image_gallery",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "images": [
+            {
+              "src": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop",
+              "alt": "Salon"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1600566753086-00f18efc2294?q=80&w=2070&auto=format&fit=crop",
+              "alt": "Mutfak"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070&auto=format&fit=crop",
+              "alt": "Banyo"
+            },
+            {
+              "src": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop",
+              "alt": "Dış Cephe"
+            }
+          ],
+          "columns": 2,
+          "gap": "12px",
+          "borderRadius": "12px"
+        }
+      },
+      {
+        "id": "d6925c83-7e21-44d3-bbef-2637f4618827",
+        "type": "checklist",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "title": "Öne Çıkan Özellikler",
+          "checkColor": "#f59e0b",
+          "items": [
+            {
+              "text": "4+2, 350m² Net Kullanım Alanı"
+            },
+            {
+              "text": "Yerden Isıtma ve Akıllı Ev Sistemi"
+            },
+            {
+              "text": "2 Araçlık Kapalı Otopark"
+            },
+            {
+              "text": "7/24 Güvenlikli Site İçi"
+            }
+          ]
+        }
+      },
+      {
+        "id": "1bc5b7b0-5ea8-4641-a7d9-031d8c4a9fcc",
+        "type": "map",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "address": "Yalıkavak, Bodrum, Muğla",
+          "lat": 37.1044,
+          "lng": 27.2913,
+          "zoom": 14,
+          "height": 250
+        }
+      },
+      {
+        "id": "264a1a3e-3c4b-4fe9-ab58-b22b80341a0e",
+        "type": "profile",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop",
+          "name": "Burak Yılmaz",
+          "title": "Lüks Konut Uzmanı",
+          "bio": "Bu özel mülkü yerinde görmek ve detaylı bilgi almak için bana ulaşabilirsiniz.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "b0b0fc40-eef2-49eb-b790-f29c9a4013f2",
+        "type": "button",
+        "order": 5,
+        "visible": true,
+        "data": {
+          "label": "WhatsApp'tan Bilgi Al",
+          "url": "https://wa.me/905551234567",
+          "style": "filled",
+          "color": "#25D366",
+          "textColor": "#ffffff",
+          "icon": "💬",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:38:10.083Z",
+    "updatedAt": "2026-04-24T13:38:10.083Z"
+  },
+  {
+    "_id": "92753f22-471d-4805-8f4b-7ee1e8bb3552",
+    "userId": "guest",
+    "title": "egitim",
+    "slug": "egitim-mocyq590",
+    "templateId": "course_registration",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "b96068c7-9130-4e50-9e09-df7f2c67594d",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "6 Haftada Kendi Web Uygulamanızı Geliştirin",
+          "subtitle": "Sıfırdan İleri Seviyeye, Gerçek Projelerle Web Geliştirme",
+          "accentWord": "Geliştirin",
+          "accentColor": "#8b5cf6",
+          "bgColor": "#1e1b4b",
+          "textColor": "#ffffff",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "ec7da883-1a2a-4d51-b285-e96347d1cd5d",
+        "type": "video",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "autoplay": false,
+          "controls": true
+        }
+      },
+      {
+        "id": "4fd8274e-ddd1-4561-8afc-191ae7100557",
+        "type": "profile",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop",
+          "name": "Ayşe Yılmaz",
+          "title": "Kıdemli Yazılım Eğitmeni",
+          "bio": "Sektörde 10+ yıl deneyim. Bugüne kadar 50.000'den fazla öğrenciye sıfırdan kodlamayı öğrettim.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "69428918-8fab-4900-877a-f4998862ee93",
+        "type": "checklist",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "title": "Bu Eğitimde Neler Öğreneceksiniz?",
+          "checkColor": "#8b5cf6",
+          "items": [
+            {
+              "text": "Modern JavaScript (ES6+) ve React Temelleri"
+            },
+            {
+              "text": "Responsive (Mobil Uyumlu) Tasarım Geliştirme"
+            },
+            {
+              "text": "Gerçek Zamanlı Veritabanı ve API Entegrasyonu"
+            },
+            {
+              "text": "Projeleri Canlıya Alma (Deployment) Stratejileri"
+            }
+          ]
+        }
+      },
+      {
+        "id": "2c5207ce-7d70-432f-8ee2-619026bbab79",
+        "type": "countdown",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "targetDate": "2026-04-27T13:45:07.092Z",
+          "label": "Erken Kayıt İndiriminin Bitmesine Kalan Süre",
+          "style": "card",
+          "showDays": true
+        }
+      },
+      {
+        "id": "960061fe-5266-4e44-a224-1f2619c55698",
+        "type": "button",
+        "order": 5,
+        "visible": true,
+        "data": {
+          "label": "Hemen Kaydol - %50 İndirimli",
+          "url": "#",
+          "style": "filled",
+          "color": "#8b5cf6",
+          "textColor": "#ffffff",
+          "icon": "🚀",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:45:07.108Z",
+    "updatedAt": "2026-04-24T13:45:07.108Z"
+  },
+  {
+    "_id": "f8fa6e54-3050-40b6-b891-359f7f8e7b8c",
+    "userId": "guest",
+    "title": "sss",
+    "slug": "sss-mocyumh0",
+    "templateId": "faq_support",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "73d1c39f-8df2-4284-a3d5-e3db3cc1f38d",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Size Nasıl Yardımcı Olabiliriz?",
+          "subtitle": "Sıkça sorulan soruların cevaplarını aşağıda bulabilir veya destek ekibimizle iletişime geçebilirsiniz.",
+          "accentWord": "Yardımcı",
+          "accentColor": "#3b82f6",
+          "bgColor": "#f8fafc",
+          "textColor": "#0f172a",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "39a65579-03a8-4296-8ff3-9142c59e4941",
+        "type": "faq",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "title": "Sıkça Sorulan Sorular",
+          "accentColor": "#3b82f6",
+          "faqs": [
+            {
+              "question": "Siparişim kaç günde kargoya verilir?",
+              "answer": "Siparişleriniz onaylandıktan sonra en geç 24 saat içerisinde (iş günlerinde) kargoya teslim edilmektedir."
+            },
+            {
+              "question": "İade ve değişim şartlarınız nelerdir?",
+              "answer": "Kullanılmamış ve ambalajı bozulmamış ürünleri teslim aldığınız tarihten itibaren 14 gün içerisinde koşulsuz iade edebilirsiniz."
+            },
+            {
+              "question": "Hangi kargo şirketleri ile çalışıyorsunuz?",
+              "answer": "Yurtiçi Kargo ve Aras Kargo ile anlaşmamız bulunmaktadır. Sipariş ekranında kargo şirketinizi seçebilirsiniz."
+            },
+            {
+              "question": "Taksit seçeneği var mı?",
+              "answer": "Evet, tüm kredi kartlarına vade farksız 3 taksit, dilerseniz 12 aya varan taksit seçeneklerimiz mevcuttur."
+            }
+          ]
+        }
+      },
+      {
+        "id": "5bc46898-19cf-4470-9896-b0c52c20beb5",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<p style=\"text-align: center;\"><strong>Çalışma Saatlerimiz:</strong><br>Hafta içi: 09:00 - 18:00<br>Müşteri temsilcilerimiz mesai saatleri içinde mesajlarınıza en geç 2 saat içerisinde dönüş yapmaktadır.</p>",
+          "alignment": "center",
+          "fontSize": "15px"
+        }
+      },
+      {
+        "id": "2adcfb88-5019-4108-8c7a-3e404dfe0b7e",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "WhatsApp Canlı Destek",
+              "url": "https://wa.me/905551234567",
+              "icon": "💬",
+              "color": "#25D366"
+            },
+            {
+              "label": "Bize E-Posta Gönderin",
+              "url": "mailto:destek@firma.com",
+              "icon": "📧",
+              "color": "#3b82f6"
+            },
+            {
+              "label": "Kargomu Takip Et",
+              "url": "#",
+              "icon": "📦",
+              "color": "#64748b"
+            }
+          ]
+        }
+      },
+      {
+        "id": "7312b4dd-05e0-44fd-a724-cb962128918f",
+        "type": "social_icons",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "socials": [
+            {
+              "platform": "instagram",
+              "url": "https://instagram.com"
+            },
+            {
+              "platform": "twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "platform": "facebook",
+              "url": "https://facebook.com"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:48:36.364Z",
+    "updatedAt": "2026-04-24T13:48:36.364Z"
+  },
+  {
+    "_id": "c081b99b-665e-46f0-a56b-bfc60b58cf0f",
+    "userId": "guest",
+    "title": "sss",
+    "slug": "sss-mocyz4gc",
+    "templateId": "faq_support",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "7c2778b7-bee8-4004-90a3-34ef23afb96f",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Size Nasıl Yardımcı Olabiliriz?",
+          "subtitle": "Sıkça sorulan soruların cevaplarını aşağıda bulabilir veya destek ekibimizle iletişime geçebilirsiniz.",
+          "accentWord": "Yardımcı",
+          "accentColor": "#3b82f6",
+          "bgColor": "#f8fafc",
+          "textColor": "#0f172a",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "59b66751-16e7-4f59-8783-954c2722d135",
+        "type": "faq",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "title": "Sıkça Sorulan Sorular",
+          "accentColor": "#3b82f6",
+          "faqs": [
+            {
+              "question": "Siparişim kaç günde kargoya verilir?",
+              "answer": "Siparişleriniz onaylandıktan sonra en geç 24 saat içerisinde (iş günlerinde) kargoya teslim edilmektedir."
+            },
+            {
+              "question": "İade ve değişim şartlarınız nelerdir?",
+              "answer": "Kullanılmamış ve ambalajı bozulmamış ürünleri teslim aldığınız tarihten itibaren 14 gün içerisinde koşulsuz iade edebilirsiniz."
+            },
+            {
+              "question": "Hangi kargo şirketleri ile çalışıyorsunuz?",
+              "answer": "Yurtiçi Kargo ve Aras Kargo ile anlaşmamız bulunmaktadır. Sipariş ekranında kargo şirketinizi seçebilirsiniz."
+            },
+            {
+              "question": "Taksit seçeneği var mı?",
+              "answer": "Evet, tüm kredi kartlarına vade farksız 3 taksit, dilerseniz 12 aya varan taksit seçeneklerimiz mevcuttur."
+            }
+          ]
+        }
+      },
+      {
+        "id": "efdf640e-be27-4533-89ec-c64e51ec1c44",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<p style=\"text-align: center;\"><strong>Çalışma Saatlerimiz:</strong><br>Hafta içi: 09:00 - 18:00<br>Müşteri temsilcilerimiz mesai saatleri içinde mesajlarınıza en geç 2 saat içerisinde dönüş yapmaktadır.</p>",
+          "alignment": "center",
+          "fontSize": "15px"
+        }
+      },
+      {
+        "id": "dd784275-8aeb-4a0b-b974-bf6f9cbe4390",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "WhatsApp Canlı Destek",
+              "url": "https://wa.me/905551234567",
+              "icon": "💬",
+              "color": "#25D366"
+            },
+            {
+              "label": "Bize E-Posta Gönderin",
+              "url": "mailto:destek@firma.com",
+              "icon": "📧",
+              "color": "#3b82f6"
+            },
+            {
+              "label": "Kargomu Takip Et",
+              "url": "#",
+              "icon": "📦",
+              "color": "#64748b"
+            }
+          ]
+        }
+      },
+      {
+        "id": "dddb062e-477a-4934-9f7e-42fb0abebfb6",
+        "type": "social_icons",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "socials": [
+            {
+              "platform": "instagram",
+              "url": "https://instagram.com"
+            },
+            {
+              "platform": "twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "platform": "facebook",
+              "url": "https://facebook.com"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:52:06.307Z",
+    "updatedAt": "2026-04-24T13:52:06.308Z"
+  },
+  {
+    "_id": "46e8d74d-b03d-430c-8c3c-5aa210b8f028",
+    "userId": "guest",
+    "title": "dsadsds",
+    "slug": "dsadsds-mocyzqzn",
+    "templateId": "faq_support",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "e0a539ad-912c-48a2-b235-1234ee65d83d",
+        "type": "hero",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "Size Nasıl Yardımcı Olabiliriz?",
+          "subtitle": "Sıkça sorulan soruların cevaplarını aşağıda bulabilir veya destek ekibimizle iletişime geçebilirsiniz.",
+          "accentWord": "Yardımcı",
+          "accentColor": "#3b82f6",
+          "bgColor": "#f8fafc",
+          "textColor": "#0f172a",
+          "alignment": "center"
+        }
+      },
+      {
+        "id": "9e32a773-bb6d-4eaa-98aa-1fc3a008c532",
+        "type": "faq",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "title": "Sıkça Sorulan Sorular",
+          "accentColor": "#3b82f6",
+          "faqs": [
+            {
+              "question": "Siparişim kaç günde kargoya verilir?",
+              "answer": "Siparişleriniz onaylandıktan sonra en geç 24 saat içerisinde (iş günlerinde) kargoya teslim edilmektedir."
+            },
+            {
+              "question": "İade ve değişim şartlarınız nelerdir?",
+              "answer": "Kullanılmamış ve ambalajı bozulmamış ürünleri teslim aldığınız tarihten itibaren 14 gün içerisinde koşulsuz iade edebilirsiniz."
+            },
+            {
+              "question": "Hangi kargo şirketleri ile çalışıyorsunuz?",
+              "answer": "Yurtiçi Kargo ve Aras Kargo ile anlaşmamız bulunmaktadır. Sipariş ekranında kargo şirketinizi seçebilirsiniz."
+            },
+            {
+              "question": "Taksit seçeneği var mı?",
+              "answer": "Evet, tüm kredi kartlarına vade farksız 3 taksit, dilerseniz 12 aya varan taksit seçeneklerimiz mevcuttur."
+            }
+          ]
+        }
+      },
+      {
+        "id": "246a110b-66dd-400d-a89f-2128a734212c",
+        "type": "text",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "content": "<p style=\"text-align: center;\"><strong>Çalışma Saatlerimiz:</strong><br>Hafta içi: 09:00 - 18:00<br>Müşteri temsilcilerimiz mesai saatleri içinde mesajlarınıza en geç 2 saat içerisinde dönüş yapmaktadır.</p>",
+          "alignment": "center",
+          "fontSize": "15px"
+        }
+      },
+      {
+        "id": "fb0b33e5-1aef-4bf5-b0de-e8a3b87daba4",
+        "type": "link_list",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "links": [
+            {
+              "label": "WhatsApp Canlı Destek",
+              "url": "https://wa.me/905551234567",
+              "icon": "💬",
+              "color": "#25D366"
+            },
+            {
+              "label": "Bize E-Posta Gönderin",
+              "url": "mailto:destek@firma.com",
+              "icon": "📧",
+              "color": "#3b82f6"
+            },
+            {
+              "label": "Kargomu Takip Et",
+              "url": "#",
+              "icon": "📦",
+              "color": "#64748b"
+            }
+          ]
+        }
+      },
+      {
+        "id": "94dd7f6b-f444-4db3-a14f-e4af40548c49",
+        "type": "social_icons",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "socials": [
+            {
+              "platform": "instagram",
+              "url": "https://instagram.com"
+            },
+            {
+              "platform": "twitter",
+              "url": "https://twitter.com"
+            },
+            {
+              "platform": "facebook",
+              "url": "https://facebook.com"
+            }
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T13:52:35.195Z",
+    "updatedAt": "2026-04-24T13:52:35.195Z"
+  },
+  {
+    "title": "Test",
+    "slug": "test-123",
+    "userId": "guest",
+    "createdAt": "2026-04-24T13:57:09.187Z",
+    "updatedAt": "2026-04-24T13:57:09.187Z"
+  },
+  {
+    "title": "Test",
+    "slug": "test-124",
+    "templateId": "course_registration",
+    "blocks": [
+      {
+        "id": "1",
+        "type": "hero",
+        "data": {
+          "title": "Test"
+        }
+      }
+    ],
+    "userId": "guest",
+    "createdAt": "2026-04-24T13:59:36.817Z",
+    "updatedAt": "2026-04-24T13:59:36.817Z"
+  },
+  {
+    "title": "Test",
+    "slug": "test-125",
+    "templateId": "course_registration",
+    "blocks": [
+      {
+        "id": "1",
+        "type": "hero",
+        "data": {
+          "title": "Test"
+        }
+      }
+    ],
+    "userId": "guest",
+    "createdAt": "2026-04-24T14:00:51.987Z",
+    "updatedAt": "2026-04-24T14:00:51.988Z"
+  },
+  {
+    "_id": "test-id-12345",
+    "title": "Test",
+    "slug": "test-125",
+    "templateId": "course_registration",
+    "blocks": [
+      {
+        "id": "1",
+        "type": "hero",
+        "data": {
+          "title": "Test"
+        }
+      }
+    ],
+    "userId": "guest",
+    "createdAt": "2026-04-24T14:02:34.587Z",
+    "updatedAt": "2026-04-24T14:02:34.588Z"
+  },
+  {
+    "_id": "test-from-node",
+    "title": "Test",
+    "slug": "test-node-123",
+    "templateId": "personal_trainer",
+    "blocks": [
+      {
+        "id": "test-block-1",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "DAHA GÜÇLÜ BİR SEN"
+        }
+      }
+    ],
+    "userId": "guest",
+    "createdAt": "2026-04-24T14:12:07.333Z",
+    "updatedAt": "2026-04-24T14:12:07.333Z"
+  },
+  {
+    "_id": "fae7e828-3e56-4250-98b3-70d5872cd131",
+    "userId": "guest",
+    "title": "at",
+    "slug": "at-mod02y6r",
+    "templateId": "personal_trainer",
+    "theme": {
+      "primaryColor": "#6366f1",
+      "backgroundColor": "#ffffff",
+      "textColor": "#1a1a1a",
+      "fontFamily": "Inter",
+      "backgroundType": "solid"
+    },
+    "blocks": [
+      {
+        "id": "50954421-0094-4399-8142-3e4f48af6b6c",
+        "type": "cover",
+        "order": 0,
+        "visible": true,
+        "data": {
+          "title": "DAHA GÜÇLÜ BİR SEN",
+          "subtitle": "Kişiye özel antrenman ve beslenme programlarıyla hedeflerine ulaş.",
+          "badgeText": "ONLINE KOÇLUK",
+          "bgImage": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop",
+          "ctaText": "Değişime Başla",
+          "ctaLink": "#paketler",
+          "textColor": "#ffffff",
+          "overlayOpacity": 0.7,
+          "overlayColor": "#000000",
+          "alignment": "center",
+          "buttonColor": "#ef4444",
+          "buttonTextColor": "#ffffff",
+          "minHeight": "80vh"
+        }
+      },
+      {
+        "id": "5030d5b4-e864-457c-b89c-62d842eeeb7a",
+        "type": "profile",
+        "order": 1,
+        "visible": true,
+        "data": {
+          "avatar": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop",
+          "name": "Caner Şahin",
+          "title": "Milli Sporcu & Fitness Koçu",
+          "bio": "Sertifikalı Personal Trainer. Vücut geliştirme ve fonksiyonel antrenman uzmanı. Bugüne kadar 500+ öğrencinin değişimine rehberlik ettim.",
+          "shape": "circle"
+        }
+      },
+      {
+        "id": "d5e30976-6524-4c7a-9f5b-c9d86d07ea77",
+        "type": "video",
+        "order": 2,
+        "visible": true,
+        "data": {
+          "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "autoplay": false,
+          "controls": true
+        }
+      },
+      {
+        "id": "d1161e42-5234-4155-ae7a-f3d4fd04e13a",
+        "type": "text",
+        "order": 3,
+        "visible": true,
+        "data": {
+          "content": "<h2 style=\"text-align: center; margin: 0; padding-top: 10px;\">Hizmet Paketleri</h2>",
+          "alignment": "center",
+          "fontSize": "16px"
+        }
+      },
+      {
+        "id": "23f5c152-b886-44ae-bf80-28ffb14fed9b",
+        "type": "product_card",
+        "order": 4,
+        "visible": true,
+        "data": {
+          "name": "1 Aylık Online Koçluk",
+          "description": "Kişiye özel antrenman planı, kalori takibi ve haftalık form kontrolü.",
+          "price": "1.500",
+          "currency": "₺",
+          "originalPrice": "2.000",
+          "image": "https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=600&auto=format&fit=crop",
+          "buttonText": "Hemen Başla",
+          "buttonColor": "#ef4444",
+          "priceColor": "#ef4444",
+          "buyUrl": "https://wa.me/905551234567"
+        }
+      },
+      {
+        "id": "3da51e38-a28b-4625-a42d-d31af6c3b503",
+        "type": "product_card",
+        "order": 5,
+        "visible": true,
+        "data": {
+          "name": "10 Derslik Stüdyo Paketi",
+          "description": "Birebir özel stüdyo dersi. Postür analizi, esneklik ve ağırlık idmanları.",
+          "price": "8.000",
+          "currency": "₺",
+          "image": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop",
+          "buttonText": "Randevu Al",
+          "buttonColor": "#ef4444",
+          "priceColor": "#ef4444",
+          "buyUrl": "https://wa.me/905551234567"
+        }
+      },
+      {
+        "id": "553fd9ea-c218-4867-b2aa-e5a3f8933972",
+        "type": "button",
+        "order": 6,
+        "visible": true,
+        "data": {
+          "label": "WhatsApp'tan Bilgi Al",
+          "url": "https://wa.me/905551234567",
+          "style": "filled",
+          "color": "#25D366",
+          "textColor": "#ffffff",
+          "icon": "💬",
+          "target": "_blank"
+        }
+      }
+    ],
+    "settings": {
+      "metaTitle": "",
+      "metaDescription": "",
+      "isPublished": false,
+      "passwordProtected": false,
+      "password": "",
+      "analytics": {
+        "views": 0,
+        "uniqueViews": 0
+      }
+    },
+    "qrCode": {
+      "generated": false
+    },
+    "createdAt": "2026-04-24T14:23:04.098Z",
+    "updatedAt": "2026-04-24T14:23:04.099Z"
   }
 ]
