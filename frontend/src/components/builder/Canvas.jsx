@@ -63,6 +63,9 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
 
   // Intercept ALL clicks inside block — prevent links, buttons, and child onClick handlers
   const handleContentClick = (e) => {
+    // Allow clicks on block controls (up, down, hide, delete)
+    if (e.target.closest('.canvas-block__controls')) return;
+
     // When double-click re-dispatches a click, let it pass through
     if (bypassRef.current) return;
 
@@ -118,7 +121,7 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
     >
       {/* Block controls overlay */}
       {showControls && (
-        <div className="canvas-block__controls" onClickCapture={e => e.stopPropagation()}>
+        <div className="canvas-block__controls" onClick={(e) => e.stopPropagation()}>
           <button
             className="canvas-block__ctrl-btn"
             onClick={() => onMove(block.id, 'up')}
@@ -190,31 +193,17 @@ export default function Canvas() {
 
   return (
     <div className="canvas" style={canvasStyle}>
-      {sortedBlocks.length === 0 ? (
-        <div className="canvas__empty">
-          <div className="canvas__empty-icon">✨</div>
-          <h3>Boş Sayfa</h3>
-          <p>Sol panelden blok ekleyerek başlayın</p>
-          <button
-            className="canvas__empty-btn"
-            onClick={() => addBlock('hero')}
-          >
-            Hero Bloğu Ekle
-          </button>
-        </div>
-      ) : (
-        sortedBlocks.map(block => (
-          <BlockWrapper
-            key={block.id}
-            block={block}
-            isSelected={selectedBlockId === block.id}
-            onSelect={selectBlock}
-            onMove={moveBlock}
-            onRemove={removeBlock}
-            onToggleVisibility={toggleBlockVisibility}
-          />
-        ))
-      )}
+      {sortedBlocks.map(block => (
+        <BlockWrapper
+          key={block.id}
+          block={block}
+          isSelected={selectedBlockId === block.id}
+          onSelect={selectBlock}
+          onMove={moveBlock}
+          onRemove={removeBlock}
+          onToggleVisibility={toggleBlockVisibility}
+        />
+      ))}
     </div>
   );
 }

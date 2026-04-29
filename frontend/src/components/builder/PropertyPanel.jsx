@@ -42,15 +42,6 @@ function PageSettingsPanel() {
       <Section icon="🎨" title="Renk Paleti" defaultOpen={true}>
         <div className="pp-color-grid">
           <div className="pp-color-card">
-            <label className="pp-color-card__label">Ana Renk</label>
-            <div className="pp-color-card__picker">
-              <input type="color" value={theme.primaryColor || '#6366f1'}
-                onChange={e => updateTheme({ primaryColor: e.target.value })} />
-              <input className="pp-color-card__hex" value={theme.primaryColor || '#6366f1'}
-                onChange={e => updateTheme({ primaryColor: e.target.value })} maxLength={7} />
-            </div>
-          </div>
-          <div className="pp-color-card">
             <label className="pp-color-card__label">Arka Plan</label>
             <div className="pp-color-card__picker">
               <input type="color" value={theme.backgroundColor || '#ffffff'}
@@ -59,25 +50,6 @@ function PageSettingsPanel() {
                 onChange={e => updateTheme({ backgroundColor: e.target.value })} maxLength={7} />
             </div>
           </div>
-          <div className="pp-color-card">
-            <label className="pp-color-card__label">Yazı Rengi</label>
-            <div className="pp-color-card__picker">
-              <input type="color" value={theme.textColor || '#1a1a1a'}
-                onChange={e => updateTheme({ textColor: e.target.value })} />
-              <input className="pp-color-card__hex" value={theme.textColor || '#1a1a1a'}
-                onChange={e => updateTheme({ textColor: e.target.value })} maxLength={7} />
-            </div>
-          </div>
-        </div>
-
-        {/* Color Preview */}
-        <div className="pp-color-preview" style={{
-          background: theme.backgroundColor || '#ffffff',
-          color: theme.textColor || '#1a1a1a',
-          borderColor: theme.primaryColor || '#6366f1'
-        }}>
-          <span style={{ color: theme.primaryColor || '#6366f1', fontWeight: 700 }}>Önizleme</span>
-          <span>Metin rengi böyle görünür</span>
         </div>
       </Section>
 
@@ -122,7 +94,7 @@ function PageSettingsPanel() {
               {settings.isPublished ? 'Siteniz herkes tarafından görülebilir' : 'Siteniz henüz yayınlanmadı'}
             </span>
           </div>
-          <ToggleRow value={!!settings.isPublished} onChange={v => updateSettings({ isPublished: v })} />
+          <ToggleRow value={!!settings.isPublished} onChange={() => useBuilderStore.getState().togglePublish(site.id)} />
         </div>
       </Section>
     </div>
@@ -1264,7 +1236,7 @@ function SpacingControls({ block }) {
 }
 
 // ─── Main PropertyPanel ───────────────────────────────────────────────────────
-export default function PropertyPanel() {
+export default function PropertyPanel({ onClose }) {
   const { site, selectedBlockId, selectBlock, updateBlock, removeBlock, getSelectedBlock } = useBuilderStore();
 
   const selectedBlock = getSelectedBlock();
@@ -1275,18 +1247,26 @@ export default function PropertyPanel() {
     <div className="pp">
       {!selectedBlock ? (
         <>
-          {/* Page Settings Header */}
-          <div className="pp__header">
-            <div className="pp__header-icon" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg>
+          <div className="pp__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="pp__header-icon" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+              </div>
+              <div className="pp__header-text">
+                <h3>Sayfa Ayarları</h3>
+                <p>Tema, yazı tipi ve SEO ayarlarını düzenleyin</p>
+              </div>
             </div>
-            <div className="pp__header-text">
-              <h3>Sayfa Ayarları</h3>
-              <p>Tema, yazı tipi ve SEO ayarlarını düzenleyin</p>
-            </div>
+            {onClose && (
+              <button className="mobile-close-btn pp__close-btn" onClick={onClose} title="Paneli Kapat">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            )}
           </div>
           <div className="pp__scroll">
             <PageSettingsPanel />

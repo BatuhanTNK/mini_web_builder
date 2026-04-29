@@ -15,7 +15,7 @@ export default function QRGenerator() {
   });
 
   useEffect(() => {
-    if (!site || site._id !== siteId) fetchSite(siteId);
+    if (!site || site.id !== siteId) fetchSite(siteId);
   }, [siteId]);
 
   if (!site) return (

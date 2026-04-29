@@ -10,21 +10,27 @@ router.post('/:id/blocks', auth, async (req, res) => {
   try {
     const { type, data, order } = req.body;
 
-    const site = await MiniSite.findOne({ _id: req.params.id, userId: req.userId });
+    const site = await MiniSite.findOne({
+      where: { id: req.params.id, userId: req.userId }
+    });
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
     }
 
+    const blocks = [...(site.blocks || [])];
+
     const newBlock = {
       id: uuidv4(),
       type,
-      order: order !== undefined ? order : site.blocks.length,
+      order: order !== undefined ? order : blocks.length,
       visible: true,
       data: data || {}
     };
 
-    site.blocks.push(newBlock);
-    site.blocks.sort((a, b) => a.order - b.order);
+    blocks.push(newBlock);
+    blocks.sort((a, b) => a.order - b.order);
+    site.blocks = blocks;
+
     await site.save();
 
     res.status(201).json({ block: newBlock, site });
@@ -38,21 +44,26 @@ router.put('/:id/blocks/:blockId', auth, async (req, res) => {
   try {
     const { data, visible } = req.body;
 
-    const site = await MiniSite.findOne({ _id: req.params.id, userId: req.userId });
+    const site = await MiniSite.findOne({
+      where: { id: req.params.id, userId: req.userId }
+    });
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
     }
 
-    const block = site.blocks.find(b => b.id === req.params.blockId);
-    if (!block) {
+    const blocks = [...(site.blocks || [])];
+    const blockIndex = blocks.findIndex(b => b.id === req.params.blockId);
+    if (blockIndex === -1) {
       return res.status(404).json({ message: 'Blok bulunamadı' });
     }
 
-    if (data !== undefined) block.data = { ...block.data, ...data };
-    if (visible !== undefined) block.visible = visible;
+    if (data !== undefined) blocks[blockIndex].data = { ...blocks[blockIndex].data, ...data };
+    if (visible !== undefined) blocks[blockIndex].visible = visible;
 
+    site.blocks = blocks;
     await site.save();
-    res.json({ block, site });
+
+    res.json({ block: blocks[blockIndex], site });
   } catch (error) {
     res.status(500).json({ message: 'Blok güncellenirken hata oluştu', error: error.message });
   }
@@ -61,13 +72,18 @@ router.put('/:id/blocks/:blockId', auth, async (req, res) => {
 // DELETE /api/sites/:id/blocks/:blockId — blok sil
 router.delete('/:id/blocks/:blockId', auth, async (req, res) => {
   try {
-    const site = await MiniSite.findOne({ _id: req.params.id, userId: req.userId });
+    const site = await MiniSite.findOne({
+      where: { id: req.params.id, userId: req.userId }
+    });
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
     }
 
-    site.blocks = site.blocks.filter(b => b.id !== req.params.blockId);
-    site.blocks.forEach((b, i) => { b.order = i; });
+    let blocks = [...(site.blocks || [])];
+    blocks = blocks.filter(b => b.id !== req.params.blockId);
+    blocks.forEach((b, i) => { b.order = i; });
+    site.blocks = blocks;
+
     await site.save();
 
     res.json({ site });
@@ -81,12 +97,15 @@ router.put('/:id/blocks/reorder', auth, async (req, res) => {
   try {
     const { blockIds } = req.body;
 
-    const site = await MiniSite.findOne({ _id: req.params.id, userId: req.userId });
+    const site = await MiniSite.findOne({
+      where: { id: req.params.id, userId: req.userId }
+    });
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
     }
 
-    const blockMap = new Map(site.blocks.map(b => [b.id, b]));
+    const blocks = [...(site.blocks || [])];
+    const blockMap = new Map(blocks.map(b => [b.id, b]));
     site.blocks = blockIds
       .map((id, index) => {
         const block = blockMap.get(id);

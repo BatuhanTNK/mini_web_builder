@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useBuilderStore } from '../../store/builderStore';
 
 const BLOCK_CATEGORIES = [
@@ -78,11 +78,30 @@ const BLOCK_CATEGORIES = [
 // All blocks flattened for "all" tab and search
 const ALL_BLOCKS = BLOCK_CATEGORIES.filter(c => c.id !== 'all').flatMap(c => c.blocks);
 
-export default function BlockLibrary() {
+export default function BlockLibrary({ onClose }) {
   const { addBlock } = useBuilderStore();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [addedType, setAddedType] = useState(null);
+  const tabsRef = useRef(null);
+
+  useEffect(() => {
+    const handleWheel = (e) => {
+      if (e.deltaY !== 0) {
+        e.currentTarget.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    };
+    const el = tabsRef.current;
+    if (el) {
+      el.addEventListener('wheel', handleWheel, { passive: false });
+    }
+    return () => {
+      if (el) {
+        el.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, []);
 
   const handleAdd = (type) => {
     addBlock(type);
@@ -108,9 +127,26 @@ export default function BlockLibrary() {
     <div className="block-library-v2">
       {/* Header */}
       <div className="block-library-v2__header">
-        <div className="block-library-v2__title-row">
-          <h3>📦 Blok Ekle</h3>
-          <span className="block-library-v2__count">{displayBlocks.length} blok</span>
+        <div className="block-library-v2__title-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h3>📦 Blok Ekle</h3>
+            <span className="block-library-v2__count">{displayBlocks.length} blok</span>
+          </div>
+          {onClose && (
+            <button 
+              className="mobile-close-btn" 
+              onClick={onClose} 
+              title="Kapat"
+              style={{
+                width: 26, height: 26, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--color-surface-3)', color: 'var(--color-text-muted)', border: 'none', cursor: 'pointer'
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Search */}
@@ -138,7 +174,10 @@ export default function BlockLibrary() {
 
       {/* Category Tabs */}
       {!search && (
-        <div className="block-library-v2__tabs">
+        <div 
+          className="block-library-v2__tabs"
+          ref={tabsRef}
+        >
           {BLOCK_CATEGORIES.map(cat => (
             <button
               key={cat.id}

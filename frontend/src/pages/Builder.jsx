@@ -164,7 +164,7 @@ export default function Builder() {
         {/* Left: Block Library */}
         {showLeft && (
           <aside className={`builder__left-panel builder__panel--animated ${isLeftVisible ? 'builder__panel--visible' : 'builder__panel--hidden-left'}`}>
-            <BlockLibrary />
+            <BlockLibrary onClose={() => setLeftPanelVisible(false)} />
           </aside>
         )}
 
@@ -218,7 +218,7 @@ export default function Builder() {
         {/* Right: Property Panel */}
         {showRight && (
           <aside className={`builder__right-panel builder__panel--animated ${isRightVisible ? 'builder__panel--visible' : 'builder__panel--hidden-right'}`}>
-            <PropertyPanel />
+            <PropertyPanel onClose={() => setRightPanelVisible(false)} />
           </aside>
         )}
       </div>

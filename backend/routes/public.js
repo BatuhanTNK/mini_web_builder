@@ -1,14 +1,21 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const MiniSite = require('../models/MiniSite');
+const User = require('../models/User');
 
 const router = express.Router();
 
 // GET /api/public/:slug — public mini site verisi al
 router.get('/:slug', async (req, res) => {
   try {
-    const site = await MiniSite.findOne({ slug: req.params.slug })
-      .populate('userId', 'name email');
+    const site = await MiniSite.findOne({
+      where: { slug: req.params.slug },
+      include: [{
+        model: User,
+        as: 'owner',
+        attributes: ['id', 'name', 'email']
+      }]
+    });
 
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
@@ -18,7 +25,7 @@ router.get('/:slug', async (req, res) => {
       return res.status(404).json({ message: 'Bu site yayında değil' });
     }
 
-    const siteData = site.toObject();
+    const siteData = site.toJSON();
 
     if (site.settings.passwordProtected) {
       const providedPassword = req.headers['x-site-password'];
@@ -36,7 +43,12 @@ router.get('/:slug', async (req, res) => {
     }
 
     delete siteData.settings.password;
-    siteData.blocks = siteData.blocks.filter(b => b.visible);
+    siteData.blocks = (siteData.blocks || []).filter(b => b.visible);
+
+    // userId bilgisini owner olarak da ekle (eski API uyumluluğu)
+    if (siteData.owner) {
+      siteData.userId = siteData.owner;
+    }
 
     res.json({ site: siteData });
   } catch (error) {
@@ -47,7 +59,7 @@ router.get('/:slug', async (req, res) => {
 // POST /api/public/:slug/unlock — şifre korumalı siteyi aç
 router.post('/:slug/unlock', async (req, res) => {
   try {
-    const site = await MiniSite.findOne({ slug: req.params.slug });
+    const site = await MiniSite.findOne({ where: { slug: req.params.slug } });
 
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
@@ -75,9 +87,9 @@ router.post('/:slug/unlock', async (req, res) => {
     }
 
     // Return the full site data
-    const siteData = site.toObject();
+    const siteData = site.toJSON();
     delete siteData.settings.password;
-    siteData.blocks = siteData.blocks.filter(b => b.visible);
+    siteData.blocks = (siteData.blocks || []).filter(b => b.visible);
 
     res.json({ success: true, site: siteData });
   } catch (error) {
@@ -88,12 +100,16 @@ router.post('/:slug/unlock', async (req, res) => {
 // POST /api/public/:slug/view — görüntülenme sayısını artır
 router.post('/:slug/view', async (req, res) => {
   try {
-    const site = await MiniSite.findOne({ slug: req.params.slug });
+    const site = await MiniSite.findOne({ where: { slug: req.params.slug } });
     if (!site) {
       return res.status(404).json({ message: 'Site bulunamadı' });
     }
 
-    site.settings.analytics.views += 1;
+    const settings = { ...site.settings };
+    if (!settings.analytics) settings.analytics = {};
+    settings.analytics.views = (settings.analytics.views || 0) + 1;
+    site.settings = settings;
+
     await site.save();
 
     res.json({ views: site.settings.analytics.views });

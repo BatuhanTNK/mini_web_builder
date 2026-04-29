@@ -1,8 +1,15 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
+
+// Database
+const { testConnection, syncDatabase } = require('./config/database');
+// Models (ilişkileri yükle)
+require('./models/index');
 
 const app = express();
 
@@ -10,30 +17,6 @@ const app = express();
 const uploadsDir = path.join(__dirname, 'uploads', 'images');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// ─── JSON file-based sites database ──────────────────────────────────────────
-const SITES_FILE = path.join(__dirname, 'data', 'sites.json');
-const USERS_FILE = path.join(__dirname, 'data', 'users.json');
-
-// Ensure data directory exists
-if (!fs.existsSync(path.join(__dirname, 'data'))) {
-  fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
-}
-if (!fs.existsSync(SITES_FILE)) fs.writeFileSync(SITES_FILE, '[]');
-if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, '[]');
-
-function readSites() {
-  try { return JSON.parse(fs.readFileSync(SITES_FILE, 'utf8')); } catch { return []; }
-}
-function writeSites(sites) {
-  fs.writeFileSync(SITES_FILE, JSON.stringify(sites, null, 2));
-}
-function readUsers() {
-  try { return JSON.parse(fs.readFileSync(USERS_FILE, 'utf8')); } catch { return []; }
-}
-function writeUsers(users) {
-  fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
 }
 
 // Middleware
@@ -74,6 +57,8 @@ const upload = multer({
     }
   }
 });
+
+// ─── Upload API (dosya sistemi tabanlı, DB'ye bağımlı değil) ─────────────────
 
 // POST /api/upload — single image upload
 app.post('/api/upload', upload.single('image'), (req, res) => {
@@ -128,102 +113,16 @@ app.get('/api/upload/list', (req, res) => {
   res.json({ files });
 });
 
-// ─── Auth API ────────────────────────────────────────────────────────────────
-app.post('/api/auth/register', (req, res) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) return res.status(400).json({ success: false, message: 'Tüm alanlar gerekli' });
-  const users = readUsers();
-  if (users.find(u => u.email === email)) return res.status(400).json({ success: false, message: 'Bu email zaten kayıtlı' });
-  const user = { _id: Date.now().toString(36) + Math.random().toString(36).slice(2), name, email, password, createdAt: new Date().toISOString() };
-  users.push(user);
-  writeUsers(users);
-  const { password: _, ...safeUser } = user;
-  res.json({ success: true, user: safeUser, token: user._id });
-});
-
-app.post('/api/auth/login', (req, res) => {
-  const { email, password } = req.body;
-  const users = readUsers();
-  const user = users.find(u => u.email === email && u.password === password);
-  if (!user) return res.status(401).json({ success: false, message: 'Email veya şifre hatalı' });
-  const { password: _, ...safeUser } = user;
-  res.json({ success: true, user: safeUser, token: user._id });
-});
-
-// ─── Sites API ───────────────────────────────────────────────────────────────
-// GET all sites for a user
-app.get('/api/sites', (req, res) => {
-  const userId = req.headers['x-user-id'];
-  if (!userId) return res.status(401).json({ message: 'Unauthorized' });
-  const sites = readSites().filter(s => s.userId === userId);
-  res.json({ sites });
-});
-
-// POST create site
-app.post('/api/sites', (req, res) => {
-  try {
-    const userId = req.headers['x-user-id'];
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
-    const site = { ...req.body, userId, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-    const sites = readSites();
-    sites.push(site);
-    writeSites(sites);
-    res.json({ success: true, site });
-  } catch (error) {
-    console.error('Error in POST /api/sites:', error);
-    res.status(500).json({ message: 'Server error creating site', error: error.message });
-  }
-});
-
-// GET single site by id
-app.get('/api/sites/:id', (req, res) => {
-  try {
-    const site = readSites().find(s => s._id === req.params.id);
-    if (!site) return res.status(404).json({ message: 'Site bulunamadı' });
-    res.json({ site });
-  } catch (error) {
-    console.error('Error in GET /api/sites/:id:', error);
-    res.status(500).json({ message: 'Server error fetching site', error: error.message });
-  }
-});
-
-// PUT update site
-app.put('/api/sites/:id', (req, res) => {
-  const sites = readSites();
-  const idx = sites.findIndex(s => s._id === req.params.id);
-  if (idx === -1) return res.status(404).json({ message: 'Site bulunamadı' });
-  sites[idx] = { ...sites[idx], ...req.body, updatedAt: new Date().toISOString() };
-  writeSites(sites);
-  res.json({ success: true, site: sites[idx] });
-});
-
-// DELETE site
-app.delete('/api/sites/:id', (req, res) => {
-  let sites = readSites();
-  sites = sites.filter(s => s._id !== req.params.id);
-  writeSites(sites);
-  res.json({ success: true });
-});
-
-// GET public site by slug — no auth needed
-app.get('/api/public/:slug', (req, res) => {
-  const site = readSites().find(s => s.slug === req.params.slug);
-  if (!site) return res.status(404).json({ message: 'Sayfa bulunamadı' });
-  // Increment views
-  const sites = readSites();
-  const idx = sites.findIndex(s => s._id === site._id);
-  if (idx !== -1) {
-    if (!sites[idx].settings) sites[idx].settings = {};
-    if (!sites[idx].settings.analytics) sites[idx].settings.analytics = {};
-    sites[idx].settings.analytics.views = (sites[idx].settings.analytics.views || 0) + 1;
-    writeSites(sites);
-  }
-  res.json({ site });
-});
+// ─── Route'ları bağla ────────────────────────────────────────────────────────
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/sites', require('./routes/sites'));
+app.use('/api/sites', require('./routes/blocks'));
+app.use('/api/public', require('./routes/public'));
+app.use('/api/media', require('./routes/media'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', database: 'mysql', timestamp: new Date().toISOString() });
 });
 
 // SPA fallback — any non-API route returns index.html so React Router works
@@ -249,8 +148,25 @@ app.use((err, req, res, next) => {
   next();
 });
 
+// ─── Sunucuyu başlat ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Upload server running on 0.0.0.0:${PORT}`);
-  console.log(`Images directory: ${uploadsDir}`);
-});
+
+const startServer = async () => {
+  try {
+    // MySQL bağlantısını test et
+    await testConnection();
+    // Tabloları oluştur / senkronize et
+    await syncDatabase();
+
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server running on 0.0.0.0:${PORT}`);
+      console.log(`📁 Images directory: ${uploadsDir}`);
+      console.log(`🗄️  Database: mini_web_db (MySQL)`);
+    });
+  } catch (error) {
+    console.error('❌ Sunucu başlatılamadı:', error.message);
+    process.exit(1);
+  }
+};
+
+startServer();

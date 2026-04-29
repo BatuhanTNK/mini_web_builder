@@ -11,15 +11,18 @@ router.post('/register', authLimiter, async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    if (!email || !password || !name) {
+      return res.status(400).json({ message: 'Tüm alanlar gerekli' });
+    }
+
+    const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
     if (existingUser) {
       return res.status(400).json({ message: 'Bu e-posta adresi zaten kayıtlı' });
     }
 
-    const user = new User({ email, password, name });
-    await user.save();
+    const user = await User.create({ email, password, name });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.status(201).json({ token, user });
   } catch (error) {
@@ -32,7 +35,7 @@ router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email: email.toLowerCase() } });
     if (!user) {
       return res.status(401).json({ message: 'E-posta veya şifre hatalı' });
     }
@@ -42,7 +45,7 @@ router.post('/login', authLimiter, async (req, res) => {
       return res.status(401).json({ message: 'E-posta veya şifre hatalı' });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.json({ token, user });
   } catch (error) {

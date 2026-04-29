@@ -3,14 +3,18 @@ import { v4 as uuidv4 } from 'uuid';
 
 // ─── Backend API helpers ─────────────────────────────────────────────────────
 // Uses Vite proxy — works on both desktop (localhost:5173) and LAN (192.168.x.x:5173)
-const USER_ID = 'guest';
+
+function getAuthToken() {
+  return localStorage.getItem('miniweb_token') || '';
+}
 
 async function api(path, options = {}) {
+  const token = getAuthToken();
   const res = await fetch(`/api${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      'x-user-id': USER_ID,
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
       ...(options.headers || {})
     }
   });
@@ -43,24 +47,151 @@ async function migrateLocalStorageToBackend(existingBackendSites) {
     localStorage.setItem(MIGRATION_FLAG, '1');
     return [];
   }
-  // Skip sites that already exist on backend (by _id)
-  const existingIds = new Set(existingBackendSites.map(s => s._id));
-  const toMigrate = legacy.filter(s => s._id && !existingIds.has(s._id));
+  // Skip sites that already exist on backend (by id)
+  const existingIds = new Set(existingBackendSites.map(s => s.id));
+  const toMigrate = legacy.filter(s => s.id && !existingIds.has(s.id));
   const migrated = [];
   for (const site of toMigrate) {
     try {
       const { site: saved } = await api('/sites', {
         method: 'POST',
-        body: JSON.stringify({ ...site, userId: USER_ID })
+        body: JSON.stringify(site)
       });
       migrated.push(saved);
     } catch (e) {
-      console.warn('Migration failed for site', site._id, e.message);
+      console.warn('Migration failed for site', site.id, e.message);
     }
   }
   localStorage.setItem(MIGRATION_FLAG, '1');
   return migrated;
 }
+
+// ─── Default English Values for New Blocks ───────────────────────────────────
+const DEFAULT_BLOCK_DATA = {
+  hero: {
+    title: 'Welcome to My Site', subtitle: 'This is a beautifully designed hero section. Add your subtitle here.',
+    accentWord: 'Beautiful', accentColor: '#6366f1', bgColor: '#0f0f13', textColor: '#ffffff', alignment: 'center'
+  },
+  text: {
+    content: 'This is a text block. You can write your own content here. It supports multiple lines and paragraphs.',
+    alignment: 'left', fontSize: 'md'
+  },
+  image: {
+    src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
+    alt: 'Default image placeholder', borderRadius: 12
+  },
+  button: {
+    label: 'Click Here', url: '#', style: 'filled', color: '#6366f1', textColor: '#ffffff'
+  },
+  link_list: {
+    links: [
+      { label: 'My Portfolio', url: '#', icon: '💼', color: '#6366f1' },
+      { label: 'Latest Project', url: '#', icon: '🚀', color: '#10b981' }
+    ]
+  },
+  social_icons: {
+    socials: [
+      { platform: 'instagram', url: 'https://instagram.com' },
+      { platform: 'twitter', url: 'https://twitter.com' },
+      { platform: 'youtube', url: 'https://youtube.com' }
+    ]
+  },
+  numbered_list: {
+    items: [
+      { number: '01', title: 'First Step', description: 'Describe your first step or point here.' },
+      { number: '02', title: 'Second Step', description: 'Describe your second step or point here.' },
+      { number: '03', title: 'Third Step', description: 'Describe your third step or point here.' }
+    ],
+    accentColor: '#6366f1'
+  },
+  profile: {
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop',
+    name: 'John Doe', title: 'Professional Title',
+    bio: 'This is a brief biography. Tell your audience who you are and what you do.', shape: 'circle'
+  },
+  countdown: {
+    targetDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    label: 'Time Remaining', showDays: true
+  },
+  coupon: {
+    code: 'WELCOME50', discount: '50% OFF', description: 'Valid for all products',
+    expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), copyable: true
+  },
+  product_card: {
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop',
+    name: 'Premium Headphones', description: 'High-quality wireless headphones with noise cancellation.',
+    price: '299', originalPrice: '399', currency: '$', showButton: true, buttonText: 'Buy Now'
+  },
+  video: {
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', aspectRatio: '16/9', autoPlay: false
+  },
+  map: {
+    locationType: 'address', address: 'New York, USA', lat: 40.7128, lng: -74.0060, zoom: 13, height: 300
+  },
+  image_gallery: {
+    images: [
+      { src: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=500', alt: 'Gallery 1' },
+      { src: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500', alt: 'Gallery 2' }
+    ],
+    columns: 2, gap: 8, borderRadius: 12
+  },
+  faq: {
+    items: [
+      { question: 'What is your return policy?', answer: 'You can return any item within 30 days of purchase.' },
+      { question: 'How long does shipping take?', answer: 'Standard shipping usually takes 3-5 business days.' }
+    ]
+  },
+  menu: {
+    title: 'Our Menu', accentColor: '#f59e0b', currency: '$',
+    categories: [
+      {
+        name: 'Starters', icon: '🥗', image: '',
+        subcategories: [
+          {
+            name: 'Salads', icon: '🥬', image: '',
+            items: [
+              { name: 'Caesar Salad', price: '12', description: 'Fresh lettuce with Caesar dressing.', image: '' }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  vcard: {
+    name: 'John Doe', jobTitle: 'Software Engineer', company: 'Tech Corp',
+    phone: '+1 234 567 8900', email: 'john@example.com', website: 'https://example.com', downloadable: true
+  },
+  spotify_embed: {
+    spotifyUrl: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT', compact: false
+  },
+  divider: {
+    style: 'line', color: '#e5e7eb', height: 24
+  },
+  contact_form: {
+    title: 'Contact Us', subtitle: 'Send us a message and we will get back to you.',
+    buttonText: 'Submit', buttonColor: '#6366f1'
+  },
+  cover: {
+    title: 'Amazing Cover Title', subtitle: 'This is a beautiful cover section.',
+    badgeText: 'Featured', bgImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
+    ctaText: 'Learn More', ctaLink: '#', textColor: '#ffffff', overlayOpacity: 0.5, overlayColor: '#000000', alignment: 'center'
+  },
+  timeline: {
+    title: 'Project Timeline',
+    cards: [
+      { time: 'Week 1', title: 'Planning Phase', description: 'Define the scope and requirements.', bgColor: '#6366f1', textColor: '#ffffff' },
+      { time: 'Week 2', title: 'Execution', description: 'Start the development process.', bgColor: '#10b981', textColor: '#ffffff' }
+    ]
+  },
+  checklist: {
+    title: 'Requirements Checklist', checkColor: '#6366f1',
+    items: [
+      { text: 'Finalize design mockups' },
+      { text: 'Set up database schema' },
+      { text: 'Configure API endpoints' }
+    ]
+  }
+};
 
 // ─── Template Definitions ────────────────────────────────────────────────────
 const makeBlock = (type, data, order) => ({
@@ -659,8 +790,6 @@ export const useBuilderStore = create((set, get) => ({
     try {
       const blocks = getTemplateBlocks(templateId);
       const payload = {
-        _id: uuidv4(),
-        userId: USER_ID,
         title: title || 'Yeni Site',
         slug: generateSlug(title || 'site'),
         templateId,
@@ -706,14 +835,14 @@ export const useBuilderStore = create((set, get) => ({
     if (!site) return;
     set({ saving: true, error: null });
     try {
-      const { site: saved } = await api(`/sites/${site._id}`, {
+      const { site: saved } = await api(`/sites/${site.id}`, {
         method: 'PUT',
         body: JSON.stringify(site)
       });
       set(state => ({
         saving: false,
         site: saved,
-        sites: state.sites.map(s => s._id === saved._id ? saved : s)
+        sites: state.sites.map(s => s.id === saved.id ? saved : s)
       }));
     } catch (e) {
       set({ error: e.message, saving: false });
@@ -723,14 +852,14 @@ export const useBuilderStore = create((set, get) => ({
   deleteSite: async (siteId) => {
     try {
       await api(`/sites/${siteId}`, { method: 'DELETE' });
-      set(state => ({ sites: state.sites.filter(s => s._id !== siteId) }));
+      set(state => ({ sites: state.sites.filter(s => String(s.id) !== String(siteId)) }));
     } catch (e) {
       set({ error: e.message });
     }
   },
 
   duplicateSite: async (siteId) => {
-    const original = get().sites.find(s => s._id === siteId);
+    const original = get().sites.find(s => String(s.id) === String(siteId));
     if (!original) {
       try {
         const { site } = await api(`/sites/${siteId}`);
@@ -743,7 +872,6 @@ export const useBuilderStore = create((set, get) => ({
     async function duplicateImpl(src) {
       const duplicate = {
         ...JSON.parse(JSON.stringify(src)),
-        _id: uuidv4(),
         title: src.title + ' (Kopya)',
         slug: generateSlug(src.title + '-kopya'),
         settings: {
@@ -768,7 +896,7 @@ export const useBuilderStore = create((set, get) => ({
 
   togglePublish: async (siteId) => {
     const { site, sites } = get();
-    const target = site?._id === siteId ? site : sites.find(s => s._id === siteId);
+    const target = String(site?.id) === String(siteId) ? site : sites.find(s => String(s.id) === String(siteId));
     if (!target) return;
     const newSettings = {
       ...target.settings,
@@ -781,8 +909,8 @@ export const useBuilderStore = create((set, get) => ({
         body: JSON.stringify(updatedSite)
       });
       set(state => ({
-        sites: state.sites.map(s => s._id === siteId ? saved : s),
-        site: state.site?._id === siteId ? saved : state.site
+        sites: state.sites.map(s => String(s.id) === String(siteId) ? saved : s),
+        site: String(state.site?.id) === String(siteId) ? saved : state.site
       }));
     } catch (e) {
       set({ error: e.message });
@@ -821,12 +949,15 @@ export const useBuilderStore = create((set, get) => ({
     const { site } = get();
     if (!site) return;
 
+    // Merge provided data with defaults if provided data is empty
+    const blockData = Object.keys(data).length > 0 ? data : (DEFAULT_BLOCK_DATA[type] || {});
+
     const newBlock = {
       id: uuidv4(),
       type,
       order: site.blocks.length,
       visible: true,
-      data
+      data: JSON.parse(JSON.stringify(blockData)) // deep copy to avoid mutations
     };
 
     set(state => ({

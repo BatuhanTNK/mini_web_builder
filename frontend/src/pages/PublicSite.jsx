@@ -71,6 +71,22 @@ export default function PublicSite() {
     return () => { cancelled = true; };
   }, [slug]);
 
+  // Update document title and meta description for SEO
+  useEffect(() => {
+    if (site) {
+      const { settings = {} } = site;
+      document.title = settings.metaTitle || site.title || 'MiniSite';
+      
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.content = settings.metaDescription || '';
+    }
+  }, [site]);
+
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -153,12 +169,6 @@ export default function PublicSite() {
 
   return (
     <>
-      {/* SEO */}
-      <title>{settings.metaTitle || site.title}</title>
-      <meta name="description" content={settings.metaDescription || ''} />
-      <meta property="og:title" content={settings.metaTitle || site.title} />
-      <meta property="og:description" content={settings.metaDescription || ''} />
-
       <div className="public-site" style={siteStyle}>
         <div className="public-site__container">
           {sortedBlocks.map(block => {

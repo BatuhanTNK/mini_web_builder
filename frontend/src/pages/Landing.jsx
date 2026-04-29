@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../store/dashboardStore';
+import { useAuthStore } from '../store/authStore';
 import { useBuilderStore } from '../store/builderStore';
 
 const TEMPLATES = [
@@ -41,7 +41,7 @@ export default function Landing() {
 
   const handleUseTemplate = async (templateId) => {
     const site = await createSite(`Yeni Site - ${templateId}`, templateId);
-    if (site) navigate(`/builder/${site._id}`);
+    if (site) navigate(`/builder/${site.id}`);
   };
 
   return (

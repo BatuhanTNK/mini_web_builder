@@ -1,92 +1,93 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
 
-const blockSchema = new mongoose.Schema({
+const MiniSite = sequelize.define('MiniSite', {
   id: {
-    type: String,
-    required: true
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
-  type: {
-    type: String,
-    required: true,
-    enum: [
-      'hero', 'image', 'button', 'link_list', 'social_icons', 'text',
-      'numbered_list', 'image_gallery', 'video', 'profile', 'countdown',
-      'coupon', 'contact_form', 'map', 'divider', 'product_card',
-      'faq', 'menu', 'vcard', 'spotify_embed', 'cover', 'timeline', 'checklist', 'spotify'
-    ]
-  },
-  order: {
-    type: Number,
-    required: true
-  },
-  visible: {
-    type: Boolean,
-    default: true
-  },
-  data: {
-    type: mongoose.Schema.Types.Mixed,
-    default: {}
-  }
-}, { _id: false });
-
-const miniSiteSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id'
+    }
   },
   title: {
-    type: String,
-    required: true,
-    trim: true
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    set(value) {
+      this.setDataValue('title', value ? value.trim() : value);
+    }
   },
   slug: {
-    type: String,
+    type: DataTypes.STRING(255),
     unique: true,
-    lowercase: true,
-    trim: true
+    set(value) {
+      this.setDataValue('slug', value ? value.toLowerCase().trim() : value);
+    }
   },
   templateId: {
-    type: String,
-    enum: [
-      'blank', 'linktree', 'digital_card', 'restaurant', 'event', 'portfolio', 
-      'e_commerce', 'pdf_lead', 'coupon_page', 'travel_itinerary', 
-      'simple_download', 'podcast_launch', 'digital_rsvp', 'real_estate', 
-      'course_registration', 'faq_support', 'personal_trainer'
-    ],
-    default: 'blank'
+    type: DataTypes.STRING(50),
+    defaultValue: 'blank',
+    validate: {
+      isIn: [[
+        'blank', 'linktree', 'digital_card', 'restaurant', 'event', 'portfolio',
+        'e_commerce', 'pdf_lead', 'coupon_page', 'travel_itinerary',
+        'simple_download', 'podcast_launch', 'digital_rsvp', 'real_estate',
+        'course_registration', 'faq_support', 'personal_trainer'
+      ]]
+    }
   },
   theme: {
-    primaryColor: { type: String, default: '#6366f1' },
-    backgroundColor: { type: String, default: '#ffffff' },
-    fontFamily: { type: String, default: 'Inter' },
-    backgroundType: { type: String, enum: ['solid', 'gradient', 'image'], default: 'solid' },
-    backgroundImage: { type: String, default: '' }
+    type: DataTypes.JSON,
+    defaultValue: {
+      primaryColor: '#6366f1',
+      backgroundColor: '#ffffff',
+      fontFamily: 'Inter',
+      backgroundType: 'solid',
+      backgroundImage: ''
+    }
   },
-  blocks: [blockSchema],
+  blocks: {
+    type: DataTypes.JSON,
+    defaultValue: []
+  },
   settings: {
-    favicon: { type: String, default: '' },
-    metaTitle: { type: String, default: '' },
-    metaDescription: { type: String, default: '' },
-    customDomain: { type: String, default: '' },
-    isPublished: { type: Boolean, default: false },
-    passwordProtected: { type: Boolean, default: false },
-    password: { type: String, default: '' },
-    analytics: {
-      views: { type: Number, default: 0 },
-      uniqueViews: { type: Number, default: 0 }
+    type: DataTypes.JSON,
+    defaultValue: {
+      favicon: '',
+      metaTitle: '',
+      metaDescription: '',
+      customDomain: '',
+      isPublished: false,
+      passwordProtected: false,
+      password: '',
+      analytics: {
+        views: 0,
+        uniqueViews: 0
+      }
     }
   },
   qrCode: {
-    generated: { type: Boolean, default: false },
-    imageUrl: { type: String, default: '' },
-    color: { type: String, default: '#000000' },
-    bgColor: { type: String, default: '#ffffff' },
-    logo: { type: String, default: '' }
+    type: DataTypes.JSON,
+    defaultValue: {
+      generated: false,
+      imageUrl: '',
+      color: '#000000',
+      bgColor: '#ffffff',
+      logo: ''
+    }
   }
-}, { timestamps: true });
+}, {
+  tableName: 'mini_sites',
+  timestamps: true,
+  indexes: [
+    { fields: ['userId'] },
+    { unique: true, fields: ['slug'] }
+  ]
+});
 
-miniSiteSchema.index({ userId: 1 });
-miniSiteSchema.index({ slug: 1 }, { unique: true });
-
-module.exports = mongoose.model('MiniSite', miniSiteSchema);
+module.exports = MiniSite;

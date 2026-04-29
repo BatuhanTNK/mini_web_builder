@@ -44,7 +44,7 @@ export default function Dashboard() {
     if (site) {
       setShowModal(false);
       setNewTitle('');
-      navigate(`/builder/${site._id}`);
+      navigate(`/builder/${site.id}`);
     }
   };
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
 
   const handleDuplicate = async (siteId) => {
     const site = await duplicateSite(siteId);
-    if (site) navigate(`/builder/${site._id}`);
+    if (site) navigate(`/builder/${site.id}`);
   };
 
   return (
@@ -115,7 +115,7 @@ export default function Dashboard() {
         ) : (
           <div className="dashboard__grid">
             {sites.map(site => (
-              <div key={site._id} className="site-card">
+              <div key={site.id} className="site-card">
                 <div className="site-card__thumb" style={{ background: `linear-gradient(135deg, ${site.theme?.primaryColor || '#6366f1'}, ${site.theme?.primaryColor || '#8b5cf6'}44)` }}>
                   <span className="site-card__thumb-icon">🌐</span>
                   {site.settings?.isPublished && <span className="site-card__live-badge">CANLI</span>}
@@ -128,19 +128,19 @@ export default function Dashboard() {
                     <span>{new Date(site.updatedAt).toLocaleDateString('tr-TR')}</span>
                   </div>
                   <div className="site-card__actions">
-                    <button className="site-card__btn site-card__btn--primary" onClick={() => navigate(`/builder/${site._id}`)}>
+                    <button className="site-card__btn site-card__btn--primary" onClick={() => navigate(`/builder/${site.id}`)}>
                       ✏️ Düzenle
                     </button>
                     <a className="site-card__btn site-card__btn--ghost" href={`/p/${site.slug}`} target="_blank" rel="noreferrer">
                       🔗
                     </a>
-                    <button className="site-card__btn site-card__btn--ghost" onClick={() => handleDuplicate(site._id)}>
+                    <button className="site-card__btn site-card__btn--ghost" onClick={() => handleDuplicate(site.id)}>
                       📋
                     </button>
-                    <button className="site-card__btn site-card__btn--ghost" onClick={() => navigate(`/builder/${site._id}/qr`)}>
+                    <button className="site-card__btn site-card__btn--ghost" onClick={() => navigate(`/builder/${site.id}/qr`)}>
                       📱
                     </button>
-                    <button className="site-card__btn site-card__btn--danger" onClick={() => setDeleteConfirm(site._id)}>
+                    <button className="site-card__btn site-card__btn--danger" onClick={() => setDeleteConfirm(site.id)}>
                       🗑
                     </button>
                   </div>

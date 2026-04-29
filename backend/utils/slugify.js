@@ -1,20 +1,20 @@
-const slugify = require('slugify');
+const slugifyLib = require('slugify');
 const MiniSite = require('../models/MiniSite');
 
 const generateUniqueSlug = async (title) => {
-  let slug = slugify(title, { lower: true, strict: true, locale: 'tr' });
+  let slug = slugifyLib(title, { lower: true, strict: true, locale: 'tr' });
 
   if (!slug) {
     slug = 'site-' + Date.now().toString(36);
   }
 
-  let existingSite = await MiniSite.findOne({ slug });
+  let existingSite = await MiniSite.findOne({ where: { slug } });
   let counter = 1;
   const baseSlug = slug;
 
   while (existingSite) {
     slug = `${baseSlug}-${counter}`;
-    existingSite = await MiniSite.findOne({ slug });
+    existingSite = await MiniSite.findOne({ where: { slug } });
     counter++;
   }
 
