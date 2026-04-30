@@ -5,19 +5,35 @@ import BlockLibrary from '../components/builder/BlockLibrary';
 import Canvas from '../components/builder/Canvas';
 import PropertyPanel from '../components/builder/PropertyPanel';
 import MobileFrame from '../components/builder/MobileFrame';
+import ConfirmDialog from '../components/shared/ConfirmDialog';
 
 export default function Builder() {
   const { siteId } = useParams();
   const navigate = useNavigate();
-  const { site, loading, saving, fetchSite, saveSite, togglePublish, updateSiteLocal, selectBlock } = useBuilderStore();
+  const { site, loading, saving, hasUnsavedChanges, fetchSite, saveSite, togglePublish, updateSiteLocal, selectBlock } = useBuilderStore();
   const [activeTab, setActiveTab] = useState('blocks');
   const [saved, setSaved] = useState(false);
   const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const [rightPanelVisible, setRightPanelVisible] = useState(true);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
 
   useEffect(() => {
     fetchSite(siteId);
   }, [siteId]);
+
+  // Warn user before leaving page with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = ''; // Chrome requires returnValue to be set
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const handleSave = async () => {
     await saveSite();
@@ -43,6 +59,35 @@ export default function Builder() {
       if (!go) return;
     }
     window.open(`${window.location.origin}/p/${site.slug}`, '_blank');
+  };
+
+  const handleBackToDashboard = () => {
+    if (hasUnsavedChanges) {
+      setPendingNavigation('/dashboard');
+      setShowUnsavedDialog(true);
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
+  const handleConfirmNavigation = () => {
+    if (pendingNavigation) {
+      navigate(pendingNavigation);
+      setPendingNavigation(null);
+    }
+  };
+
+  const handleSaveAndNavigate = async () => {
+    if (pendingNavigation) {
+      await saveSite();
+      navigate(pendingNavigation);
+      setPendingNavigation(null);
+    }
+  };
+
+  const handleCancelNavigation = () => {
+    setPendingNavigation(null);
+    setShowUnsavedDialog(false);
   };
 
   if (loading) {
@@ -76,12 +121,31 @@ export default function Builder() {
 
   return (
     <div className={`builder ${isPreviewMode ? 'builder--preview-mode' : ''}`}>
+      {/* Unsaved Changes Dialog */}
+      <ConfirmDialog
+        isOpen={showUnsavedDialog}
+        onClose={handleCancelNavigation}
+        onConfirm={handleConfirmNavigation}
+        onSaveAndConfirm={handleSaveAndNavigate}
+        title="Kaydedilmemiş Değişiklikler"
+        message={`Yaptığınız değişiklikler kaydedilmedi.\n\nBu sayfadan ayrılırsanız, tüm değişiklikleriniz kaybolacak.\n\nNe yapmak istersiniz?`}
+        confirmText="Kaydetmeden Ayrıl"
+        saveAndConfirmText="💾 Kaydet ve Ayrıl"
+        cancelText="İptal"
+        type="warning"
+        showSaveOption={true}
+      />
+
       {/* Top Bar */}
       <header className="builder__topbar">
         <div className="builder__topbar-left">
-          <Link to="/dashboard" className="builder__back-btn" title="Dashboard'a dön">
+          <button 
+            onClick={handleBackToDashboard} 
+            className="builder__back-btn" 
+            title="Dashboard'a dön"
+          >
             ← Geri
-          </Link>
+          </button>
           <input
             className="builder__site-title-input"
             value={site.title || ''}
@@ -150,11 +214,12 @@ export default function Builder() {
             {site.settings?.isPublished ? '✅ Yayında' : '🚀 Yayınla'}
           </button>
           <button
-            className={`builder__action-btn builder__action-btn--primary ${saved ? 'builder__action-btn--saved' : ''}`}
+            className={`builder__action-btn builder__action-btn--primary ${saved ? 'builder__action-btn--saved' : ''} ${hasUnsavedChanges ? 'builder__action-btn--unsaved' : ''}`}
             onClick={handleSave}
             disabled={saving}
+            title={hasUnsavedChanges ? 'Kaydedilmemiş değişiklikler var' : 'Tüm değişiklikler kaydedildi'}
           >
-            {saving ? '⏳ Kaydediliyor...' : saved ? '✅ Kaydedildi!' : '💾 Kaydet'}
+            {saving ? '⏳ Kaydediliyor...' : saved ? '✅ Kaydedildi!' : hasUnsavedChanges ? '💾 Kaydet *' : '💾 Kaydet'}
           </button>
         </div>
       </header>

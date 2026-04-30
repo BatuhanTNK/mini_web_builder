@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useBuilderStore } from '../../store/builderStore';
 import ImageUploader from '../shared/ImageUploader';
+import BackgroundUploader from '../shared/BackgroundUploader';
 
 // ─── Collapsible Section ──────────────────────────────────────────────────────
 function Section({ icon, title, defaultOpen = true, children, badge }) {
@@ -104,29 +105,323 @@ function PageSettingsPanel() {
 // ─── Block-specific Forms ─────────────────────────────────────────────────────
 function HeroForm({ block, updateBlock }) {
   const d = block.data;
+  
+  // Default values for Hero block content
+  const defaults = {
+    title: 'Welcome to My Site',
+    subtitle: 'This is a beautifully designed hero section. Add your subtitle here.',
+    accentWord: 'Beautiful',
+    accentColor: '#6366f1',
+    textColor: '#ffffff',
+    alignment: 'center'
+  };
+  
   return (
     <>
-      <Field label="Başlık">
-        <input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Ana başlık..." />
+      <Field 
+        label="Başlık"
+        onReset={() => updateBlock(block.id, { title: defaults.title })}
+      >
+        <input 
+          className="property-panel__input" 
+          value={d.title || ''} 
+          onChange={e => updateBlock(block.id, { title: e.target.value })} 
+          placeholder="Ana başlık..." 
+        />
       </Field>
-      <Field label="Alt Başlık">
-        <input className="property-panel__input" value={d.subtitle || ''} onChange={e => updateBlock(block.id, { subtitle: e.target.value })} placeholder="Alt başlık..." />
+      
+      <Field 
+        label="Alt Başlık"
+        onReset={() => updateBlock(block.id, { subtitle: defaults.subtitle })}
+      >
+        <input 
+          className="property-panel__input" 
+          value={d.subtitle || ''} 
+          onChange={e => updateBlock(block.id, { subtitle: e.target.value })} 
+          placeholder="Alt başlık..." 
+        />
       </Field>
-      <Field label="Vurgulanan Kelime">
-        <input className="property-panel__input" value={d.accentWord || ''} onChange={e => updateBlock(block.id, { accentWord: e.target.value })} placeholder="Vurgulanacak kelime..." />
+      
+      <Field 
+        label="Vurgulanan Kelime"
+        onReset={() => updateBlock(block.id, { accentWord: defaults.accentWord })}
+      >
+        <input 
+          className="property-panel__input" 
+          value={d.accentWord || ''} 
+          onChange={e => updateBlock(block.id, { accentWord: e.target.value })} 
+          placeholder="Vurgulanacak kelime..." 
+        />
       </Field>
-      <Field label="Vurgu Rengi">
-        <ColorRow value={d.accentColor || '#6366f1'} onChange={v => updateBlock(block.id, { accentColor: v })} />
+      
+      <Field 
+        label="Vurgu Rengi"
+        onReset={() => updateBlock(block.id, { accentColor: defaults.accentColor })}
+      >
+        <ColorRow 
+          value={d.accentColor || '#6366f1'} 
+          onChange={v => updateBlock(block.id, { accentColor: v })} 
+        />
       </Field>
-      <Field label="Arka Plan Rengi">
-        <ColorRow value={d.bgColor || '#0f0f13'} onChange={v => updateBlock(block.id, { bgColor: v })} />
+      
+      <Field 
+        label="Metin Rengi"
+        onReset={() => updateBlock(block.id, { textColor: defaults.textColor })}
+      >
+        <ColorRow 
+          value={d.textColor || '#ffffff'} 
+          onChange={v => updateBlock(block.id, { textColor: v })} 
+        />
       </Field>
-      <Field label="Metin Rengi">
-        <ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} />
+      
+      <Field 
+        label="Hizalama"
+        onReset={() => updateBlock(block.id, { alignment: defaults.alignment })}
+      >
+        <AlignRow 
+          value={d.alignment || 'center'} 
+          onChange={v => updateBlock(block.id, { alignment: v })} 
+        />
       </Field>
-      <Field label="Hizalama">
-        <AlignRow value={d.alignment || 'center'} onChange={v => updateBlock(block.id, { alignment: v })} />
+    </>
+  );
+}
+
+function HeroBackgroundForm({ block, updateBlock }) {
+  const d = block.data;
+  
+  // Default values for background
+  const defaults = {
+    bgColor: '#0f0f13',
+    bgImage: '',
+    bgImageOriginal: '',
+    bgImageZoom: 1,
+    bgImageOffsetY: 0,
+    bgGradient: false,
+    gradientColor1: '#6366f1',
+    gradientColor2: '#8b5cf6',
+    gradientAngle: 135,
+    overlayColor: '#000000',
+    overlayOpacity: 0.5,
+    bgBlur: 0
+  };
+
+  // Determine current background type
+  const bgType = d.bgGradient ? 'gradient' : (d.bgImage !== undefined && !d.bgGradient) ? 'image' : 'solid';
+  
+  // Reset all background settings
+  const resetAll = () => {
+    updateBlock(block.id, defaults);
+  };
+  
+  return (
+    <>
+      {/* Reset All Button */}
+      <div className="pp-reset-all">
+        <button 
+          className="pp-reset-all__btn"
+          onClick={resetAll}
+          title="Tüm arka plan ayarlarını varsayılan değerlere döndür"
+        >
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
+      </div>
+
+      <Field 
+        label="Arka Plan Tipi"
+        onReset={() => updateBlock(block.id, { bgImage: undefined, bgGradient: false, bgImageOriginal: '', bgImageZoom: 1, bgImageOffsetY: 0 })}
+      >
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button
+            className={`pp-align-btn ${bgType === 'solid' ? 'pp-align-btn--active' : ''}`}
+            onClick={() => updateBlock(block.id, { bgImage: undefined, bgGradient: false })}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '13px' }}
+          >
+            🎨 Düz Renk
+          </button>
+          <button
+            className={`pp-align-btn ${bgType === 'gradient' ? 'pp-align-btn--active' : ''}`}
+            onClick={() => updateBlock(block.id, { bgImage: undefined, bgGradient: true })}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '13px' }}
+          >
+            🌈 Gradient
+          </button>
+          <button
+            className={`pp-align-btn ${bgType === 'image' ? 'pp-align-btn--active' : ''}`}
+            onClick={() => updateBlock(block.id, { bgGradient: false, bgImage: '' })}
+            style={{ flex: 1, padding: '8px 12px', fontSize: '13px' }}
+          >
+            🖼️ Resim
+          </button>
+        </div>
       </Field>
+
+      {/* Solid Color */}
+      {bgType === 'solid' && (
+        <Field 
+          label="Arka Plan Rengi"
+          onReset={() => updateBlock(block.id, { bgColor: defaults.bgColor })}
+        >
+          <ColorRow 
+            value={d.bgColor || '#0f0f13'} 
+            onChange={v => updateBlock(block.id, { bgColor: v })} 
+          />
+        </Field>
+      )}
+
+      {/* Gradient */}
+      {bgType === 'gradient' && (
+        <>
+          <Field 
+            label="Gradient Renk 1"
+            onReset={() => updateBlock(block.id, { gradientColor1: defaults.gradientColor1 })}
+          >
+            <ColorRow 
+              value={d.gradientColor1 || '#6366f1'} 
+              onChange={v => updateBlock(block.id, { gradientColor1: v })} 
+            />
+          </Field>
+          <Field 
+            label="Gradient Renk 2"
+            onReset={() => updateBlock(block.id, { gradientColor2: defaults.gradientColor2 })}
+          >
+            <ColorRow 
+              value={d.gradientColor2 || '#8b5cf6'} 
+              onChange={v => updateBlock(block.id, { gradientColor2: v })} 
+            />
+          </Field>
+          <Field 
+            label={
+              <>
+                Gradient Açısı
+                <span className="pp-field__value-badge">{d.gradientAngle || 135}°</span>
+              </>
+            }
+            onReset={() => updateBlock(block.id, { gradientAngle: defaults.gradientAngle })}
+          >
+            <input 
+              className="property-panel__input" 
+              type="range" 
+              min="0" 
+              max="360" 
+              value={d.gradientAngle || 135} 
+              onChange={e => updateBlock(block.id, { gradientAngle: Number(e.target.value) })} 
+            />
+          </Field>
+          
+          <Field 
+            label="Overlay Rengi"
+            onReset={() => updateBlock(block.id, { overlayColor: defaults.overlayColor })}
+          >
+            <ColorRow 
+              value={d.overlayColor || '#000000'} 
+              onChange={v => updateBlock(block.id, { overlayColor: v })} 
+            />
+          </Field>
+          
+          <Field 
+            label={
+              <>
+                Overlay Saydamlığı
+                <span className="pp-field__value-badge">{((d.overlayOpacity ?? 0.5) * 100).toFixed(0)}%</span>
+              </>
+            }
+            onReset={() => updateBlock(block.id, { overlayOpacity: defaults.overlayOpacity })}
+          >
+            <input 
+              className="property-panel__input" 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.01" 
+              value={d.overlayOpacity ?? 0.5} 
+              onChange={e => updateBlock(block.id, { overlayOpacity: Number(e.target.value) })} 
+            />
+          </Field>
+        </>
+      )}
+
+      {/* Background Image */}
+      {bgType === 'image' && (
+        <>
+          <Field 
+            label="Arka Plan Resmi"
+            onReset={() => updateBlock(block.id, { bgImage: '', bgImageOriginal: '', bgImageZoom: 1, bgImageOffsetY: 0 })}
+          >
+            <BackgroundUploader 
+              value={d.bgImage || ''} 
+              onChange={(data) => {
+                if (typeof data === 'string') {
+                  updateBlock(block.id, { bgImage: data });
+                } else {
+                  updateBlock(block.id, data);
+                }
+              }}
+              cropData={{
+                bgImageOriginal: d.bgImageOriginal,
+                bgImageZoom: d.bgImageZoom,
+                bgImageOffsetY: d.bgImageOffsetY
+              }}
+              label="Arka Plan" 
+            />
+          </Field>
+          
+          {/* Show controls only if image is uploaded */}
+          {d.bgImage && d.bgImage.length > 0 && (
+            <>
+              <Field 
+                label={
+                  <>
+                    Bulanıklık
+                    <span className="pp-field__value-badge">{d.bgBlur ?? 0}px</span>
+                  </>
+                }
+                onReset={() => updateBlock(block.id, { bgBlur: defaults.bgBlur })}
+              >
+                <input 
+                  className="property-panel__input" 
+                  type="range" 
+                  min="0" 
+                  max="20" 
+                  value={d.bgBlur ?? 0} 
+                  onChange={e => updateBlock(block.id, { bgBlur: Number(e.target.value) })} 
+                />
+              </Field>
+              
+              <Field 
+                label="Overlay Rengi"
+                onReset={() => updateBlock(block.id, { overlayColor: defaults.overlayColor })}
+              >
+                <ColorRow 
+                  value={d.overlayColor || '#000000'} 
+                  onChange={v => updateBlock(block.id, { overlayColor: v })} 
+                />
+              </Field>
+              
+              <Field 
+                label={
+                  <>
+                    Overlay Saydamlığı
+                    <span className="pp-field__value-badge">{((d.overlayOpacity ?? 0.5) * 100).toFixed(0)}%</span>
+                  </>
+                }
+                onReset={() => updateBlock(block.id, { overlayOpacity: defaults.overlayOpacity })}
+              >
+                <input 
+                  className="property-panel__input" 
+                  type="range" 
+                  min="0" 
+                  max="1" 
+                  step="0.01" 
+                  value={d.overlayOpacity ?? 0.5} 
+                  onChange={e => updateBlock(block.id, { overlayOpacity: Number(e.target.value) })} 
+                />
+              </Field>
+            </>
+          )}
+        </>
+      )}
     </>
   );
 }
@@ -993,10 +1288,21 @@ function GenericForm({ block }) {
 }
 
 // ─── Helper Components ────────────────────────────────────────────────────────
-function Field({ label, children }) {
+function Field({ label, children, onReset }) {
   return (
     <div className="pp-field">
-      <label className="pp-field__label">{label}</label>
+      <div className="pp-field__header">
+        <label className="pp-field__label">{label}</label>
+        {onReset && (
+          <button 
+            className="pp-field__reset" 
+            onClick={onReset}
+            title="Varsayılana dön"
+          >
+            ↺
+          </button>
+        )}
+      </div>
       {children}
     </div>
   );
@@ -1141,52 +1447,188 @@ function SpacingControls({ block }) {
   const { updateBlockProps } = useBuilderStore();
   const id = block.id;
 
+  // Default spacing values
+  const spacingDefaults = {
+    marginTop: 0,
+    marginBottom: 0,
+    paddingTop: 0,
+    paddingBottom: 0
+  };
+
+  // Default radius values
+  const radiusDefaults = {
+    rounded: true,
+    borderRadius: 16
+  };
+
   return (
     <>
       <Section icon="📐" title="Boşluk Ayarları" defaultOpen={false}>
-        {/* Visual Box Model */}
-        <div className="pp-spacing-box">
-          <div className="pp-spacing-box__label">Margin</div>
-          <div className="pp-spacing-box__outer">
-            <input className="pp-spacing-box__input pp-spacing-box__input--top" type="number" min={0} max={200}
-              value={block.marginTop || 0} onChange={e => updateBlockProps(id, { marginTop: parseInt(e.target.value) || 0 })}
-              title="Üst margin" />
-            <div className="pp-spacing-box__inner-wrapper">
-              <div className="pp-spacing-box__label pp-spacing-box__label--inner">Padding</div>
-              <div className="pp-spacing-box__inner">
-                <input className="pp-spacing-box__input pp-spacing-box__input--top" type="number" min={0} max={200}
-                  value={block.paddingTop || 0} onChange={e => updateBlockProps(id, { paddingTop: parseInt(e.target.value) || 0 })}
-                  title="Üst padding" />
-                <div className="pp-spacing-box__content">İçerik</div>
-                <input className="pp-spacing-box__input pp-spacing-box__input--bottom" type="number" min={0} max={200}
-                  value={block.paddingBottom || 0} onChange={e => updateBlockProps(id, { paddingBottom: parseInt(e.target.value) || 0 })}
-                  title="Alt padding" />
-              </div>
-            </div>
-            <input className="pp-spacing-box__input pp-spacing-box__input--bottom" type="number" min={0} max={200}
-              value={block.marginBottom || 0} onChange={e => updateBlockProps(id, { marginBottom: parseInt(e.target.value) || 0 })}
-              title="Alt margin" />
-          </div>
+        {/* Reset All Spacing Button */}
+        <div className="pp-reset-all">
+          <button 
+            className="pp-reset-all__btn"
+            onClick={() => updateBlockProps(id, spacingDefaults)}
+            title="Tüm boşluk ayarlarını varsayılan değerlere döndür"
+          >
+            <span className="pp-reset-all__icon">↺</span>
+            <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+          </button>
         </div>
 
-        {/* Quick presets */}
-        <div className="pp-presets">
-          <span className="pp-presets__label">Hızlı Ayar:</span>
-          <div className="pp-presets__btns">
+        {/* Margin Controls */}
+        <div className="pp-spacing-group">
+          <div className="pp-spacing-group__header">
+            <span className="pp-spacing-group__title">Dış Boşluk (Margin)</span>
+            <button 
+              className="pp-spacing-group__reset"
+              onClick={() => updateBlockProps(id, { marginTop: 0, marginBottom: 0 })}
+              title="Sıfırla"
+            >
+              ↺
+            </button>
+          </div>
+          
+          <div className="pp-spacing-control">
+            <label className="pp-spacing-control__label">
+              <span>Üst</span>
+              <span className="pp-spacing-control__value">{block.marginTop || 0}px</span>
+            </label>
+            <input 
+              type="range" 
+              className="pp-spacing-control__slider"
+              min={0} 
+              max={100} 
+              step={4}
+              value={block.marginTop || 0} 
+              onChange={e => updateBlockProps(id, { marginTop: parseInt(e.target.value) })}
+            />
+          </div>
+
+          <div className="pp-spacing-control">
+            <label className="pp-spacing-control__label">
+              <span>Alt</span>
+              <span className="pp-spacing-control__value">{block.marginBottom || 0}px</span>
+            </label>
+            <input 
+              type="range" 
+              className="pp-spacing-control__slider"
+              min={0} 
+              max={100} 
+              step={4}
+              value={block.marginBottom || 0} 
+              onChange={e => updateBlockProps(id, { marginBottom: parseInt(e.target.value) })}
+            />
+          </div>
+
+          <div className="pp-spacing-presets">
             {[0, 8, 16, 24, 32, 48].map(v => (
               <button
                 key={v}
-                className={`pp-presets__btn ${block.marginTop === v && block.marginBottom === v ? 'pp-presets__btn--active' : ''}`}
+                className={`pp-spacing-preset ${(block.marginTop === v && block.marginBottom === v) ? 'pp-spacing-preset--active' : ''}`}
                 onClick={() => updateBlockProps(id, { marginTop: v, marginBottom: v })}
+                title={`Üst ve alt: ${v}px`}
               >
                 {v}
               </button>
             ))}
           </div>
         </div>
+
+        {/* Padding Controls */}
+        <div className="pp-spacing-group">
+          <div className="pp-spacing-group__header">
+            <span className="pp-spacing-group__title">İç Boşluk (Padding)</span>
+            <button 
+              className="pp-spacing-group__reset"
+              onClick={() => updateBlockProps(id, { paddingTop: 0, paddingBottom: 0 })}
+              title="Sıfırla"
+            >
+              ↺
+            </button>
+          </div>
+          
+          <div className="pp-spacing-control">
+            <label className="pp-spacing-control__label">
+              <span>Üst</span>
+              <span className="pp-spacing-control__value">{block.paddingTop || 0}px</span>
+            </label>
+            <input 
+              type="range" 
+              className="pp-spacing-control__slider"
+              min={0} 
+              max={100} 
+              step={4}
+              value={block.paddingTop || 0} 
+              onChange={e => updateBlockProps(id, { paddingTop: parseInt(e.target.value) })}
+            />
+          </div>
+
+          <div className="pp-spacing-control">
+            <label className="pp-spacing-control__label">
+              <span>Alt</span>
+              <span className="pp-spacing-control__value">{block.paddingBottom || 0}px</span>
+            </label>
+            <input 
+              type="range" 
+              className="pp-spacing-control__slider"
+              min={0} 
+              max={100} 
+              step={4}
+              value={block.paddingBottom || 0} 
+              onChange={e => updateBlockProps(id, { paddingBottom: parseInt(e.target.value) })}
+            />
+          </div>
+
+          <div className="pp-spacing-presets">
+            {[0, 8, 16, 24, 32, 48].map(v => (
+              <button
+                key={v}
+                className={`pp-spacing-preset ${(block.paddingTop === v && block.paddingBottom === v) ? 'pp-spacing-preset--active' : ''}`}
+                onClick={() => updateBlockProps(id, { paddingTop: v, paddingBottom: v })}
+                title={`Üst ve alt: ${v}px`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Visual Preview */}
+        <div className="pp-spacing-preview">
+          <div className="pp-spacing-preview__label">Önizleme</div>
+          <div className="pp-spacing-preview__box" style={{
+            padding: `${block.marginTop || 0}px 8px ${block.marginBottom || 0}px 8px`,
+            background: 'rgba(99, 102, 241, 0.1)',
+            borderRadius: '4px'
+          }}>
+            <div style={{
+              padding: `${block.paddingTop || 0}px 8px ${block.paddingBottom || 0}px 8px`,
+              background: 'rgba(99, 102, 241, 0.2)',
+              borderRadius: '4px',
+              fontSize: '10px',
+              color: 'rgba(255, 255, 255, 0.6)',
+              textAlign: 'center'
+            }}>
+              İçerik
+            </div>
+          </div>
+        </div>
       </Section>
 
       <Section icon="🔲" title="Köşe Kavisi" defaultOpen={false}>
+        {/* Reset All Radius Button */}
+        <div className="pp-reset-all">
+          <button 
+            className="pp-reset-all__btn"
+            onClick={() => updateBlockProps(id, radiusDefaults)}
+            title="Köşe kavisi ayarlarını varsayılan değerlere döndür"
+          >
+            <span className="pp-reset-all__icon">↺</span>
+            <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+          </button>
+        </div>
+
         <div className="pp-radius-control">
           <div className="pp-radius-toggle">
             <span>Kavisli Köşeler</span>
@@ -1301,6 +1743,13 @@ export default function PropertyPanel({ onClose }) {
             <Section icon="✏️" title="İçerik" defaultOpen={true}>
               <BlockForm block={selectedBlock} updateBlock={updateBlock} />
             </Section>
+
+            {/* Background Settings for Hero Block */}
+            {selectedBlock.type === 'hero' && (
+              <Section icon="🎨" title="Arka Plan" defaultOpen={true}>
+                <HeroBackgroundForm block={selectedBlock} updateBlock={updateBlock} />
+              </Section>
+            )}
 
             {/* Layout Controls */}
             <SpacingControls block={selectedBlock} />

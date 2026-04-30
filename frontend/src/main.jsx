@@ -5,6 +5,7 @@ import App from './App';
 import './styles/index.css';
 import './styles/builder.css';
 import './styles/blocks.css';
+import './styles/confirm-dialog.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

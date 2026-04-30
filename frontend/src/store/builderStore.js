@@ -768,6 +768,8 @@ export const useBuilderStore = create((set, get) => ({
   loading: false,
   saving: false,
   error: null,
+  hasUnsavedChanges: false,
+  lastSavedState: null,
 
   // Sites CRUD (backend-backed)
   fetchSites: async () => {
@@ -824,7 +826,13 @@ export const useBuilderStore = create((set, get) => ({
     set({ loading: true, error: null });
     try {
       const { site } = await api(`/sites/${siteId}`);
-      set({ site, loading: false, selectedBlockId: null });
+      set({ 
+        site, 
+        loading: false, 
+        selectedBlockId: null,
+        hasUnsavedChanges: false,
+        lastSavedState: JSON.stringify(site)
+      });
     } catch (e) {
       set({ error: e.message, loading: false, site: null });
     }
@@ -842,7 +850,9 @@ export const useBuilderStore = create((set, get) => ({
       set(state => ({
         saving: false,
         site: saved,
-        sites: state.sites.map(s => s.id === saved.id ? saved : s)
+        sites: state.sites.map(s => s.id === saved.id ? saved : s),
+        hasUnsavedChanges: false,
+        lastSavedState: JSON.stringify(saved)
       }));
     } catch (e) {
       set({ error: e.message, saving: false });
@@ -920,7 +930,8 @@ export const useBuilderStore = create((set, get) => ({
   // Local site updates (before save)
   updateSiteLocal: (updates) => {
     set(state => ({
-      site: state.site ? { ...state.site, ...updates } : null
+      site: state.site ? { ...state.site, ...updates } : null,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -929,7 +940,8 @@ export const useBuilderStore = create((set, get) => ({
       site: state.site ? {
         ...state.site,
         theme: { ...state.site.theme, ...themeUpdates }
-      } : null
+      } : null,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -938,7 +950,8 @@ export const useBuilderStore = create((set, get) => ({
       site: state.site ? {
         ...state.site,
         settings: { ...state.site.settings, ...settingsUpdates }
-      } : null
+      } : null,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -965,7 +978,8 @@ export const useBuilderStore = create((set, get) => ({
         ...state.site,
         blocks: [...state.site.blocks, newBlock]
       },
-      selectedBlockId: newBlock.id
+      selectedBlockId: newBlock.id,
+      hasUnsavedChanges: true
     }));
 
     return newBlock.id;
@@ -978,7 +992,8 @@ export const useBuilderStore = create((set, get) => ({
         blocks: state.site.blocks.map(b =>
           b.id === blockId ? { ...b, data: { ...b.data, ...dataUpdates } } : b
         )
-      } : null
+      } : null,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -990,7 +1005,8 @@ export const useBuilderStore = create((set, get) => ({
         blocks: state.site.blocks.map(b =>
           b.id === blockId ? { ...b, ...propUpdates } : b
         )
-      } : null
+      } : null,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -1002,7 +1018,8 @@ export const useBuilderStore = create((set, get) => ({
           .filter(b => b.id !== blockId)
           .map((b, i) => ({ ...b, order: i }))
       } : null,
-      selectedBlockId: state.selectedBlockId === blockId ? null : state.selectedBlockId
+      selectedBlockId: state.selectedBlockId === blockId ? null : state.selectedBlockId,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -1013,7 +1030,8 @@ export const useBuilderStore = create((set, get) => ({
         blocks: state.site.blocks.map(b =>
           b.id === blockId ? { ...b, visible: !b.visible } : b
         )
-      } : null
+      } : null,
+      hasUnsavedChanges: true
     }));
   },
 
@@ -1032,7 +1050,8 @@ export const useBuilderStore = create((set, get) => ({
     blocks.forEach((b, i) => { b.order = i; });
 
     set(state => ({
-      site: { ...state.site, blocks }
+      site: { ...state.site, blocks },
+      hasUnsavedChanges: true
     }));
   },
 
@@ -1050,7 +1069,8 @@ export const useBuilderStore = create((set, get) => ({
     blocks.forEach((b, i) => { b.order = i; });
 
     set(state => ({
-      site: { ...state.site, blocks }
+      site: { ...state.site, blocks },
+      hasUnsavedChanges: true
     }));
   },
 

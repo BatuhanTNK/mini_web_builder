@@ -7,9 +7,25 @@ const fs = require('fs');
 
 const router = express.Router();
 
+// General image storage (for block images)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '..', 'uploads');
+    const uploadDir = path.join(__dirname, '..', 'uploads', 'images');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+    cb(null, uniqueName);
+  }
+});
+
+// Background image storage (for hero backgrounds)
+const backgroundStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, '..', 'uploads', 'backgrounds');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -38,7 +54,13 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-// POST /api/media/upload
+const backgroundUpload = multer({
+  storage: backgroundStorage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB for backgrounds
+});
+
+// POST /api/media/upload - General image upload
 router.post('/upload', auth, upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
@@ -58,10 +80,34 @@ router.post('/upload', auth, upload.single('image'), async (req, res) => {
       imageUrl = result.secure_url;
       fs.unlinkSync(req.file.path);
     } else {
-      imageUrl = `/uploads/${req.file.filename}`;
+      imageUrl = `/uploads/images/${req.file.filename}`;
     }
 
     res.json({ url: imageUrl, filename: req.file.originalname });
+  } catch (error) {
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({ message: 'Dosya yüklenirken hata oluştu', error: error.message });
+  }
+});
+
+// POST /api/media/upload-background - Background image upload (always local, no Cloudinary)
+router.post('/upload-background', auth, backgroundUpload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Dosya yüklenmedi' });
+    }
+
+    // Always save locally for backgrounds (CDN will be added later)
+    const imageUrl = `/uploads/backgrounds/${req.file.filename}`;
+
+    res.json({ 
+      url: imageUrl, 
+      filename: req.file.originalname,
+      size: req.file.size,
+      path: imageUrl // This will be used for CDN migration later
+    });
   } catch (error) {
     if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
