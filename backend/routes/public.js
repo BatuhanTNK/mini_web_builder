@@ -118,4 +118,44 @@ router.post('/:slug/view', async (req, res) => {
   }
 });
 
+// POST /api/public/:slug/contact — iletişim formu gönderimi
+router.post('/:slug/contact', async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+      return res.status(400).json({ message: 'Tüm alanlar gereklidir' });
+    }
+
+    const site = await MiniSite.findOne({ where: { slug: req.params.slug } });
+    if (!site) {
+      return res.status(404).json({ message: 'Site bulunamadı' });
+    }
+
+    const settings = { ...site.settings };
+    if (!settings.messages) settings.messages = [];
+    
+    // Mesajı kaydet
+    settings.messages.push({
+      id: Date.now().toString(),
+      name,
+      email,
+      message,
+      createdAt: new Date().toISOString(),
+      read: false
+    });
+
+    // Son 100 mesajı tut (limitasyon)
+    if (settings.messages.length > 100) {
+      settings.messages = settings.messages.slice(-100);
+    }
+
+    site.settings = settings;
+    await site.save();
+
+    res.json({ success: true, message: 'Mesajınız başarıyla iletildi' });
+  } catch (error) {
+    res.status(500).json({ message: 'Mesaj gönderilemedi', error: error.message });
+  }
+});
+
 module.exports = router;

@@ -77,6 +77,36 @@
 .button-block__btn--outline { background: transparent; border-color: var(--btn-color, #6366f1); color: var(--btn-color, #6366f1); }
 .button-block__btn--ghost { background: rgba(0,0,0,0.06); color: var(--btn-color, #6366f1); }
 
+/* ─── Button Hover Effects (via inline component) ───────────────────────── */
+.btn-block__link { display: inline-flex; }
+.btn-hover--lift:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.btn-hover--grow:hover { transform: scale(1.05); }
+.btn-hover--opacity:hover { opacity: 0.75; }
+.btn-hover--glow:hover { box-shadow: 0 0 20px rgba(99,102,241,0.5); }
+.btn-hover--shake:hover { animation: btnShake 0.4s ease; }
+
+@keyframes btnShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ─── Button Attention Animations (looping) ─────────────────────────────── */
+.btn-anim--pulse { animation: btnPulse 2s ease-in-out infinite; }
+.btn-anim--bounce { animation: btnBounce 2s ease infinite; }
+
+@keyframes btnPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
+  50% { transform: scale(1.03); box-shadow: 0 0 16px 4px rgba(99,102,241,0.25); }
+}
+@keyframes btnBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-8px); }
+  60% { transform: translateY(-4px); }
+}
+
 /* ─── Link List Block ────────────────────────────────────────────────────── */
 .link-list-block { padding: 12px 24px; display: flex; flex-direction: column; gap: 10px; }
 .link-list-block__item {

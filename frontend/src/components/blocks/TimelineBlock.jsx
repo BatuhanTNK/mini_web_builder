@@ -1,5 +1,5 @@
 export default function TimelineBlock({ data }) {
-  const { title = '', cards = [] } = data || {};
+  const { title = '', cards = [], titleColor = '#ffffff' } = data || {};
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '16px 0' }}>
@@ -9,7 +9,8 @@ export default function TimelineBlock({ data }) {
           fontWeight: 800, 
           margin: '0 0 8px 0',
           textTransform: 'uppercase',
-          letterSpacing: '1px'
+          letterSpacing: '1px',
+          color: titleColor
         }}>
           {title}
         </h3>

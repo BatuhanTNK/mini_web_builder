@@ -398,9 +398,36 @@ input, textarea, select { font-family: inherit; }
 .auth-page__switch button:hover { color: var(--color-accent); }
 
 /* ─── Public Site ────────────────────────────────────────────────────────── */
-.public-site { min-height: 100vh; }
+.public-site { min-height: 100vh; position: relative; }
 .public-site__container { max-width: 480px; margin: 0 auto; padding: 0; }
 .public-site__block { position: relative; }
+
+/* Dark / Light mode toggle button */
+.public-site__theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 999;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(128, 128, 128, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background 0.2s ease;
+  line-height: 1;
+}
+.public-site__theme-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(128, 128, 128, 0.25);
+}
 
 .public-site-loading, .public-site-error {
   min-height: 100vh;
@@ -580,3 +607,52 @@ input, textarea, select { font-family: inherit; }
 @media (max-width: 640px) {
   .qr-page__content { grid-template-columns: 1fr; }
 }
+
+/* ─── Phase 2 Animations ─────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoom-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-left {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes rotate-in {
+  from { opacity: 0; transform: rotate(-15deg) scale(0.9); }
+  to { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+@keyframes bounce-in {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blur-in {
+  from { opacity: 0; filter: blur(10px); }
+  to { opacity: 1; filter: blur(0); }
+}
+

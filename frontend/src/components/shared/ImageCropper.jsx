@@ -3,9 +3,10 @@ import { createPortal } from 'react-dom';
 
 export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom = 1, initialOffsetY = 0, onCrop, onCancel }) {
   const [offsetY, setOffsetY] = useState(initialOffsetY);
+  const [offsetX, setOffsetX] = useState(0);
   const [zoom, setZoom] = useState(initialZoom);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStartY, setDragStartY] = useState(0);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [imageNaturalSize, setImageNaturalSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef(null);
   const imageWrapperRef = useRef(null);
@@ -47,22 +48,30 @@ export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom
     }
   }, [zoom]);
 
-  const handleStart = (clientY) => {
+  const handleStart = (clientX, clientY) => {
     setIsDragging(true);
-    setDragStartY(clientY);
+    setDragStart({ x: clientX, y: clientY });
   };
 
-  const handleMove = (clientY) => {
+  const handleMove = (clientX, clientY) => {
     if (!isDragging || !containerRef.current || !imageWrapperRef.current) return;
-    
-    const deltaY = clientY - dragStartY;
+
+    const deltaY = clientY - dragStart.y;
+    const deltaX = clientX - dragStart.x;
     const containerHeight = containerRef.current.offsetHeight;
+    const containerWidth = containerRef.current.offsetWidth;
     const wrapperHeight = imageWrapperRef.current.offsetHeight;
-    const maxOffset = Math.max(0, wrapperHeight - containerHeight);
-    
-    const newOffset = Math.max(-maxOffset, Math.min(0, offsetY + deltaY));
-    setOffsetY(newOffset);
-    setDragStartY(clientY);
+    const wrapperWidth = imageWrapperRef.current.offsetWidth;
+
+    const maxOffsetY = Math.max(0, wrapperHeight - containerHeight);
+    const maxOffsetX = Math.max(0, wrapperWidth - containerWidth);
+
+    const newOffsetY = Math.max(-maxOffsetY, Math.min(0, offsetY + deltaY));
+    const newOffsetX = Math.max(-maxOffsetX, Math.min(maxOffsetX, offsetX + deltaX));
+
+    setOffsetY(newOffsetY);
+    setOffsetX(newOffsetX);
+    setDragStart({ x: clientX, y: clientY });
   };
 
   const handleEnd = () => {
@@ -83,7 +92,7 @@ export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom
     const container = containerRef.current;
 
     // Set canvas size to match container
-    const canvasWidth = 1200; // Fixed width for quality
+    const canvasWidth = aspectRatio >= 1 ? 1200 : Math.round(1200 * aspectRatio);
     const canvasHeight = Math.round(canvasWidth / aspectRatio);
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -91,33 +100,31 @@ export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom
     // Load original image
     const img = new Image();
     img.onload = () => {
-      // Calculate scale and position
       const containerWidth = container.offsetWidth;
       const containerHeight = container.offsetHeight;
-      const displayScale = (containerWidth / img.naturalWidth) * zoom;
-      const displayHeight = img.naturalHeight * displayScale;
-      
-      // Calculate crop area in natural image coordinates
-      const cropScale = img.naturalWidth / (containerWidth * zoom);
-      const sourceY = Math.abs(offsetY) * cropScale;
-      const sourceHeight = containerHeight * cropScale;
-      const sourceWidth = img.naturalWidth;
-      
-      // Draw cropped image
+
+      // Scale factor: how much the image is scaled in display
+      const displayedWidth = containerWidth * zoom;
+      const scaleX = img.naturalWidth / displayedWidth;
+
+      // X: offsetX is relative to center; convert to source coords
+      const wrapperLeft = (containerWidth - displayedWidth) / 2 + offsetX;
+      const sourceX = Math.max(0, -wrapperLeft * scaleX);
+      const sourceWidth = Math.min(img.naturalWidth - sourceX, containerWidth * scaleX);
+
+      // Y: offsetY is top of wrapper relative to container top
+      const sourceY = Math.max(0, Math.abs(offsetY) * scaleX);
+      const sourceHeight = Math.min(img.naturalHeight - sourceY, containerHeight * scaleX);
+
       ctx.drawImage(
         img,
-        0, sourceY, sourceWidth, sourceHeight,
+        sourceX, sourceY, sourceWidth, sourceHeight,
         0, 0, canvasWidth, canvasHeight
       );
 
-      // Convert to blob
       canvas.toBlob((blob) => {
         const croppedUrl = URL.createObjectURL(blob);
-        // Return crop info along with the image
-        onCrop(croppedUrl, blob, {
-          zoom: zoom,
-          offsetY: offsetY
-        });
+        onCrop(croppedUrl, blob, { zoom, offsetY, offsetX });
       }, 'image/jpeg', 0.92);
     };
     img.src = imageUrl;
@@ -173,7 +180,7 @@ export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom
             margin: 0, 
             fontSize: '15px' 
           }}>
-            Sürükle, yakınlaştır ve istediğin alanı seç
+            {aspectRatio === 1 ? 'Sürükle ve yakınlaştır' : 'Sürükle, yakınlaştır ve istediğin alanı seç'}
           </p>
         </div>
 
@@ -193,12 +200,12 @@ export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom
             touchAction: 'none',
             backgroundColor: '#000'
           }}
-          onMouseDown={(e) => handleStart(e.clientY)}
-          onMouseMove={(e) => handleMove(e.clientY)}
+          onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
+          onMouseMove={(e) => handleMove(e.clientX, e.clientY)}
           onMouseUp={handleEnd}
           onMouseLeave={handleEnd}
-          onTouchStart={(e) => handleStart(e.touches[0].clientY)}
-          onTouchMove={(e) => handleMove(e.touches[0].clientY)}
+          onTouchStart={(e) => handleStart(e.touches[0].clientX, e.touches[0].clientY)}
+          onTouchMove={(e) => handleMove(e.touches[0].clientX, e.touches[0].clientY)}
           onTouchEnd={handleEnd}
         >
           <div 
@@ -206,7 +213,7 @@ export default function ImageCropper({ imageUrl, aspectRatio = 16/9, initialZoom
             style={{
               position: 'absolute',
               top: `${offsetY}px`,
-              left: '50%',
+              left: `calc(50% + ${offsetX}px)`,
               transform: 'translateX(-50%)',
               width: `${zoom * 100}%`,
               transition: isDragging ? 'none' : 'width 0.15s ease-out'

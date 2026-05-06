@@ -27,6 +27,7 @@ import ContactFormBlock from '../blocks/ContactFormBlock';
 import CoverBlock from '../blocks/CoverBlock';
 import TimelineBlock from '../blocks/TimelineBlock';
 import ChecklistBlock from '../blocks/ChecklistBlock';
+import ImageCarouselBlock from '../blocks/ImageCarouselBlock';
 
 const BLOCK_COMPONENTS = {
   hero: HeroBlock,
@@ -52,9 +53,10 @@ const BLOCK_COMPONENTS = {
   cover: CoverBlock,
   timeline: TimelineBlock,
   checklist: ChecklistBlock,
+  image_carousel: ImageCarouselBlock,
 };
 
-function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleVisibility }) {
+function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleVisibility, onDuplicate, resolvedText, isDarkMode }) {
   const [showControls, setShowControls] = useState(false);
   const bypassRef = useRef(false);
   const BlockComponent = BLOCK_COMPONENTS[block.type];
@@ -63,7 +65,7 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
 
   // Intercept ALL clicks inside block — prevent links, buttons, and child onClick handlers
   const handleContentClick = (e) => {
-    // Allow clicks on block controls (up, down, hide, delete)
+    // Allow clicks on block controls (up, down, hide, delete, duplicate)
     if (e.target.closest('.canvas-block__controls')) return;
 
     // When double-click re-dispatches a click, let it pass through
@@ -101,13 +103,26 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
     setTimeout(() => { bypassRef.current = false; }, 0);
   };
 
+  const animationName = block.animation && block.animation !== 'none' ? block.animation : undefined;
+
+  let heightStyle = {};
+  if (block.heightType === 'px') heightStyle.height = `${block.heightPx || 400}px`;
+  if (block.heightType === 'vh') heightStyle.height = `${block.heightVh || 50}vh`;
+  if (block.heightType === 'full') heightStyle.height = '100vh';
+
   const blockStyle = {
     marginTop: block.marginTop ? `${block.marginTop}px` : undefined,
     marginBottom: block.marginBottom ? `${block.marginBottom}px` : undefined,
     paddingTop: block.paddingTop ? `${block.paddingTop}px` : undefined,
     paddingBottom: block.paddingBottom ? `${block.paddingBottom}px` : undefined,
-    borderRadius: block.rounded === false ? '0' : (block.borderRadius != null ? `${block.borderRadius}px` : undefined),
-    overflow: block.rounded === false || block.borderRadius != null ? 'hidden' : undefined,
+    borderRadius: block.type === 'profile' ? undefined : (block.rounded === false ? '0' : (block.borderRadius != null ? `${block.borderRadius}px` : undefined)),
+    overflow: block.type === 'profile' ? 'visible' : ((block.rounded === false || block.borderRadius != null) ? 'hidden' : undefined),
+    animation: animationName ? `${animationName} 0.6s ease-out both` : undefined,
+    '--block-font-size': block.fontSize ? `${block.fontSize}px` : undefined,
+    '--block-line-height': block.lineHeight,
+    '--block-letter-spacing': block.letterSpacing ? `${block.letterSpacing}px` : undefined,
+    '--block-font-weight': block.fontWeight,
+    ...heightStyle
   };
 
   return (
@@ -134,6 +149,11 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
           >↓</button>
           <button
             className="canvas-block__ctrl-btn"
+            onClick={() => onDuplicate(block.id)}
+            title="Kopyasını oluştur"
+          >📋</button>
+          <button
+            className="canvas-block__ctrl-btn"
             onClick={() => onToggleVisibility(block.id)}
             title={block.visible ? 'Gizle' : 'Göster'}
           >{block.visible ? '👁' : '🚫'}</button>
@@ -152,7 +172,10 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
 
       {/* Block content */}
       <div className={`canvas-block__content ${!block.visible ? 'canvas-block__content--hidden' : ''}`}>
-        <BlockComponent data={block.data} />
+        <BlockComponent 
+          data={isDarkMode ? { ...block.data, textColor: resolvedText } : block.data} 
+          isDarkMode={isDarkMode}
+        />
       </div>
 
       {/* Hidden overlay */}
@@ -173,7 +196,7 @@ export default function Canvas() {
     moveBlock,
     removeBlock,
     toggleBlockVisibility,
-    addBlock
+    duplicateBlock
   } = useBuilderStore();
 
   if (!site) return null;
@@ -181,14 +204,23 @@ export default function Canvas() {
   const { blocks = [], theme = {} } = site;
   const sortedBlocks = [...blocks].sort((a, b) => a.order - b.order);
 
+  const isDarkMode = !!theme.darkMode;
+  // Canvas önizlemesinde karanlık modu varsayılan olarak göster
+  const resolvedBg = isDarkMode
+    ? (theme.darkBg || theme.backgroundColor || '#0f0f13')
+    : (theme.backgroundColor || '#ffffff');
+  const resolvedText = isDarkMode
+    ? (theme.darkText || theme.textColor || '#ffffff')
+    : (theme.lightText || theme.textColor || '#1a1a1a');
+
   const canvasStyle = {
     '--site-primary': theme.primaryColor || '#6366f1',
-    '--site-bg': theme.backgroundColor || '#ffffff',
-    '--site-text': theme.textColor || '#1a1a1a',
+    '--site-bg': resolvedBg,
+    '--site-text': resolvedText,
     '--site-font': theme.fontFamily || 'Inter',
     fontFamily: `var(--site-font), sans-serif`,
-    backgroundColor: `var(--site-bg)`,
-    color: `var(--site-text)`,
+    backgroundColor: resolvedBg,
+    color: resolvedText,
   };
 
   return (
@@ -202,6 +234,9 @@ export default function Canvas() {
           onMove={moveBlock}
           onRemove={removeBlock}
           onToggleVisibility={toggleBlockVisibility}
+          onDuplicate={duplicateBlock}
+          isDarkMode={isDarkMode}
+          resolvedText={resolvedText}
         />
       ))}
     </div>

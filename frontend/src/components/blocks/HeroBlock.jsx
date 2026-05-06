@@ -131,10 +131,26 @@ export default function HeroBlock({ data }) {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2 }}>
-        <h1 style={{ fontSize: '32px', fontWeight: 800, margin: '0 0 12px 0', lineHeight: 1.2 }}>
+        <h1 style={{ 
+          fontSize: 'var(--block-font-size, 32px)', 
+          fontWeight: 'var(--block-font-weight, 800)', 
+          margin: '0 0 12px 0', 
+          lineHeight: 'var(--block-line-height, 1.2)',
+          letterSpacing: 'var(--block-letter-spacing, normal)'
+        }}>
           {highlightText(title)}
         </h1>
-        {subtitle && <p style={{ fontSize: '16px', opacity: 0.8, margin: 0 }}>{highlightText(subtitle)}</p>}
+        {subtitle && (
+          <p style={{ 
+            fontSize: 'calc(var(--block-font-size, 16px) * 0.5 + 8px)', // Scale subtitle with main size
+            opacity: 0.8, 
+            margin: 0,
+            lineHeight: 'var(--block-line-height, 1.5)',
+            letterSpacing: 'var(--block-letter-spacing, normal)'
+          }}>
+            {highlightText(subtitle)}
+          </p>
+        )}
       </div>
     </div>
   );

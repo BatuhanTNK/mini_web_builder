@@ -13,7 +13,7 @@ function readAsDataURL(file) {
   });
 }
 
-export default function ImageUploader({ value, onChange, label = 'Gorsel' }) {
+export default function ImageUploader({ value, onChange, label = 'Gorsel', folder = 'images' }) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -27,6 +27,9 @@ export default function ImageUploader({ value, onChange, label = 'Gorsel' }) {
     // 1) Try backend upload (fast + small storage footprint)
     try {
       const formData = new FormData();
+      if (folder) {
+        formData.append('folder', folder);
+      }
       formData.append('image', file);
       const res = await fetch(`${UPLOAD_SERVER}/api/upload`, {
         method: 'POST',

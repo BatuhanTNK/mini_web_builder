@@ -38,6 +38,7 @@ const BLOCK_CATEGORIES = [
     blocks: [
       { type: 'video', label: 'Video', icon: '▶️', description: 'YouTube / Vimeo gömme', color: '#ef4444' },
       { type: 'image_gallery', label: 'Galeri', icon: '🖼️', description: 'Fotoğraf galerisi', color: '#ec4899' },
+      { type: 'image_carousel', label: 'Görsel Slider', icon: '🎠', description: 'İleri-geri kaydırmalı galeri', color: '#f472b6' },
       { type: 'spotify_embed', label: 'Spotify', icon: '🎵', description: 'Müzik oynatıcı', color: '#22c55e' },
     ]
   },

@@ -12,8 +12,33 @@ export default function CoverBlock({ data }) {
     minHeight = '70vh',
     alignment = 'center',
     buttonColor = '#f2f2f2',
-    buttonTextColor = '#1a1a1a'
+    buttonTextColor = '#1a1a1a',
+    // New background options
+    bgColor = '#0f0f13',
+    bgGradient = false,
+    gradientColor1 = '#6366f1',
+    gradientColor2 = '#8b5cf6',
+    gradientAngle = 135,
+    bgBlur = 0,
+    bgSize = 'cover',
+    bgPosition = 'center',
+    bgRepeat = 'no-repeat'
   } = data || {};
+
+  const getBackgroundStyle = () => {
+    let style = {};
+    if (bgImage) {
+      style.backgroundImage = `url(${bgImage})`;
+      style.backgroundSize = bgSize;
+      style.backgroundPosition = bgPosition;
+      style.backgroundRepeat = bgRepeat;
+    } else if (bgGradient) {
+      style.background = `linear-gradient(${gradientAngle}deg, ${gradientColor1}, ${gradientColor2})`;
+    } else {
+      style.backgroundColor = bgColor;
+    }
+    return style;
+  };
 
   return (
     <div style={{
@@ -27,28 +52,33 @@ export default function CoverBlock({ data }) {
       padding: '48px 24px',
       overflow: 'hidden',
       color: textColor,
-      borderRadius: 'inherit' // Inherits from block wrapper
+      borderRadius: 'inherit',
+      ...getBackgroundStyle()
     }}>
-      {/* Background Image */}
-      {bgImage && (
+      {/* Background Image Layer (for Blur) */}
+      {bgImage && bgBlur > 0 && (
         <div style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
           backgroundImage: `url(${bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: bgSize,
+          backgroundPosition: bgPosition,
+          backgroundRepeat: bgRepeat,
+          filter: `blur(${bgBlur}px)`,
           zIndex: 0
         }} />
       )}
 
       {/* Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: overlayColor,
-        opacity: overlayOpacity,
-        zIndex: 1
-      }} />
+      {(bgImage || bgGradient) && overlayOpacity > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: overlayColor,
+          opacity: overlayOpacity,
+          zIndex: 1
+        }} />
+      )}
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '800px', width: '100%' }}>

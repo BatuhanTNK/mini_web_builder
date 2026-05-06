@@ -5,7 +5,7 @@ import ImageCropper from './ImageCropper';
 // This ensures easy CDN migration later
 const UPLOAD_SERVER = '';
 
-export default function BackgroundUploader({ value, onChange, label = 'Arka Plan', aspectRatio = 16/9, cropData }) {
+export default function BackgroundUploader({ value, onChange, label = 'Arka Plan', aspectRatio = 16/9, cropData, uploadEndpoint = '/api/media/upload-background' }) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -59,7 +59,7 @@ export default function BackgroundUploader({ value, onChange, label = 'Arka Plan
           throw new Error('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
         }
         
-        const originalRes = await fetch(`${UPLOAD_SERVER}/api/media/upload-background`, {
+        const originalRes = await fetch(`${UPLOAD_SERVER}${uploadEndpoint}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -86,7 +86,7 @@ export default function BackgroundUploader({ value, onChange, label = 'Arka Plan
         throw new Error('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
       }
       
-      const res = await fetch(`${UPLOAD_SERVER}/api/media/upload-background`, {
+      const res = await fetch(`${UPLOAD_SERVER}${uploadEndpoint}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -204,7 +204,7 @@ export default function BackgroundUploader({ value, onChange, label = 'Arka Plan
         />
 
       {hasImage ? (
-        <div className="image-uploader__preview" style={{ aspectRatio: '16/9' }}>
+        <div className="image-uploader__preview" style={{ aspectRatio: `${aspectRatio}` }}>
           <img src={value} alt={label} style={{ objectFit: 'cover' }} />
           <div className="image-uploader__overlay">
             <button
@@ -237,7 +237,7 @@ export default function BackgroundUploader({ value, onChange, label = 'Arka Plan
           onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          style={{ aspectRatio: '16/9' }}
+          style={{ aspectRatio: `${aspectRatio}` }}
         >
           {uploading ? (
             <>
@@ -248,7 +248,7 @@ export default function BackgroundUploader({ value, onChange, label = 'Arka Plan
             <>
               <span className="image-uploader__icon">🖼️</span>
               <span className="image-uploader__text">
-                Arka plan resmi yükle
+                {aspectRatio === 1 ? 'Profil fotoğrafı yükle' : 'Arka plan resmi yükle'}
               </span>
               <span className="image-uploader__hint">
                 JPG, PNG, WebP (max 10MB)

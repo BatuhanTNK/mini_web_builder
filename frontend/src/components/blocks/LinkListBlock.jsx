@@ -1,5 +1,11 @@
 export default function LinkListBlock({ data }) {
-  const { links = [] } = data || {};
+  const {
+    links = [], size = 'md', borderRadius = 12,
+    fontWeight = 'bold', textTransform = 'none',
+    hoverEffect = 'lift', animation = 'none',
+    borderWidth = 0, borderColor = '#000000', borderStyle = 'solid',
+    fullWidth = true
+  } = data || {};
 
   if (!links || links.length === 0) {
     return (
@@ -17,6 +23,16 @@ export default function LinkListBlock({ data }) {
     );
   }
 
+  const sizeMap = {
+    sm: { padding: '10px 16px', fontSize: '13px' },
+    md: { padding: '14px 20px', fontSize: '15px' },
+    lg: { padding: '18px 24px', fontSize: '17px' },
+  };
+  const { padding, fontSize } = sizeMap[size] || sizeMap.md;
+
+  const hoverClass = hoverEffect && hoverEffect !== 'none' ? `btn-hover--${hoverEffect}` : '';
+  const animClass = animation && animation !== 'none' ? `btn-anim--${animation}` : '';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px 0' }}>
       {links.map((link, i) => (
@@ -25,15 +41,19 @@ export default function LinkListBlock({ data }) {
           href={link.url || '#'}
           target="_blank"
           rel="noopener noreferrer"
+          className={`btn-block__link ${hoverClass} ${animClass}`.trim()}
           style={{
             display: 'flex', alignItems: 'center', gap: '12px',
-            padding: '14px 20px', borderRadius: '12px',
+            padding, borderRadius: `${borderRadius}px`,
             backgroundColor: link.color || '#6366f1', color: '#fff',
-            textDecoration: 'none', fontWeight: 500, fontSize: '15px',
-            transition: 'transform 0.2s, opacity 0.2s'
+            textDecoration: 'none',
+            fontWeight: fontWeight === 'bold' ? 600 : 400,
+            fontSize, textTransform,
+            width: fullWidth ? '100%' : 'auto', boxSizing: 'border-box',
+            transition: 'transform 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease',
+            border: borderWidth > 0 ? `${borderWidth}px ${borderStyle} ${borderColor}` : 'none',
+            letterSpacing: textTransform === 'uppercase' ? '0.5px' : undefined,
           }}
-          onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-          onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
         >
           {link.icon && <span style={{ fontSize: '18px' }}>{link.icon}</span>}
           <span style={{ flex: 1, textAlign: 'center' }}>{link.label || 'İsimsiz Link'}</span>

@@ -1,77 +1,98 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 
-export default function FAQBlock({ data = {}, theme = {} }) {
-  const { items = [] } = data;
+export default function FAQBlock({ data = {} }) {
+  const {
+    items = [],
+    // Renkler
+    questionColor = '#ffffff',
+    answerColor = 'rgba(255,255,255,0.65)',
+    borderColor = 'rgba(255,255,255,0.12)',
+    iconColor = '#6366f1',
+    activeBg = 'rgba(99,102,241,0.08)',
+  } = data;
+
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const styles = {
-    container: {
-      maxWidth: 720,
-      margin: "0 auto",
-      padding: 16,
-      fontFamily: theme.fontFamily || "inherit",
-      color: theme.color || "#222",
-    },
-    item: {
-      borderBottom: `1px solid ${theme.borderColor || "#e0e0e0"}`,
-    },
-    question: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "16px 0",
-      cursor: "pointer",
-      fontSize: 16,
-      fontWeight: 600,
-      background: "none",
-      border: "none",
-      width: "100%",
-      textAlign: "left",
-      color: "inherit",
-      fontFamily: "inherit",
-    },
-    chevron: (isOpen) => ({
-      display: "inline-block",
-      width: 10,
-      height: 10,
-      borderRight: `2px solid ${theme.accentColor || "#555"}`,
-      borderBottom: `2px solid ${theme.accentColor || "#555"}`,
-      transform: isOpen ? "rotate(-135deg)" : "rotate(45deg)",
-      transition: "transform 0.25s ease",
-      flexShrink: 0,
-      marginLeft: 12,
-    }),
-    answer: (isOpen) => ({
-      maxHeight: isOpen ? 500 : 0,
-      overflow: "hidden",
-      transition: "max-height 0.3s ease",
-      paddingBottom: isOpen ? 16 : 0,
-      fontSize: 14,
-      lineHeight: 1.6,
-      color: theme.secondaryColor || "#555",
-    }),
-  };
-
   if (!items.length) {
-    return <div style={styles.container}>No FAQ items available.</div>;
+    return (
+      <div style={{ padding: '16px', textAlign: 'center', opacity: 0.4, fontSize: '14px' }}>
+        Henüz soru eklenmedi.
+      </div>
+    );
   }
 
   return (
-    <div style={styles.container}>
+    <div style={{ width: '100%' }}>
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
-          <div key={index} style={styles.item}>
-            <button style={styles.question} onClick={() => toggle(index)}>
-              <span>{item.question}</span>
-              <span style={styles.chevron(isOpen)} />
+          <div
+            key={index}
+            style={{
+              borderBottom: `1px solid ${borderColor}`,
+              background: isOpen ? activeBg : 'transparent',
+              borderRadius: isOpen ? '8px' : '0',
+              transition: 'background 0.2s',
+            }}
+          >
+            <button
+              onClick={() => toggle(index)}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '16px',
+                width: '100%',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left',
+                gap: '12px',
+              }}
+            >
+              <span style={{
+                fontSize: '15px',
+                fontWeight: 600,
+                color: questionColor,
+                lineHeight: 1.4,
+                flex: 1,
+              }}>
+                {item.question}
+              </span>
+              {/* Chevron ikonu */}
+              <svg
+                width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke={iconColor} strokeWidth="2.5"
+                strokeLinecap="round" strokeLinejoin="round"
+                style={{
+                  flexShrink: 0,
+                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.25s ease',
+                }}
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </button>
-            <div style={styles.answer(isOpen)}>
-              <p style={{ margin: 0 }}>{item.answer}</p>
+
+            {/* Cevap — animasyonlu açılma */}
+            <div style={{
+              maxHeight: isOpen ? '500px' : '0',
+              overflow: 'hidden',
+              transition: 'max-height 0.3s ease',
+            }}>
+              <p style={{
+                margin: 0,
+                padding: '0 16px 16px',
+                fontSize: '14px',
+                lineHeight: 1.7,
+                color: answerColor,
+              }}>
+                {item.answer}
+              </p>
             </div>
           </div>
         );

@@ -1,7 +1,98 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useBuilderStore } from '../../store/builderStore';
 import ImageUploader from '../shared/ImageUploader';
 import BackgroundUploader from '../shared/BackgroundUploader';
+import ProfileAvatarUploader from '../shared/ProfileAvatarUploader';
+import EmojiPicker from 'emoji-picker-react';
+
+// ─── Emoji Picker Field ───────────────────────────────────────────────────────
+function EmojiPickerField({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const [pickerPos, setPickerPos] = useState({ top: 0, left: 0 });
+  const btnRef = useRef(null);
+  const pickerRef = useRef(null);
+
+  // Dışarı tıklayınca kapat
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        pickerRef.current && !pickerRef.current.contains(e.target) &&
+        btnRef.current && !btnRef.current.contains(e.target)
+      ) setOpen(false);
+    };
+    if (open) document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
+  const handleOpen = () => {
+    if (!open && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      const pickerW = 260;
+      const pickerH = 320;
+      const viewportW = window.innerWidth;
+      const viewportH = window.innerHeight;
+
+      // Sağa sığmıyorsa sola aç
+      let left = rect.right - pickerW;
+      if (left < 8) left = rect.left;
+      if (left + pickerW > viewportW - 8) left = viewportW - pickerW - 8;
+
+      // Alta sığmıyorsa yukarı aç
+      let top = rect.bottom + 4;
+      if (top + pickerH > viewportH - 8) top = rect.top - pickerH - 4;
+
+      setPickerPos({ top, left });
+    }
+    setOpen(v => !v);
+  };
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+        <button
+          ref={btnRef}
+          type="button"
+          onClick={handleOpen}
+          style={{
+            flex: 1, padding: '8px 12px', borderRadius: '8px',
+            border: '1.5px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.06)',
+            color: '#fff', fontSize: '16px', cursor: 'pointer', textAlign: 'left',
+            minHeight: '38px', display: 'flex', alignItems: 'center', gap: '8px'
+          }}
+        >
+          {value ? <span style={{ fontSize: '20px' }}>{value}</span> : <span style={{ opacity: 0.4, fontSize: '13px' }}>Emoji seç...</span>}
+        </button>
+        {value && (
+          <button className="property-panel__remove-btn" style={{ flexShrink: 0 }} onClick={() => onChange('')}>✕</button>
+        )}
+      </div>
+
+      {open && createPortal(
+        <div
+          ref={pickerRef}
+          style={{
+            position: 'fixed',
+            top: pickerPos.top,
+            left: pickerPos.left,
+            zIndex: 99999,
+          }}
+        >
+          <EmojiPicker
+            onEmojiClick={(emojiData) => { onChange(emojiData.emoji); setOpen(false); }}
+            width={260}
+            height={320}
+            theme="dark"
+            searchPlaceholder="Emoji ara..."
+            skinTonesDisabled
+            previewConfig={{ showPreview: false }}
+          />
+        </div>,
+        document.body
+      )}
+    </div>
+  );
+}
 
 // ─── Collapsible Section ──────────────────────────────────────────────────────
 function Section({ icon, title, defaultOpen = true, children, badge }) {
@@ -40,6 +131,56 @@ function PageSettingsPanel() {
 
   return (
     <div className="pp-settings-content">
+      <Section icon="🌗" title="Görünüm Modu" defaultOpen={true}>
+        <Field label="Karanlık / Aydınlık Mod">
+          <ToggleRow
+            value={!!theme.darkMode}
+            onChange={v => updateTheme({ darkMode: v })}
+          />
+        </Field>
+        {theme.darkMode && (
+          <>
+            {/* ── Karanlık Mod Renkleri ── */}
+            <div style={{ margin: '10px 0 4px', fontSize: '12px', fontWeight: 600, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              🌙 Karanlık Mod
+            </div>
+            <Field label="Arka Plan Rengi">
+              <ColorRow
+                value={theme.darkBg || '#0f0f13'}
+                onChange={v => updateTheme({ darkBg: v })}
+              />
+            </Field>
+            <Field label="Metin Rengi">
+              <ColorRow
+                value={theme.darkText || '#ffffff'}
+                onChange={v => updateTheme({ darkText: v })}
+              />
+            </Field>
+
+            {/* ── Aydınlık Mod Renkleri ── */}
+            <div style={{ margin: '14px 0 4px', fontSize: '12px', fontWeight: 600, opacity: 0.5, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              ☀️ Aydınlık Mod
+            </div>
+            <Field label="Arka Plan Rengi">
+              <ColorRow
+                value={theme.lightBg || '#ffffff'}
+                onChange={v => updateTheme({ lightBg: v })}
+              />
+            </Field>
+            <Field label="Metin Rengi">
+              <ColorRow
+                value={theme.lightText || '#1a1a1a'}
+                onChange={v => updateTheme({ lightText: v })}
+              />
+            </Field>
+
+            <p style={{ fontSize: '12px', opacity: 0.45, margin: '10px 0 0', lineHeight: 1.5 }}>
+              Ziyaretçiler sağ üstteki ☀️/🌙 butonuyla modu değiştirebilir.
+            </p>
+          </>
+        )}
+      </Section>
+
       <Section icon="🎨" title="Renk Paleti" defaultOpen={true}>
         <div className="pp-color-grid">
           <div className="pp-color-card">
@@ -98,12 +239,52 @@ function PageSettingsPanel() {
           <ToggleRow value={!!settings.isPublished} onChange={() => useBuilderStore.getState().togglePublish(site.id)} />
         </div>
       </Section>
+
+      <Section icon="📱" title="Mobil Uygulama (PWA)" defaultOpen={false}>
+        <p style={{ fontSize: '12px', opacity: 0.6, marginBottom: '12px', lineHeight: 1.4 }}>
+          Sitenizin bir mobil uygulama gibi davranmasını sağlayın.
+        </p>
+        
+        <Field label="Alt Navigasyon Çubuğu">
+          <ToggleRow 
+            value={!!settings.showBottomNav} 
+            onChange={v => updateSettings({ showBottomNav: v })} 
+          />
+        </Field>
+        
+        {settings.showBottomNav && (
+          <Field label="İletişim Telefonu">
+            <input 
+              className="pp-input" 
+              type="tel"
+              value={settings.contactPhone || ''}
+              onChange={e => updateSettings({ contactPhone: e.target.value })}
+              placeholder="+90 555..." 
+            />
+          </Field>
+        )}
+
+        <Field label="Uygulama İkonu">
+          <ImageUploader 
+            value={settings.appIcon || ''} 
+            onChange={v => updateSettings({ appIcon: v })} 
+            label="App Icon" 
+          />
+        </Field>
+
+        <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(99,102,241,0.1)', borderRadius: '10px', border: '1px solid rgba(99,102,241,0.2)' }}>
+          <div style={{ fontSize: '13px', fontWeight: 700, color: '#6366f1', marginBottom: '4px' }}>A2HS Aktif</div>
+          <p style={{ fontSize: '11px', margin: 0, opacity: 0.8, lineHeight: 1.4 }}>
+            Ziyaretçileriniz sayfayı "Ana Ekrana Ekle" diyerek uygulama olarak kullanabilirler.
+          </p>
+        </div>
+      </Section>
     </div>
   );
 }
 
 // ─── Block-specific Forms ─────────────────────────────────────────────────────
-function HeroForm({ block, updateBlock }) {
+function HeroForm({ block, updateBlock, isDarkMode }) {
   const d = block.data;
   
   // Default values for Hero block content
@@ -164,15 +345,17 @@ function HeroForm({ block, updateBlock }) {
         />
       </Field>
       
-      <Field 
-        label="Metin Rengi"
-        onReset={() => updateBlock(block.id, { textColor: defaults.textColor })}
-      >
-        <ColorRow 
-          value={d.textColor || '#ffffff'} 
-          onChange={v => updateBlock(block.id, { textColor: v })} 
-        />
-      </Field>
+      {isDarkMode ? <DarkModeTextNote /> : (
+        <Field 
+          label="Metin Rengi"
+          onReset={() => updateBlock(block.id, { textColor: defaults.textColor })}
+        >
+          <ColorRow 
+            value={d.textColor || '#ffffff'} 
+            onChange={v => updateBlock(block.id, { textColor: v })} 
+          />
+        </Field>
+      )}
       
       <Field 
         label="Hizalama"
@@ -461,8 +644,93 @@ function ImageForm({ block, updateBlock }) {
       <Field label="Link URL">
         <input className="property-panel__input" value={d.link || ''} onChange={e => updateBlock(block.id, { link: e.target.value })} placeholder="https://..." />
       </Field>
-      <Field label="Köşe Yuvarlama">
-        <input className="property-panel__input" type="number" min={0} max={48} value={d.borderRadius ?? 0} onChange={e => updateBlock(block.id, { borderRadius: Number(e.target.value) })} />
+      <Field label="En-Boy Oranı">
+        <select className="property-panel__select" value={d.aspectRatio || '16/9'} onChange={e => updateBlock(block.id, { aspectRatio: e.target.value })}>
+          <option value="auto">Otomatik (Orijinal)</option>
+          <option value="1/1">1:1 (Kare)</option>
+          <option value="16/9">16:9 (Yatay)</option>
+          <option value="4/3">4:3 (Yatay)</option>
+          <option value="9/16">9:16 (Dikey Story)</option>
+        </select>
+      </Field>
+      <Field label="Görsel Sığdırma">
+        <select className="property-panel__select" value={d.objectFit || 'cover'} onChange={e => updateBlock(block.id, { objectFit: e.target.value })}>
+          <option value="cover">Alan Kapla (Cover)</option>
+          <option value="contain">İçine Sığdır (Contain)</option>
+        </select>
+      </Field>
+      <Field label={
+        <>
+          Maksimum Genişlik
+          <span className="pp-field__value-badge">{d.maxWidth || '100%'}</span>
+        </>
+      }>
+        <input 
+          className="property-panel__input" 
+          type="range" 
+          min={10} 
+          max={100} 
+          step={1}
+          value={parseInt(d.maxWidth) || 100} 
+          onChange={e => updateBlock(block.id, { maxWidth: `${e.target.value}%` })} 
+        />
+      </Field>
+      <Field label="Hizalama">
+        <AlignRow value={d.alignment || 'center'} onChange={v => updateBlock(block.id, { alignment: v })} />
+      </Field>
+      <Field label="Renk Örtüsü (Overlay)">
+        <ColorRow value={d.overlayColor || '#000000'} onChange={v => updateBlock(block.id, { overlayColor: v })} />
+      </Field>
+      <Field label={
+        <>
+          Örtü Saydamlığı
+          <span className="pp-field__value-badge">{((d.overlayOpacity ?? 0) * 100).toFixed(0)}%</span>
+        </>
+      }>
+        <input 
+          className="property-panel__input" 
+          type="range" 
+          min="0" 
+          max="1" 
+          step="0.01" 
+          value={d.overlayOpacity ?? 0} 
+          onChange={e => updateBlock(block.id, { overlayOpacity: Number(e.target.value) })} 
+        />
+      </Field>
+      <Field label="Siyah/Beyaz Filtre">
+        <ToggleRow value={!!d.grayscale} onChange={v => updateBlock(block.id, { grayscale: v })} />
+      </Field>
+      <Field label={
+        <>
+          Bulanıklık (Blur)
+          <span className="pp-field__value-badge">{d.blur ?? 0}px</span>
+        </>
+      }>
+        <input 
+          className="property-panel__input" 
+          type="range" 
+          min="0" 
+          max="20" 
+          value={d.blur ?? 0} 
+          onChange={e => updateBlock(block.id, { blur: Number(e.target.value) })} 
+        />
+      </Field>
+      <Field label="Tıklanınca Tam Ekran (Lightbox)">
+        <ToggleRow value={!!d.lightboxEnabled} onChange={v => updateBlock(block.id, { lightboxEnabled: v })} />
+      </Field>
+      <Field label={
+        <>
+          Köşe Yuvarlama
+          <span className="pp-field__value-badge">{d.borderRadius ?? 0}px</span>
+        </>
+      }>
+        <input className="property-panel__input" type="range" min={0} max={64} value={d.borderRadius ?? 0} onChange={e => updateBlock(block.id, { borderRadius: Number(e.target.value) })} />
+      </Field>
+      <Field label="Alt Yazı (Caption)">
+        <input className="property-panel__input" value={d.caption || ''} onChange={e => updateBlock(block.id, { caption: e.target.value })} placeholder="Görsel açıklama metni..." />
+      </Field>
+      <Field label="Alt Yazı Rengi">
+        <ColorRow value={d.captionColor || '#888888'} onChange={v => updateBlock(block.id, { captionColor: v })} />
       </Field>
     </>
   );
@@ -485,8 +753,88 @@ function ButtonForm({ block, updateBlock }) {
           <option value="ghost">Şeffaf</option>
         </select>
       </Field>
+      <Field label="Boyut">
+        <select className="property-panel__select" value={d.size || 'md'} onChange={e => updateBlock(block.id, { size: e.target.value })}>
+          <option value="sm">Küçük</option>
+          <option value="md">Orta</option>
+          <option value="lg">Büyük</option>
+        </select>
+      </Field>
+      <Field label="Tam Genişlik">
+        <ToggleRow value={d.fullWidth !== false} onChange={v => updateBlock(block.id, { fullWidth: v })} />
+      </Field>
+      <Field label={
+        <>
+          Köşe Yuvarlama
+          <span className="pp-field__value-badge">{d.borderRadius ?? 12}px</span>
+        </>
+      }>
+        <input className="property-panel__input" type="range" min={0} max={50} value={d.borderRadius ?? 12} onChange={e => updateBlock(block.id, { borderRadius: Number(e.target.value) })} />
+      </Field>
       <Field label="Renk">
         <ColorRow value={d.color || '#6366f1'} onChange={v => updateBlock(block.id, { color: v })} />
+      </Field>
+      <Field label="Yazı Rengi">
+        <ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} />
+      </Field>
+      <Field label="Yazı Kalınlığı">
+        <select className="property-panel__select" value={d.fontWeight || 'bold'} onChange={e => updateBlock(block.id, { fontWeight: e.target.value })}>
+          <option value="normal">Normal</option>
+          <option value="bold">Kalın</option>
+        </select>
+      </Field>
+      <Field label="Metin Dönüşümü">
+        <select className="property-panel__select" value={d.textTransform || 'none'} onChange={e => updateBlock(block.id, { textTransform: e.target.value })}>
+          <option value="none">Normal</option>
+          <option value="uppercase">BÜYÜK HARF</option>
+          <option value="capitalize">İlk Harfler Büyük</option>
+        </select>
+      </Field>
+      <Field label="Hover Efekti">
+        <select className="property-panel__select" value={d.hoverEffect || 'lift'} onChange={e => updateBlock(block.id, { hoverEffect: e.target.value })}>
+          <option value="none">Yok</option>
+          <option value="lift">Yukarı Kay</option>
+          <option value="grow">Büyüme</option>
+          <option value="opacity">Opaklık</option>
+          <option value="glow">Parlama</option>
+          <option value="shake">Titreme</option>
+        </select>
+      </Field>
+      <Field label="Dikkat Animasyonu">
+        <select className="property-panel__select" value={d.animation || 'none'} onChange={e => updateBlock(block.id, { animation: e.target.value })}>
+          <option value="none">Yok</option>
+          <option value="pulse">Nabız (Pulse)</option>
+          <option value="bounce">Zıplama (Bounce)</option>
+        </select>
+      </Field>
+      <Field label={
+        <>
+          Kenarlık Kalınlığı
+          <span className="pp-field__value-badge">{d.borderWidth ?? 0}px</span>
+        </>
+      }>
+        <input className="property-panel__input" type="range" min={0} max={4} value={d.borderWidth ?? 0} onChange={e => updateBlock(block.id, { borderWidth: Number(e.target.value) })} />
+      </Field>
+      {(d.borderWidth > 0) && (
+        <>
+          <Field label="Kenarlık Stili">
+            <select className="property-panel__select" value={d.borderStyle || 'solid'} onChange={e => updateBlock(block.id, { borderStyle: e.target.value })}>
+              <option value="solid">Düz</option>
+              <option value="dashed">Kesik Çizgi</option>
+              <option value="dotted">Noktalı</option>
+            </select>
+          </Field>
+          <Field label="Kenarlık Rengi">
+            <ColorRow value={d.borderColor || '#000000'} onChange={v => updateBlock(block.id, { borderColor: v })} />
+          </Field>
+        </>
+      )}
+      <Field label="Bağlantı Tipi">
+        <select className="property-panel__select" value={d.linkType || 'url'} onChange={e => updateBlock(block.id, { linkType: e.target.value })}>
+          <option value="url">URL (Web Adresi)</option>
+          <option value="tel">Telefon Arama</option>
+          <option value="mail">E-posta Gönder</option>
+        </select>
       </Field>
       <Field label="Yeni Sekmede Aç">
         <ToggleRow value={d.target === '_blank'} onChange={v => updateBlock(block.id, { target: v ? '_blank' : '_self' })} />
@@ -495,67 +843,291 @@ function ButtonForm({ block, updateBlock }) {
   );
 }
 
-function ProfileForm({ block, updateBlock }) {
+function ProfileForm({ block, updateBlock, isDarkMode }) {
   const d = block.data;
+
+  const defaults = {
+    avatar: '',
+    name: '',
+    title: '',
+    bio: '',
+    shape: 'circle',
+    textColor: '#ffffff',
+    alignment: 'center',
+    verifiedBadge: false,
+    bannerImage: '',
+    bannerColor: '#1a1a2e',
+    haloEnabled: false,
+    haloColor1: '#6366f1',
+    haloColor2: '#8b5cf6',
+    avatarHover: 'none',
+    bioMaxLines: 0,
+  };
+
+  const resetAll = () => updateBlock(block.id, defaults);
+
   return (
     <>
+      {/* ── Tümünü Sıfırla ── */}
+      <div className="pp-reset-all">
+        <button className="pp-reset-all__btn" onClick={resetAll} title="Tüm profil ayarlarını varsayılan değerlere döndür">
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
+      </div>
+
+      {/* ── Temel Bilgiler ── */}
       <Field label="Profil Fotografı">
-        <ImageUploader value={d.avatar || ''} onChange={v => updateBlock(block.id, { avatar: v })} label="Profil" />
+        <ProfileAvatarUploader value={d.avatar || ''} onChange={v => updateBlock(block.id, { avatar: v })} />
       </Field>
-      <Field label="İsim">
+      <Field label="İsim" onReset={() => updateBlock(block.id, { name: defaults.name })}>
         <input className="property-panel__input" value={d.name || ''} onChange={e => updateBlock(block.id, { name: e.target.value })} placeholder="Adınız Soyadınız" />
       </Field>
-      <Field label="Unvan">
+      <Field label="Unvan" onReset={() => updateBlock(block.id, { title: defaults.title })}>
         <input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Pozisyon" />
       </Field>
-      <Field label="Bio">
+      <Field label="Bio" onReset={() => updateBlock(block.id, { bio: defaults.bio })}>
         <textarea className="property-panel__textarea" rows={3} value={d.bio || ''} onChange={e => updateBlock(block.id, { bio: e.target.value })} placeholder="Kısa bio..." />
       </Field>
-      <Field label="Şekil">
+
+      {/* ── Görünüm ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Görünüm</h4>
+
+      <Field label="Hizalama" onReset={() => updateBlock(block.id, { alignment: defaults.alignment })}>
+        <AlignRow value={d.alignment || 'center'} onChange={v => updateBlock(block.id, { alignment: v })} />
+      </Field>
+      <Field label="Avatar Şekli" onReset={() => updateBlock(block.id, { shape: defaults.shape })}>
         <select className="property-panel__select" value={d.shape || 'circle'} onChange={e => updateBlock(block.id, { shape: e.target.value })}>
           <option value="circle">Daire</option>
           <option value="square">Kare</option>
         </select>
       </Field>
+      <Field label="Metin Rengi" onReset={() => updateBlock(block.id, { textColor: defaults.textColor })} hidden={isDarkMode}>
+        <ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} />
+      </Field>
+      {isDarkMode && <DarkModeTextNote />}
+
+      {/* ── Avatar Hover Animasyonu ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Avatar Hover Efekti</h4>
+
+      <Field label="Animasyon" onReset={() => updateBlock(block.id, { avatarHover: defaults.avatarHover })}>
+        <select className="property-panel__select" value={d.avatarHover || 'none'} onChange={e => updateBlock(block.id, { avatarHover: e.target.value })}>
+          <option value="none">Yok</option>
+          <option value="scale">Büyüme (Scale)</option>
+          <option value="grayscale">Gri → Renkli</option>
+          <option value="flip">Çevirme (Flip)</option>
+        </select>
+      </Field>
+
+      {/* ── Doğrulanmış Rozeti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Doğrulanmış Rozeti</h4>
+
+      <Field label="Mavi Tik Göster" onReset={() => updateBlock(block.id, { verifiedBadge: defaults.verifiedBadge })}>
+        <ToggleRow value={!!d.verifiedBadge} onChange={v => updateBlock(block.id, { verifiedBadge: v })} />
+      </Field>
+
+      {/* ── Kapak Görseli (Banner) ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Kapak Görseli (Banner)</h4>
+
+      <Field label="Banner Resmi" onReset={() => updateBlock(block.id, { bannerImage: defaults.bannerImage })}>
+        <ImageUploader value={d.bannerImage || ''} onChange={v => updateBlock(block.id, { bannerImage: v })} label="Banner" />
+      </Field>
+      <Field label="Banner Rengi (Resim Yoksa)" onReset={() => updateBlock(block.id, { bannerColor: defaults.bannerColor })}>
+        <ColorRow value={d.bannerColor || '#1a1a2e'} onChange={v => updateBlock(block.id, { bannerColor: v })} />
+      </Field>
+
+      {/* ── Avatar Çerçevesi / Halo ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Avatar Çerçevesi (Halo)</h4>
+
+      <Field label="Halo Efekti Aktif" onReset={() => updateBlock(block.id, { haloEnabled: defaults.haloEnabled })}>
+        <ToggleRow value={!!d.haloEnabled} onChange={v => updateBlock(block.id, { haloEnabled: v })} />
+      </Field>
+      {d.haloEnabled && (
+        <>
+          <Field label="Halo Renk 1" onReset={() => updateBlock(block.id, { haloColor1: defaults.haloColor1 })}>
+            <ColorRow value={d.haloColor1 || '#6366f1'} onChange={v => updateBlock(block.id, { haloColor1: v })} />
+          </Field>
+          <Field label="Halo Renk 2" onReset={() => updateBlock(block.id, { haloColor2: defaults.haloColor2 })}>
+            <ColorRow value={d.haloColor2 || '#8b5cf6'} onChange={v => updateBlock(block.id, { haloColor2: v })} />
+          </Field>
+        </>
+      )}
+
+      {/* ── Bio Read More ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Bio Genişletme</h4>
+
+      <Field
+        label={<>Satır Limiti <span className="pp-field__value-badge">{d.bioMaxLines > 0 ? `${d.bioMaxLines} satır` : 'Kapalı'}</span></>}
+        onReset={() => updateBlock(block.id, { bioMaxLines: defaults.bioMaxLines })}
+      >
+        <input
+          className="property-panel__input"
+          type="range" min={0} max={6} step={1}
+          value={d.bioMaxLines ?? 0}
+          onChange={e => updateBlock(block.id, { bioMaxLines: Number(e.target.value) })}
+        />
+      </Field>
+      <p style={{ fontSize: '11px', opacity: 0.45, margin: '2px 0 0', lineHeight: 1.4 }}>
+        0 = tüm bio gösterilir, 1–6 = o kadar satırdan sonra "devamını oku" çıkar
+      </p>
+
     </>
   );
 }
 
 function CountdownForm({ block, updateBlock }) {
   const d = block.data;
+
+  const defaults = {
+    label: 'Etkinliğe Kalan Süre', showDays: true,
+    labelColor: 'rgba(255,255,255,0.8)',
+    style: 'card', expiredMessage: 'Kampanya Sona Erdi!', hideOnExpire: false,
+    labelColor: 'rgba(255,255,255,0.8)',
+    boxBg: 'rgba(255,255,255,0.1)',
+    numberColor: '#ffffff',
+    unitLabelColor: 'rgba(255,255,255,0.6)',
+    accentColor: '#6366f1',
+  };
+
   return (
     <>
+      {/* ── Tümünü Sıfırla ── */}
+      <div className="pp-reset-all">
+        <button className="pp-reset-all__btn" onClick={() => updateBlock(block.id, defaults)}
+          title="Tüm ayarları varsayılana döndür">
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
+      </div>
+
+      {/* ── İçerik ── */}
+      <Field label="Görünüm Stili">
+        <select className="property-panel__select" value={d.style || 'card'} onChange={e => updateBlock(block.id, { style: e.target.value })}>
+          <option value="card">Kart (Card)</option>
+          <option value="minimal">Minimal</option>
+          <option value="neon">Neon Parlama</option>
+        </select>
+      </Field>
       <Field label="Hedef Tarih">
         <input className="property-panel__input" type="datetime-local" value={d.targetDate || ''} onChange={e => updateBlock(block.id, { targetDate: e.target.value })} />
       </Field>
-      <Field label="Etiket">
+      <Field label="Etiket" onReset={() => updateBlock(block.id, { label: defaults.label })}>
         <input className="property-panel__input" value={d.label || ''} onChange={e => updateBlock(block.id, { label: e.target.value })} placeholder="Etkinliğe kalan süre" />
       </Field>
       <Field label="Günleri Göster">
         <ToggleRow value={d.showDays !== false} onChange={v => updateBlock(block.id, { showDays: v })} />
       </Field>
+
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Süre Dolduğunda</h4>
+      <Field label="Bitiş Mesajı" onReset={() => updateBlock(block.id, { expiredMessage: defaults.expiredMessage })}>
+        <input className="property-panel__input" value={d.expiredMessage || ''} onChange={e => updateBlock(block.id, { expiredMessage: e.target.value })} placeholder="Kampanya bitti..." />
+      </Field>
+      <Field label="Süre Bitince Gizle">
+        <ToggleRow value={!!d.hideOnExpire} onChange={v => updateBlock(block.id, { hideOnExpire: v })} />
+      </Field>
+
+      {/* ── Renk Paleti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+
+      <Field label="Etiket Rengi" onReset={() => updateBlock(block.id, { labelColor: defaults.labelColor })}>
+        <ColorRow value={d.labelColor || 'rgba(255,255,255,0.8)'} onChange={v => updateBlock(block.id, { labelColor: v })} />
+      </Field>
+      {d.style === 'card' && (
+        <Field label="Kutu Arka Planı" onReset={() => updateBlock(block.id, { boxBg: defaults.boxBg })}>
+          <ColorRow value={d.boxBg || 'rgba(255,255,255,0.1)'} onChange={v => updateBlock(block.id, { boxBg: v })} />
+        </Field>
+      )}
+      <Field label="Sayı Rengi" onReset={() => updateBlock(block.id, { numberColor: defaults.numberColor })}>
+        <ColorRow value={d.numberColor || '#ffffff'} onChange={v => updateBlock(block.id, { numberColor: v })} />
+      </Field>
+      <Field label="Birim Etiketi Rengi" onReset={() => updateBlock(block.id, { unitLabelColor: defaults.unitLabelColor })}>
+        <ColorRow value={d.unitLabelColor || 'rgba(255,255,255,0.6)'} onChange={v => updateBlock(block.id, { unitLabelColor: v })} />
+      </Field>
+      {d.style === 'neon' && (
+        <Field label="Vurgu (Neon) Rengi" onReset={() => updateBlock(block.id, { accentColor: defaults.accentColor })}>
+          <ColorRow value={d.accentColor || '#6366f1'} onChange={v => updateBlock(block.id, { accentColor: v })} />
+        </Field>
+      )}
     </>
   );
 }
 
 function CouponForm({ block, updateBlock }) {
   const d = block.data;
+
+  const defaults = {
+    code: 'INDIRIM20', discount: '%20 İndirim', description: 'Tüm ürünlerde geçerli',
+    expiryDate: '', copyable: true,
+    discountColor: '#ffffff', descriptionColor: 'rgba(255,255,255,0.7)',
+    codeBg: 'rgba(255,255,255,0.08)', codeColor: '#ffffff',
+    borderColor: 'rgba(255,255,255,0.25)',
+    copyBtnBg: '#6366f1', copyBtnColor: '#ffffff',
+    expiryColor: 'rgba(255,255,255,0.45)',
+  };
+
   return (
     <>
-      <Field label="Kupon Kodu">
+      {/* ── Tümünü Sıfırla ── */}
+      <div className="pp-reset-all">
+        <button className="pp-reset-all__btn" onClick={() => updateBlock(block.id, defaults)}
+          title="Tüm ayarları varsayılana döndür">
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
+      </div>
+
+      {/* ── İçerik ── */}
+      <Field label="Kupon Kodu" onReset={() => updateBlock(block.id, { code: defaults.code })}>
         <input className="property-panel__input" value={d.code || ''} onChange={e => updateBlock(block.id, { code: e.target.value })} placeholder="INDIRIM20" />
       </Field>
-      <Field label="İndirim">
+      <Field label="İndirim" onReset={() => updateBlock(block.id, { discount: defaults.discount })}>
         <input className="property-panel__input" value={d.discount || ''} onChange={e => updateBlock(block.id, { discount: e.target.value })} placeholder="%20 İndirim" />
       </Field>
-      <Field label="Açıklama">
+      <Field label="Açıklama" onReset={() => updateBlock(block.id, { description: defaults.description })}>
         <input className="property-panel__input" value={d.description || ''} onChange={e => updateBlock(block.id, { description: e.target.value })} placeholder="Tüm ürünlerde geçerli" />
       </Field>
-      <Field label="Son Kullanım Tarihi">
+      <Field label="Son Kullanım Tarihi" onReset={() => updateBlock(block.id, { expiryDate: defaults.expiryDate })}>
         <input className="property-panel__input" type="date" value={d.expiryDate || ''} onChange={e => updateBlock(block.id, { expiryDate: e.target.value })} />
       </Field>
       <Field label="Kopyalanabilir">
         <ToggleRow value={d.copyable !== false} onChange={v => updateBlock(block.id, { copyable: v })} />
+      </Field>
+
+      {/* ── Renk Paleti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+
+      <Field label="İndirim Rengi" onReset={() => updateBlock(block.id, { discountColor: defaults.discountColor })}>
+        <ColorRow value={d.discountColor || '#ffffff'} onChange={v => updateBlock(block.id, { discountColor: v })} />
+      </Field>
+      <Field label="Açıklama Rengi" onReset={() => updateBlock(block.id, { descriptionColor: defaults.descriptionColor })}>
+        <ColorRow value={d.descriptionColor || 'rgba(255,255,255,0.7)'} onChange={v => updateBlock(block.id, { descriptionColor: v })} />
+      </Field>
+      <Field label="Kod Arka Planı" onReset={() => updateBlock(block.id, { codeBg: defaults.codeBg })}>
+        <ColorRow value={d.codeBg || 'rgba(255,255,255,0.08)'} onChange={v => updateBlock(block.id, { codeBg: v })} />
+      </Field>
+      <Field label="Kod Rengi" onReset={() => updateBlock(block.id, { codeColor: defaults.codeColor })}>
+        <ColorRow value={d.codeColor || '#ffffff'} onChange={v => updateBlock(block.id, { codeColor: v })} />
+      </Field>
+      <Field label="Çerçeve Rengi" onReset={() => updateBlock(block.id, { borderColor: defaults.borderColor })}>
+        <ColorRow value={d.borderColor || 'rgba(255,255,255,0.25)'} onChange={v => updateBlock(block.id, { borderColor: v })} />
+      </Field>
+      <Field label="Kopyala Butonu Rengi" onReset={() => updateBlock(block.id, { copyBtnBg: defaults.copyBtnBg })}>
+        <ColorRow value={d.copyBtnBg || '#6366f1'} onChange={v => updateBlock(block.id, { copyBtnBg: v })} />
+      </Field>
+      <Field label="Kopyala Yazı Rengi" onReset={() => updateBlock(block.id, { copyBtnColor: defaults.copyBtnColor })}>
+        <ColorRow value={d.copyBtnColor || '#ffffff'} onChange={v => updateBlock(block.id, { copyBtnColor: v })} />
+      </Field>
+      <Field label="Son Kullanım Rengi" onReset={() => updateBlock(block.id, { expiryColor: defaults.expiryColor })}>
+        <ColorRow value={d.expiryColor || 'rgba(255,255,255,0.45)'} onChange={v => updateBlock(block.id, { expiryColor: v })} />
       </Field>
     </>
   );
@@ -641,23 +1213,169 @@ function GalleryForm({ block, updateBlock }) {
   );
 }
 
-function ProductCardForm({ block, updateBlock }) {
+function ImageCarouselForm({ block, updateBlock }) {
   const d = block.data;
+  const images = d.images || [];
+
+  const addImage = (url) => {
+    updateBlock(block.id, { images: [...images, { src: url, alt: '' }] });
+  };
+
+  const removeImage = (index) => {
+    updateBlock(block.id, { images: images.filter((_, i) => i !== index) });
+  };
+
+  const updateImageAlt = (index, alt) => {
+    const newImages = images.map((img, i) => i === index ? { ...img, alt } : img);
+    updateBlock(block.id, { images: newImages });
+  };
+
   return (
     <>
-      <Field label="Urun Gorseli">
-        <ImageUploader value={d.image || ''} onChange={v => updateBlock(block.id, { image: v })} label="Urun" />
+      <Field label="En-Boy Oranı">
+        <select className="property-panel__select" value={d.aspectRatio || '16/9'} onChange={e => updateBlock(block.id, { aspectRatio: e.target.value })}>
+          <option value="auto">Otomatik (Orijinal)</option>
+          <option value="1/1">1:1 (Kare)</option>
+          <option value="16/9">16:9 (Yatay)</option>
+          <option value="4/3">4:3 (Yatay)</option>
+          <option value="9/16">9:16 (Dikey Story)</option>
+        </select>
       </Field>
-      <Field label="Ürün Adı">
+      <Field label={
+        <>
+          Köşe Yuvarlama
+          <span className="pp-field__value-badge">{d.borderRadius ?? 12}px</span>
+        </>
+      }>
+        <input className="property-panel__input" type="range" min={0} max={64} value={d.borderRadius ?? 12} onChange={e => updateBlock(block.id, { borderRadius: Number(e.target.value) })} />
+      </Field>
+
+      <div className="property-panel__list-header">
+        <span>Görseller ({images.length})</span>
+      </div>
+
+      {images.map((img, i) => (
+        <div key={i} className="property-panel__list-item">
+          <div className="property-panel__list-item-header">
+            <span>{img.alt || `Görsel ${i + 1}`}</span>
+            <button className="property-panel__remove-btn" onClick={() => removeImage(i)}>X</button>
+          </div>
+          {img.src && (
+            <img src={img.src} alt={img.alt} style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 8, marginBottom: 8 }} />
+          )}
+          <Field label="Alt Metin">
+            <input className="property-panel__input" value={img.alt || ''} onChange={e => updateImageAlt(i, e.target.value)} placeholder="Görsel açıklaması..." />
+          </Field>
+        </div>
+      ))}
+
+      <Field label="Yeni Görsel Ekle">
+        <ImageUploader value="" onChange={url => { if (url) addImage(url); }} label="Carousel" />
+      </Field>
+    </>
+  );
+}
+
+function ProductCardForm({ block, updateBlock }) {
+  const d = block.data;
+
+  const defaults = {
+    name: 'Ürün Adı', description: 'Ürün açıklaması buraya gelecek.',
+    price: '299', originalPrice: '399', currency: '₺',
+    showButton: true, buttonText: 'Satın Al', buyUrl: '',
+    buttonColor: '#6366f1', buttonTextColor: '#ffffff',
+    priceColor: '#6366f1',
+    cardBg: 'rgba(255,255,255,0.05)',
+    imageBg: 'rgba(255,255,255,0.08)',
+    nameColor: '#ffffff',
+    descriptionColor: 'rgba(255,255,255,0.65)',
+    originalPriceColor: 'rgba(255,255,255,0.4)',
+  };
+
+  return (
+    <>
+      {/* ── Tümünü Sıfırla ── */}
+      <div className="pp-reset-all">
+        <button className="pp-reset-all__btn" onClick={() => updateBlock(block.id, defaults)}
+          title="Tüm ayarları varsayılana döndür">
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
+      </div>
+
+      {/* ── İçerik ── */}
+      {/* Çoklu Görsel */}
+      <div className="property-panel__list-header">
+        <span>Görseller ({(d.images?.length > 0 ? d.images : (d.image ? [d.image] : [])).length})</span>
+      </div>
+
+      {/* Görsel listesi */}
+      {(() => {
+        const imgs = d.images?.length > 0 ? d.images : (d.image ? [d.image] : []);
+        return imgs.map((src, i) => (
+          <div key={i} style={{
+            display: 'flex', alignItems: 'center', gap: '8px',
+            padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.06)',
+          }}>
+            <img src={src} alt={`Görsel ${i + 1}`} style={{
+              width: '48px', height: '48px', objectFit: 'cover',
+              borderRadius: '8px', flexShrink: 0,
+            }} />
+            <span style={{ flex: 1, fontSize: '12px', opacity: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              Görsel {i + 1}
+            </span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              <button
+                disabled={i === 0}
+                onClick={() => {
+                  const next = [...imgs];
+                  [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                  updateBlock(block.id, { images: next, image: next[0] });
+                }}
+                style={{ background: 'none', border: 'none', color: i === 0 ? '#444' : '#aaa', cursor: i === 0 ? 'default' : 'pointer', fontSize: '14px' }}
+              >↑</button>
+              <button
+                disabled={i === imgs.length - 1}
+                onClick={() => {
+                  const next = [...imgs];
+                  [next[i], next[i + 1]] = [next[i + 1], next[i]];
+                  updateBlock(block.id, { images: next, image: next[0] });
+                }}
+                style={{ background: 'none', border: 'none', color: i === imgs.length - 1 ? '#444' : '#aaa', cursor: i === imgs.length - 1 ? 'default' : 'pointer', fontSize: '14px' }}
+              >↓</button>
+              <button
+                onClick={() => {
+                  const next = imgs.filter((_, idx) => idx !== i);
+                  updateBlock(block.id, { images: next, image: next[0] || '' });
+                }}
+                className="property-panel__remove-btn"
+              >✕</button>
+            </div>
+          </div>
+        ));
+      })()}
+
+      <Field label="Görsel Ekle">
+        <ImageUploader
+          value=""
+          onChange={url => {
+            if (!url) return;
+            const existing = d.images?.length > 0 ? d.images : (d.image ? [d.image] : []);
+            updateBlock(block.id, { images: [...existing, url], image: existing[0] || url });
+          }}
+          label="Ürün"
+        />
+      </Field>
+      <Field label="Ürün Adı" onReset={() => updateBlock(block.id, { name: defaults.name })}>
         <input className="property-panel__input" value={d.name || ''} onChange={e => updateBlock(block.id, { name: e.target.value })} placeholder="Ürün adı..." />
       </Field>
-      <Field label="Açıklama">
+      <Field label="Açıklama" onReset={() => updateBlock(block.id, { description: defaults.description })}>
         <textarea className="property-panel__textarea" value={d.description || ''} onChange={e => updateBlock(block.id, { description: e.target.value })} placeholder="Ürün açıklaması..." rows={2} />
       </Field>
-      <Field label="Fiyat">
+      <Field label="Fiyat" onReset={() => updateBlock(block.id, { price: defaults.price })}>
         <input className="property-panel__input" value={d.price || ''} onChange={e => updateBlock(block.id, { price: e.target.value })} placeholder="299" />
       </Field>
-      <Field label="Orijinal Fiyat">
+      <Field label="Orijinal Fiyat" onReset={() => updateBlock(block.id, { originalPrice: defaults.originalPrice })}>
         <input className="property-panel__input" value={d.originalPrice || ''} onChange={e => updateBlock(block.id, { originalPrice: e.target.value })} placeholder="499" />
       </Field>
       <Field label="Para Birimi">
@@ -668,31 +1386,53 @@ function ProductCardForm({ block, updateBlock }) {
           <option value="£">£ (GBP)</option>
         </select>
       </Field>
-      <Field label="Fiyat Rengi">
-        <ColorRow value={d.priceColor || '#6366f1'} onChange={v => updateBlock(block.id, { priceColor: v })} />
-      </Field>
 
+      {/* ── Buton ── */}
       <div className="property-panel__divider" />
       <h4 className="property-panel__section-title">Buton Ayarları</h4>
 
       <Field label="Butonu Göster">
-        <label className="property-panel__toggle">
-          <input type="checkbox" checked={d.showButton !== false} onChange={e => updateBlock(block.id, { showButton: e.target.checked })} />
-          <span>{d.showButton !== false ? 'Açık' : 'Kapalı'}</span>
-        </label>
+        <ToggleRow value={d.showButton !== false} onChange={v => updateBlock(block.id, { showButton: v })} />
       </Field>
       {d.showButton !== false && (
         <>
-          <Field label="Buton Metni">
-            <input className="property-panel__input" value={d.buttonText || 'Satin Al'} onChange={e => updateBlock(block.id, { buttonText: e.target.value })} placeholder="Satin Al" />
+          <Field label="Buton Metni" onReset={() => updateBlock(block.id, { buttonText: defaults.buttonText })}>
+            <input className="property-panel__input" value={d.buttonText || 'Satın Al'} onChange={e => updateBlock(block.id, { buttonText: e.target.value })} placeholder="Satın Al" />
           </Field>
-          <Field label="Buton URL">
+          <Field label="Buton URL" onReset={() => updateBlock(block.id, { buyUrl: defaults.buyUrl })}>
             <input className="property-panel__input" value={d.buyUrl || ''} onChange={e => updateBlock(block.id, { buyUrl: e.target.value })} placeholder="https://..." />
           </Field>
-          <Field label="Buton Rengi">
+        </>
+      )}
+
+      {/* ── Renk Paleti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+
+      <Field label="Kart Arka Planı" onReset={() => updateBlock(block.id, { cardBg: defaults.cardBg })}>
+        <ColorRow value={d.cardBg || 'rgba(255,255,255,0.05)'} onChange={v => updateBlock(block.id, { cardBg: v })} />
+      </Field>
+      <Field label="Görsel Arka Planı" onReset={() => updateBlock(block.id, { imageBg: defaults.imageBg })}>
+        <ColorRow value={d.imageBg || 'rgba(255,255,255,0.08)'} onChange={v => updateBlock(block.id, { imageBg: v })} />
+      </Field>
+      <Field label="Ürün Adı Rengi" onReset={() => updateBlock(block.id, { nameColor: defaults.nameColor })}>
+        <ColorRow value={d.nameColor || '#ffffff'} onChange={v => updateBlock(block.id, { nameColor: v })} />
+      </Field>
+      <Field label="Açıklama Rengi" onReset={() => updateBlock(block.id, { descriptionColor: defaults.descriptionColor })}>
+        <ColorRow value={d.descriptionColor || 'rgba(255,255,255,0.65)'} onChange={v => updateBlock(block.id, { descriptionColor: v })} />
+      </Field>
+      <Field label="Fiyat Rengi" onReset={() => updateBlock(block.id, { priceColor: defaults.priceColor })}>
+        <ColorRow value={d.priceColor || '#6366f1'} onChange={v => updateBlock(block.id, { priceColor: v })} />
+      </Field>
+      <Field label="Orijinal Fiyat Rengi" onReset={() => updateBlock(block.id, { originalPriceColor: defaults.originalPriceColor })}>
+        <ColorRow value={d.originalPriceColor || 'rgba(255,255,255,0.4)'} onChange={v => updateBlock(block.id, { originalPriceColor: v })} />
+      </Field>
+      {d.showButton !== false && (
+        <>
+          <Field label="Buton Rengi" onReset={() => updateBlock(block.id, { buttonColor: defaults.buttonColor })}>
             <ColorRow value={d.buttonColor || '#6366f1'} onChange={v => updateBlock(block.id, { buttonColor: v })} />
           </Field>
-          <Field label="Buton Yazı Rengi">
+          <Field label="Buton Yazı Rengi" onReset={() => updateBlock(block.id, { buttonTextColor: defaults.buttonTextColor })}>
             <ColorRow value={d.buttonTextColor || '#ffffff'} onChange={v => updateBlock(block.id, { buttonTextColor: v })} />
           </Field>
         </>
@@ -773,17 +1513,84 @@ function SpotifyForm({ block, updateBlock }) {
   );
 }
 
-function VCardForm({ block, updateBlock }) {
+function VCardForm({ block, updateBlock, isDarkMode }) {
   const d = block.data;
+
+  const defaults = {
+    name: 'Ad Soyad', jobTitle: 'Pozisyon', company: 'Şirket Adı',
+    phone: '+90 555 000 00 00', email: 'ornek@email.com', website: '',
+    downloadable: true,
+    avatarBg: '#6366f1', avatarTextColor: '#ffffff',
+    nameColor: '#ffffff', textColor: 'rgba(255,255,255,0.7)',
+    iconColor: '#6366f1', btnBg: '#6366f1', btnTextColor: '#ffffff',
+  };
+
   return (
     <>
-      <Field label="Ad Soyad"><input className="property-panel__input" value={d.name || ''} onChange={e => updateBlock(block.id, { name: e.target.value })} placeholder="Ad Soyad" /></Field>
-      <Field label="Pozisyon"><input className="property-panel__input" value={d.jobTitle || ''} onChange={e => updateBlock(block.id, { jobTitle: e.target.value })} placeholder="Pozisyon" /></Field>
-      <Field label="Şirket"><input className="property-panel__input" value={d.company || ''} onChange={e => updateBlock(block.id, { company: e.target.value })} placeholder="Şirket Adı" /></Field>
-      <Field label="Telefon"><input className="property-panel__input" value={d.phone || ''} onChange={e => updateBlock(block.id, { phone: e.target.value })} placeholder="+90 555 000 00 00" /></Field>
-      <Field label="E-posta"><input className="property-panel__input" value={d.email || ''} onChange={e => updateBlock(block.id, { email: e.target.value })} placeholder="ornek@email.com" /></Field>
-      <Field label="Website"><input className="property-panel__input" value={d.website || ''} onChange={e => updateBlock(block.id, { website: e.target.value })} placeholder="https://..." /></Field>
-      <Field label="İndirilebilir"><ToggleRow value={d.downloadable !== false} onChange={v => updateBlock(block.id, { downloadable: v })} /></Field>
+      {/* ── Tümünü Sıfırla ── */}
+      <div className="pp-reset-all">
+        <button className="pp-reset-all__btn" onClick={() => updateBlock(block.id, defaults)}
+          title="Tüm ayarları varsayılana döndür">
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
+      </div>
+
+      {/* ── İçerik ── */}
+      <Field label="Profil Fotoğrafı">
+        <ProfileAvatarUploader
+          value={d.avatar || ''}
+          onChange={v => updateBlock(block.id, { avatar: v })}
+        />
+      </Field>
+      <Field label="Ad Soyad" onReset={() => updateBlock(block.id, { name: defaults.name })}>
+        <input className="property-panel__input" value={d.name || ''} onChange={e => updateBlock(block.id, { name: e.target.value })} placeholder="Ad Soyad" />
+      </Field>
+      <Field label="Pozisyon" onReset={() => updateBlock(block.id, { jobTitle: defaults.jobTitle })}>
+        <input className="property-panel__input" value={d.jobTitle || ''} onChange={e => updateBlock(block.id, { jobTitle: e.target.value })} placeholder="Pozisyon" />
+      </Field>
+      <Field label="Şirket" onReset={() => updateBlock(block.id, { company: defaults.company })}>
+        <input className="property-panel__input" value={d.company || ''} onChange={e => updateBlock(block.id, { company: e.target.value })} placeholder="Şirket Adı" />
+      </Field>
+      <Field label="Telefon" onReset={() => updateBlock(block.id, { phone: defaults.phone })}>
+        <input className="property-panel__input" value={d.phone || ''} onChange={e => updateBlock(block.id, { phone: e.target.value })} placeholder="+90 555 000 00 00" />
+      </Field>
+      <Field label="E-posta" onReset={() => updateBlock(block.id, { email: defaults.email })}>
+        <input className="property-panel__input" value={d.email || ''} onChange={e => updateBlock(block.id, { email: e.target.value })} placeholder="ornek@email.com" />
+      </Field>
+      <Field label="Website" onReset={() => updateBlock(block.id, { website: defaults.website })}>
+        <input className="property-panel__input" value={d.website || ''} onChange={e => updateBlock(block.id, { website: e.target.value })} placeholder="https://..." />
+      </Field>
+      <Field label="İndirilebilir">
+        <ToggleRow value={d.downloadable !== false} onChange={v => updateBlock(block.id, { downloadable: v })} />
+      </Field>
+
+      {/* ── Renk Paleti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+
+      <Field label="Avatar Arka Plan" onReset={() => updateBlock(block.id, { avatarBg: defaults.avatarBg })}>
+        <ColorRow value={d.avatarBg || '#6366f1'} onChange={v => updateBlock(block.id, { avatarBg: v })} />
+      </Field>
+      <Field label="Avatar Harf Rengi" onReset={() => updateBlock(block.id, { avatarTextColor: defaults.avatarTextColor })}>
+        <ColorRow value={d.avatarTextColor || '#ffffff'} onChange={v => updateBlock(block.id, { avatarTextColor: v })} />
+      </Field>
+      <Field label="İsim Rengi" onReset={() => updateBlock(block.id, { nameColor: defaults.nameColor })} hidden={isDarkMode}>
+        <ColorRow value={d.nameColor || '#ffffff'} onChange={v => updateBlock(block.id, { nameColor: v })} />
+      </Field>
+      <Field label="Metin Rengi" onReset={() => updateBlock(block.id, { textColor: defaults.textColor })} hidden={isDarkMode}>
+        <ColorRow value={d.textColor || 'rgba(255,255,255,0.7)'} onChange={v => updateBlock(block.id, { textColor: v })} />
+      </Field>
+      {isDarkMode && <DarkModeTextNote />}
+      <Field label="İkon Rengi" onReset={() => updateBlock(block.id, { iconColor: defaults.iconColor })}>
+        <ColorRow value={d.iconColor || '#6366f1'} onChange={v => updateBlock(block.id, { iconColor: v })} />
+      </Field>
+      <Field label="Buton Rengi" onReset={() => updateBlock(block.id, { btnBg: defaults.btnBg })}>
+        <ColorRow value={d.btnBg || '#6366f1'} onChange={v => updateBlock(block.id, { btnBg: v })} />
+      </Field>
+      <Field label="Buton Yazı Rengi" onReset={() => updateBlock(block.id, { btnTextColor: defaults.btnTextColor })}>
+        <ColorRow value={d.btnTextColor || '#ffffff'} onChange={v => updateBlock(block.id, { btnTextColor: v })} />
+      </Field>
     </>
   );
 }
@@ -819,9 +1626,74 @@ function LinkListForm({ block, updateBlock }) {
           </div>
           <Field label="Metin"><input className="property-panel__input" value={link.label || ''} onChange={e => updateLink(i, 'label', e.target.value)} placeholder="Link metni..." /></Field>
           <Field label="URL"><input className="property-panel__input" value={link.url || ''} onChange={e => updateLink(i, 'url', e.target.value)} placeholder="https://..." /></Field>
+          <Field label="İkon (Emoji)">
+            <EmojiPickerField value={link.icon || ''} onChange={v => updateLink(i, 'icon', v)} />
+          </Field>
           <Field label="Renk"><ColorRow value={link.color || '#6366f1'} onChange={v => updateLink(i, 'color', v)} /></Field>
         </div>
       ))}
+
+      {/* ─── Genel Stil Ayarları ─── */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', marginTop: '12px', paddingTop: '12px' }}>
+        <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.5, marginBottom: '10px' }}>Genel Stil</div>
+      </div>
+      <Field label="Boyut">
+        <select className="property-panel__select" value={d.size || 'md'} onChange={e => updateBlock(block.id, { size: e.target.value })}>
+          <option value="sm">Küçük</option>
+          <option value="md">Orta</option>
+          <option value="lg">Büyük</option>
+        </select>
+      </Field>
+      <Field label={<>Köşe Yuvarlama<span className="pp-field__value-badge">{d.borderRadius ?? 12}px</span></>}>
+        <input className="property-panel__input" type="range" min={0} max={50} value={d.borderRadius ?? 12} onChange={e => updateBlock(block.id, { borderRadius: Number(e.target.value) })} />
+      </Field>
+      <Field label="Yazı Kalınlığı">
+        <select className="property-panel__select" value={d.fontWeight || 'bold'} onChange={e => updateBlock(block.id, { fontWeight: e.target.value })}>
+          <option value="normal">Normal</option>
+          <option value="bold">Kalın</option>
+        </select>
+      </Field>
+      <Field label="Metin Dönüşümü">
+        <select className="property-panel__select" value={d.textTransform || 'none'} onChange={e => updateBlock(block.id, { textTransform: e.target.value })}>
+          <option value="none">Normal</option>
+          <option value="uppercase">BÜYÜK HARF</option>
+          <option value="capitalize">İlk Harfler Büyük</option>
+        </select>
+      </Field>
+      <Field label="Hover Efekti">
+        <select className="property-panel__select" value={d.hoverEffect || 'lift'} onChange={e => updateBlock(block.id, { hoverEffect: e.target.value })}>
+          <option value="none">Yok</option>
+          <option value="lift">Yukarı Kay</option>
+          <option value="grow">Büyüme</option>
+          <option value="opacity">Opaklık</option>
+          <option value="glow">Parlama</option>
+          <option value="shake">Titreme</option>
+        </select>
+      </Field>
+      <Field label="Dikkat Animasyonu">
+        <select className="property-panel__select" value={d.animation || 'none'} onChange={e => updateBlock(block.id, { animation: e.target.value })}>
+          <option value="none">Yok</option>
+          <option value="pulse">Nabız (Pulse)</option>
+          <option value="bounce">Zıplama (Bounce)</option>
+        </select>
+      </Field>
+      <Field label={<>Kenarlık Kalınlığı<span className="pp-field__value-badge">{d.borderWidth ?? 0}px</span></>}>
+        <input className="property-panel__input" type="range" min={0} max={4} value={d.borderWidth ?? 0} onChange={e => updateBlock(block.id, { borderWidth: Number(e.target.value) })} />
+      </Field>
+      {(d.borderWidth > 0) && (
+        <>
+          <Field label="Kenarlık Stili">
+            <select className="property-panel__select" value={d.borderStyle || 'solid'} onChange={e => updateBlock(block.id, { borderStyle: e.target.value })}>
+              <option value="solid">Düz</option>
+              <option value="dashed">Kesik Çizgi</option>
+              <option value="dotted">Noktalı</option>
+            </select>
+          </Field>
+          <Field label="Kenarlık Rengi">
+            <ColorRow value={d.borderColor || '#000000'} onChange={v => updateBlock(block.id, { borderColor: v })} />
+          </Field>
+        </>
+      )}
     </>
   );
 }
@@ -830,7 +1702,7 @@ function SocialIconsForm({ block, updateBlock }) {
   const d = block.data;
   const socials = d.socials || [];
 
-  const PLATFORMS = ['instagram', 'twitter', 'facebook', 'youtube', 'linkedin', 'tiktok', 'github', 'whatsapp', 'telegram', 'pinterest', 'snapchat', 'spotify'];
+  const PLATFORMS = ['instagram', 'twitter', 'facebook', 'youtube', 'linkedin', 'tiktok', 'github', 'whatsapp', 'telegram', 'pinterest', 'snapchat', 'spotify', 'discord', 'twitch', 'reddit', 'medium', 'dribbble', 'behance', 'email', 'website', 'other'];
 
   const updateSocial = (index, field, value) => {
     const newSocials = socials.map((s, i) => i === index ? { ...s, [field]: value } : s);
@@ -847,6 +1719,39 @@ function SocialIconsForm({ block, updateBlock }) {
 
   return (
     <>
+      {/* Renk Ayarları */}
+      <Field label="Arka Plan Rengi">
+        <ColorRow 
+          value={d.iconBgColor || 'rgba(0,0,0,0.06)'} 
+          onChange={v => updateBlock(block.id, { iconBgColor: v })} 
+        />
+      </Field>
+      <Field label="Border Rengi">
+        <ColorRow 
+          value={d.iconBorderColor || 'rgba(0,0,0,0.12)'} 
+          onChange={v => updateBlock(block.id, { iconBorderColor: v })} 
+        />
+      </Field>
+      <Field 
+        label={
+          <>
+            Border Kalınlığı
+            <span className="pp-field__value-badge">{d.iconBorderWidth ?? 2}px</span>
+          </>
+        }
+      >
+        <input 
+          className="property-panel__input" 
+          type="range" 
+          min={0} 
+          max={4} 
+          value={d.iconBorderWidth ?? 2} 
+          onChange={e => updateBlock(block.id, { iconBorderWidth: Number(e.target.value) })} 
+        />
+      </Field>
+
+      <div className="property-panel__divider" />
+
       <div className="property-panel__list-header">
         <span>Sosyal Hesaplar ({socials.length})</span>
         <button className="property-panel__add-btn" onClick={addSocial}>+ Ekle</button>
@@ -854,14 +1759,24 @@ function SocialIconsForm({ block, updateBlock }) {
       {socials.map((social, i) => (
         <div key={i} className="property-panel__list-item">
           <div className="property-panel__list-item-header">
-            <span>{social.platform}</span>
+            <span>{social.platform === 'other' ? (social.customName || 'Diğer') : social.platform}</span>
             <button className="property-panel__remove-btn" onClick={() => removeSocial(i)}>✕</button>
           </div>
           <Field label="Platform">
             <select className="property-panel__select" value={social.platform || 'instagram'} onChange={e => updateSocial(i, 'platform', e.target.value)}>
-              {PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
+              {PLATFORMS.map(p => <option key={p} value={p}>{p === 'other' ? 'Diğer (Özel)' : p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
             </select>
           </Field>
+          {social.platform === 'other' && (
+            <>
+              <Field label="Platform Adı">
+                <input className="property-panel__input" value={social.customName || ''} onChange={e => updateSocial(i, 'customName', e.target.value)} placeholder="Örn: X (Twitter)" />
+              </Field>
+              <Field label="Özel Logo">
+                <ImageUploader value={social.customIcon || ''} onChange={v => updateSocial(i, 'customIcon', v)} label="Logo Yükle" folder="logo" />
+              </Field>
+            </>
+          )}
           <Field label="URL"><input className="property-panel__input" value={social.url || ''} onChange={e => updateSocial(i, 'url', e.target.value)} placeholder="https://..." /></Field>
         </div>
       ))}
@@ -889,6 +1804,8 @@ function NumberedListForm({ block, updateBlock }) {
   return (
     <>
       <Field label="Vurgu Rengi"><ColorRow value={d.accentColor || '#6366f1'} onChange={v => updateBlock(block.id, { accentColor: v })} /></Field>
+      <Field label="Başlık Rengi"><ColorRow value={d.titleColor || '#ffffff'} onChange={v => updateBlock(block.id, { titleColor: v })} /></Field>
+      <Field label="Açıklama Rengi"><ColorRow value={d.descColor || 'rgba(255, 255, 255, 0.7)'} onChange={v => updateBlock(block.id, { descColor: v })} /></Field>
       <div className="property-panel__list-header">
         <span>Maddeler ({items.length})</span>
         <button className="property-panel__add-btn" onClick={addItem}>+ Ekle</button>
@@ -911,6 +1828,14 @@ function FAQForm({ block, updateBlock }) {
   const d = block.data;
   const items = d.items || [];
 
+  const defaults = {
+    questionColor: '#ffffff',
+    answerColor: 'rgba(255,255,255,0.65)',
+    borderColor: 'rgba(255,255,255,0.12)',
+    iconColor: '#6366f1',
+    activeBg: 'rgba(99,102,241,0.08)',
+  };
+
   const updateItem = (index, field, value) => {
     const newItems = items.map((item, i) => i === index ? { ...item, [field]: value } : item);
     updateBlock(block.id, { items: newItems });
@@ -924,23 +1849,177 @@ function FAQForm({ block, updateBlock }) {
     updateBlock(block.id, { items: items.filter((_, i) => i !== index) });
   };
 
+  const moveItem = (index, dir) => {
+    const target = index + dir;
+    if (target < 0 || target >= items.length) return;
+    const next = [...items];
+    [next[index], next[target]] = [next[target], next[index]];
+    updateBlock(block.id, { items: next });
+  };
+
   return (
     <>
+      {/* ── Sorular ── */}
       <div className="property-panel__list-header">
         <span>Sorular ({items.length})</span>
         <button className="property-panel__add-btn" onClick={addItem}>+ Ekle</button>
       </div>
+
       {items.map((item, i) => (
         <div key={i} className="property-panel__list-item">
           <div className="property-panel__list-item-header">
-            <span>Soru {i + 1}</span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              <button
+                onClick={() => moveItem(i, -1)} disabled={i === 0}
+                style={{ background: 'none', border: 'none', color: i === 0 ? '#444' : '#aaa', cursor: i === 0 ? 'default' : 'pointer', fontSize: '14px' }}
+              >↑</button>
+              <button
+                onClick={() => moveItem(i, 1)} disabled={i === items.length - 1}
+                style={{ background: 'none', border: 'none', color: i === items.length - 1 ? '#444' : '#aaa', cursor: i === items.length - 1 ? 'default' : 'pointer', fontSize: '14px' }}
+              >↓</button>
+              <span style={{ marginLeft: '4px' }}>Soru {i + 1}</span>
+            </div>
             <button className="property-panel__remove-btn" onClick={() => removeItem(i)}>✕</button>
           </div>
-          <Field label="Soru"><input className="property-panel__input" value={item.question || ''} onChange={e => updateItem(i, 'question', e.target.value)} placeholder="Soru..." /></Field>
-          <Field label="Cevap"><textarea className="property-panel__textarea" rows={3} value={item.answer || ''} onChange={e => updateItem(i, 'answer', e.target.value)} placeholder="Cevap..." /></Field>
+          <Field label="Soru">
+            <input className="property-panel__input" value={item.question || ''} onChange={e => updateItem(i, 'question', e.target.value)} placeholder="Soru..." />
+          </Field>
+          <Field label="Cevap">
+            <textarea className="property-panel__textarea" rows={3} value={item.answer || ''} onChange={e => updateItem(i, 'answer', e.target.value)} placeholder="Cevap..." />
+          </Field>
         </div>
       ))}
+
+      {/* ── Renk Paleti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+
+      <Field label="Soru Rengi" onReset={() => updateBlock(block.id, { questionColor: defaults.questionColor })}>
+        <ColorRow value={d.questionColor || '#ffffff'} onChange={v => updateBlock(block.id, { questionColor: v })} />
+      </Field>
+      <Field label="Cevap Rengi" onReset={() => updateBlock(block.id, { answerColor: defaults.answerColor })}>
+        <ColorRow value={d.answerColor || 'rgba(255,255,255,0.65)'} onChange={v => updateBlock(block.id, { answerColor: v })} />
+      </Field>
+      <Field label="Ayırıcı Rengi" onReset={() => updateBlock(block.id, { borderColor: defaults.borderColor })}>
+        <ColorRow value={d.borderColor || 'rgba(255,255,255,0.12)'} onChange={v => updateBlock(block.id, { borderColor: v })} />
+      </Field>
+      <Field label="İkon Rengi" onReset={() => updateBlock(block.id, { iconColor: defaults.iconColor })}>
+        <ColorRow value={d.iconColor || '#6366f1'} onChange={v => updateBlock(block.id, { iconColor: v })} />
+      </Field>
+      <Field label="Açık Soru Arka Planı" onReset={() => updateBlock(block.id, { activeBg: defaults.activeBg })}>
+        <ColorRow value={d.activeBg || 'rgba(99,102,241,0.08)'} onChange={v => updateBlock(block.id, { activeBg: v })} />
+      </Field>
     </>
+  );
+}
+
+// ─── Toplu Fiyat Güncelleme Paneli ───────────────────────────────────────────
+function BulkPricePanel({ catName, onApply }) {
+  const [open, setOpen] = useState(false);
+  const [percent, setPercent] = useState(10);
+  const [type, setType] = useState('zam'); // 'zam' | 'indirim'
+
+  const handleApply = () => {
+    const pct = type === 'zam' ? percent : -percent;
+    onApply(pct);
+    setOpen(false);
+  };
+
+  return (
+    <div style={{ margin: '8px 0 12px' }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        style={{
+          width: '100%', padding: '8px 12px', borderRadius: '8px',
+          border: '1.5px solid rgba(99,102,241,0.4)',
+          background: open ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.08)',
+          color: '#a5b4fc', fontSize: '12px', fontWeight: 600,
+          cursor: 'pointer', textAlign: 'left',
+          display: 'flex', alignItems: 'center', gap: '6px',
+        }}
+      >
+        <span>💰</span>
+        <span>Toplu Fiyat Güncelle</span>
+        <span style={{ marginLeft: 'auto', opacity: 0.6 }}>{open ? '▲' : '▼'}</span>
+      </button>
+
+      {open && (
+        <div style={{
+          marginTop: '6px', padding: '12px', borderRadius: '8px',
+          background: 'rgba(99,102,241,0.08)',
+          border: '1px solid rgba(99,102,241,0.2)',
+        }}>
+          <p style={{ margin: '0 0 10px', fontSize: '11px', opacity: 0.6, lineHeight: 1.4 }}>
+            <strong>"{catName}"</strong> kategorisindeki tüm ürün fiyatlarına uygulanır.
+          </p>
+
+          {/* Zam / İndirim seçimi */}
+          <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
+            <button
+              onClick={() => setType('zam')}
+              style={{
+                flex: 1, padding: '7px', borderRadius: '6px', border: 'none',
+                background: type === 'zam' ? '#6366f1' : 'rgba(255,255,255,0.08)',
+                color: type === 'zam' ? '#fff' : 'rgba(255,255,255,0.5)',
+                fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+              }}
+            >📈 Zam</button>
+            <button
+              onClick={() => setType('indirim')}
+              style={{
+                flex: 1, padding: '7px', borderRadius: '6px', border: 'none',
+                background: type === 'indirim' ? '#10b981' : 'rgba(255,255,255,0.08)',
+                color: type === 'indirim' ? '#fff' : 'rgba(255,255,255,0.5)',
+                fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+              }}
+            >📉 İndirim</button>
+          </div>
+
+          {/* Yüzde input */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+            <input
+              type="number" min={1} max={200} value={percent}
+              onChange={e => setPercent(Math.max(1, Number(e.target.value)))}
+              style={{
+                flex: 1, padding: '8px 10px', borderRadius: '6px',
+                border: '1px solid rgba(255,255,255,0.15)',
+                background: 'rgba(255,255,255,0.06)', color: '#fff',
+                fontSize: '16px', fontWeight: 700, textAlign: 'center',
+              }}
+            />
+            <span style={{ fontSize: '18px', fontWeight: 700, color: '#fff' }}>%</span>
+          </div>
+
+          {/* Hızlı seçim */}
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '10px', flexWrap: 'wrap' }}>
+            {[5, 10, 15, 20, 25, 50].map(p => (
+              <button
+                key={p}
+                onClick={() => setPercent(p)}
+                style={{
+                  padding: '4px 8px', borderRadius: '5px', border: 'none',
+                  background: percent === p ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.07)',
+                  color: percent === p ? '#a5b4fc' : 'rgba(255,255,255,0.5)',
+                  fontSize: '11px', fontWeight: 600, cursor: 'pointer',
+                }}
+              >%{p}</button>
+            ))}
+          </div>
+
+          {/* Uygula butonu */}
+          <button
+            onClick={handleApply}
+            style={{
+              width: '100%', padding: '9px', borderRadius: '7px', border: 'none',
+              background: type === 'zam' ? '#6366f1' : '#10b981',
+              color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer',
+            }}
+          >
+            {type === 'zam' ? `📈 %${percent} Zam Uygula` : `📉 %${percent} İndirim Uygula`}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -1007,6 +2086,26 @@ function MenuForm({ block, updateBlock }) {
     updateSubcategory(ci, si, 'items', items);
   };
 
+  // ── Toplu Fiyat Güncelleme — bir kategorideki tüm ürünlere zam/indirim uygula
+  const bulkUpdatePrices = (ci, percent) => {
+    const multiplier = 1 + percent / 100;
+    const newCats = categories.map((cat, i) => {
+      if (i !== ci) return cat;
+      return {
+        ...cat,
+        subcategories: (cat.subcategories || []).map(sub => ({
+          ...sub,
+          items: (sub.items || []).map(item => {
+            const num = parseFloat(item.price);
+            if (isNaN(num)) return item;
+            return { ...item, price: Math.round(num * multiplier).toString() };
+          })
+        }))
+      };
+    });
+    setCategories(newCats);
+  };
+
   return (
     <>
       <Field label="Menü Başlığı">
@@ -1014,7 +2113,7 @@ function MenuForm({ block, updateBlock }) {
           onChange={e => updateBlock(block.id, { title: e.target.value })}
           placeholder="Menümüz" />
       </Field>
-      <Field label="Vurgu Rengi">
+      <Field label="Vurgu Rengi (Fiyat & Çizgi)">
         <ColorRow value={d.accentColor || '#f59e0b'} onChange={v => updateBlock(block.id, { accentColor: v })} />
       </Field>
       <Field label="Para Birimi">
@@ -1025,6 +2124,47 @@ function MenuForm({ block, updateBlock }) {
           <option value="€">€ (EUR)</option>
           <option value="£">£ (GBP)</option>
         </select>
+      </Field>
+
+      {/* ── Renk Paleti ── */}
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+
+      <Field label="Arka Plan" onReset={() => updateBlock(block.id, { containerBg: 'rgba(255,255,255,0.04)' })}>
+        <ColorRow value={d.containerBg || 'rgba(255,255,255,0.04)'} onChange={v => updateBlock(block.id, { containerBg: v })} />
+      </Field>
+      <Field label="Başlık Rengi" onReset={() => updateBlock(block.id, { titleColor: '#ffffff' })}>
+        <ColorRow value={d.titleColor || '#ffffff'} onChange={v => updateBlock(block.id, { titleColor: v })} />
+      </Field>
+      <Field label="Kart Arka Planı" onReset={() => updateBlock(block.id, { cardBg: 'rgba(255,255,255,0.06)' })}>
+        <ColorRow value={d.cardBg || 'rgba(255,255,255,0.06)'} onChange={v => updateBlock(block.id, { cardBg: v })} />
+      </Field>
+      <Field label="Kart Kenarlık" onReset={() => updateBlock(block.id, { cardBorder: 'rgba(255,255,255,0.1)' })}>
+        <ColorRow value={d.cardBorder || 'rgba(255,255,255,0.1)'} onChange={v => updateBlock(block.id, { cardBorder: v })} />
+      </Field>
+      <Field label="Kart Görsel Arka Planı" onReset={() => updateBlock(block.id, { cardImageBg: 'rgba(255,255,255,0.08)' })}>
+        <ColorRow value={d.cardImageBg || 'rgba(255,255,255,0.08)'} onChange={v => updateBlock(block.id, { cardImageBg: v })} />
+      </Field>
+      <Field label="Kategori Adı Rengi" onReset={() => updateBlock(block.id, { cardNameColor: '#ffffff' })}>
+        <ColorRow value={d.cardNameColor || '#ffffff'} onChange={v => updateBlock(block.id, { cardNameColor: v })} />
+      </Field>
+      <Field label="Alt Bilgi Rengi" onReset={() => updateBlock(block.id, { cardSubColor: 'rgba(255,255,255,0.5)' })}>
+        <ColorRow value={d.cardSubColor || 'rgba(255,255,255,0.5)'} onChange={v => updateBlock(block.id, { cardSubColor: v })} />
+      </Field>
+      <Field label="Geri Butonu Arka Planı" onReset={() => updateBlock(block.id, { backBtnBg: 'rgba(255,255,255,0.08)' })}>
+        <ColorRow value={d.backBtnBg || 'rgba(255,255,255,0.08)'} onChange={v => updateBlock(block.id, { backBtnBg: v })} />
+      </Field>
+      <Field label="Geri Butonu Yazı Rengi" onReset={() => updateBlock(block.id, { backBtnColor: '#ffffff' })}>
+        <ColorRow value={d.backBtnColor || '#ffffff'} onChange={v => updateBlock(block.id, { backBtnColor: v })} />
+      </Field>
+      <Field label="Ürün Adı Rengi" onReset={() => updateBlock(block.id, { itemNameColor: '#ffffff' })}>
+        <ColorRow value={d.itemNameColor || '#ffffff'} onChange={v => updateBlock(block.id, { itemNameColor: v })} />
+      </Field>
+      <Field label="Ürün Açıklama Rengi" onReset={() => updateBlock(block.id, { itemDescColor: 'rgba(255,255,255,0.6)' })}>
+        <ColorRow value={d.itemDescColor || 'rgba(255,255,255,0.6)'} onChange={v => updateBlock(block.id, { itemDescColor: v })} />
+      </Field>
+      <Field label="Ürün Ayırıcı Rengi" onReset={() => updateBlock(block.id, { itemDivider: 'rgba(255,255,255,0.08)' })}>
+        <ColorRow value={d.itemDivider || 'rgba(255,255,255,0.08)'} onChange={v => updateBlock(block.id, { itemDivider: v })} />
       </Field>
 
       <div className="property-panel__divider" />
@@ -1045,13 +2185,16 @@ function MenuForm({ block, updateBlock }) {
               <button className="menu-editor__btn" onClick={() => moveCategory(ci, 1)} title="Aşağı">↓</button>
               <button className="menu-editor__btn menu-editor__btn--danger" onClick={() => removeCategory(ci)} title="Sil">🗑</button>
             </div>
+
+            {/* ── Toplu Fiyat Güncelleme ── */}
+            <BulkPricePanel catName={cat.name} onApply={(pct) => bulkUpdatePrices(ci, pct)} />
+
             <Field label="Kategori Adı">
               <input className="property-panel__input" value={cat.name || ''}
                 onChange={e => updateCategory(ci, 'name', e.target.value)} placeholder="Örn. İçecekler" />
             </Field>
             <Field label="Ikon (Emoji)">
-              <input className="property-panel__input" value={cat.icon || ''}
-                onChange={e => updateCategory(ci, 'icon', e.target.value)} placeholder="🥤" maxLength={4} />
+              <EmojiPickerField value={cat.icon || ''} onChange={v => updateCategory(ci, 'icon', v)} />
             </Field>
             <Field label="Kategori Görseli">
               <ImageUploader value={cat.image || ''} onChange={v => updateCategory(ci, 'image', v)} label="Kategori" />
@@ -1080,9 +2223,7 @@ function MenuForm({ block, updateBlock }) {
                       placeholder="Örn. Soğuk İçecekler" />
                   </Field>
                   <Field label="Ikon (Emoji)">
-                    <input className="property-panel__input" value={sub.icon || ''}
-                      onChange={e => updateSubcategory(ci, si, 'icon', e.target.value)}
-                      placeholder="🧊" maxLength={4} />
+                    <EmojiPickerField value={sub.icon || ''} onChange={v => updateSubcategory(ci, si, 'icon', v)} />
                   </Field>
                   <Field label="Alt Kategori Görseli">
                     <ImageUploader value={sub.image || ''} onChange={v => updateSubcategory(ci, si, 'image', v)} label="Alt Kategori" />
@@ -1135,46 +2276,66 @@ function MenuForm({ block, updateBlock }) {
 
 function ContactFormForm({ block, updateBlock }) {
   const d = block.data;
-  const fields = d.fields || [];
 
-  const FIELD_TYPES = ['text', 'email', 'tel', 'textarea', 'select'];
-
-  const addField = () => {
-    updateBlock(block.id, { fields: [...fields, { label: 'Yeni Alan', type: 'text', required: false }] });
-  };
-
-  const removeField = (index) => {
-    updateBlock(block.id, { fields: fields.filter((_, i) => i !== index) });
-  };
-
-  const updateField = (index, key, value) => {
-    const newFields = fields.map((f, i) => i === index ? { ...f, [key]: value } : f);
-    updateBlock(block.id, { fields: newFields });
+  const defaults = {
+    submitLabel: 'Gönder',
+    successMessage: 'Mesajınız başarıyla iletildi!',
+    namePlaceholder: 'Adınız',
+    emailPlaceholder: 'E-posta adresiniz',
+    messagePlaceholder: 'Mesajınız',
+    btnBg: '#6366f1',
+    btnTextColor: '#ffffff',
+    inputBg: 'rgba(255,255,255,0.05)',
+    inputBorderColor: 'rgba(255,255,255,0.15)',
+    inputTextColor: '#ffffff'
   };
 
   return (
     <>
-      <Field label="Gönder Butonu Metni"><input className="property-panel__input" value={d.submitLabel || ''} onChange={e => updateBlock(block.id, { submitLabel: e.target.value })} placeholder="Gönder" /></Field>
-      <Field label="Alıcı E-posta"><input className="property-panel__input" value={d.recipientEmail || ''} onChange={e => updateBlock(block.id, { recipientEmail: e.target.value })} placeholder="ornek@email.com" /></Field>
-      <div className="property-panel__list-header">
-        <span>Form Alanları ({fields.length})</span>
-        <button className="property-panel__add-btn" onClick={addField}>+ Alan</button>
+      <div className="pp-reset-all">
+        <button className="pp-reset-all__btn" onClick={() => updateBlock(block.id, defaults)}>
+          <span className="pp-reset-all__icon">↺</span>
+          <span className="pp-reset-all__text">Tümünü Sıfırla</span>
+        </button>
       </div>
-      {fields.map((field, i) => (
-        <div key={i} className="property-panel__list-item">
-          <div className="property-panel__list-item-header">
-            <span>{field.label || `Alan ${i + 1}`}</span>
-            <button className="property-panel__remove-btn" onClick={() => removeField(i)}>✕</button>
-          </div>
-          <Field label="Etiket"><input className="property-panel__input" value={field.label || ''} onChange={e => updateField(i, 'label', e.target.value)} placeholder="Alan adı..." /></Field>
-          <Field label="Tip">
-            <select className="property-panel__select" value={field.type || 'text'} onChange={e => updateField(i, 'type', e.target.value)}>
-              {FIELD_TYPES.map(t => <option key={t} value={t}>{t === 'text' ? 'Metin' : t === 'email' ? 'E-posta' : t === 'tel' ? 'Telefon' : t === 'textarea' ? 'Uzun Metin' : 'Seçenek'}</option>)}
-            </select>
-          </Field>
-          <Field label="Zorunlu"><ToggleRow value={!!field.required} onChange={v => updateField(i, 'required', v)} /></Field>
-        </div>
-      ))}
+
+      <h4 className="property-panel__section-title">Metinler</h4>
+      <Field label="Buton Metni" onReset={() => updateBlock(block.id, { submitLabel: defaults.submitLabel })}>
+        <input className="property-panel__input" value={d.submitLabel || ''} onChange={e => updateBlock(block.id, { submitLabel: e.target.value })} placeholder="Gönder" />
+      </Field>
+      <Field label="Başarı Mesajı" onReset={() => updateBlock(block.id, { successMessage: defaults.successMessage })}>
+        <input className="property-panel__input" value={d.successMessage || ''} onChange={e => updateBlock(block.id, { successMessage: e.target.value })} placeholder="Mesajınız iletildi..." />
+      </Field>
+      
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Placeholderlar</h4>
+      <Field label="İsim Alanı">
+        <input className="property-panel__input" value={d.namePlaceholder || ''} onChange={e => updateBlock(block.id, { namePlaceholder: e.target.value })} placeholder="Adınız" />
+      </Field>
+      <Field label="Email Alanı">
+        <input className="property-panel__input" value={d.emailPlaceholder || ''} onChange={e => updateBlock(block.id, { emailPlaceholder: e.target.value })} placeholder="E-posta" />
+      </Field>
+      <Field label="Mesaj Alanı">
+        <input className="property-panel__input" value={d.messagePlaceholder || ''} onChange={e => updateBlock(block.id, { messagePlaceholder: e.target.value })} placeholder="Mesajınız" />
+      </Field>
+
+      <div className="property-panel__divider" />
+      <h4 className="property-panel__section-title">Renk Paleti</h4>
+      <Field label="Buton Rengi">
+        <ColorRow value={d.btnBg || '#6366f1'} onChange={v => updateBlock(block.id, { btnBg: v })} />
+      </Field>
+      <Field label="Buton Yazı Rengi">
+        <ColorRow value={d.btnTextColor || '#ffffff'} onChange={v => updateBlock(block.id, { btnTextColor: v })} />
+      </Field>
+      <Field label="Giriş Arka Planı">
+        <ColorRow value={d.inputBg || 'rgba(255,255,255,0.05)'} onChange={v => updateBlock(block.id, { inputBg: v })} />
+      </Field>
+      <Field label="Giriş Kenarlık">
+        <ColorRow value={d.inputBorderColor || 'rgba(255,255,255,0.15)'} onChange={v => updateBlock(block.id, { inputBorderColor: v })} />
+      </Field>
+      <Field label="Giriş Yazı Rengi">
+        <ColorRow value={d.inputTextColor || '#ffffff'} onChange={v => updateBlock(block.id, { inputTextColor: v })} />
+      </Field>
     </>
   );
 }
@@ -1219,6 +2380,7 @@ function TimelineForm({ block, updateBlock }) {
   return (
     <>
       <Field label="Bölüm Başlığı"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Day 1" /></Field>
+      <Field label="Başlık Rengi"><ColorRow value={d.titleColor || '#ffffff'} onChange={v => updateBlock(block.id, { titleColor: v })} /></Field>
       <div className="property-panel__list-header">
         <span>Kartlar ({cards.length})</span>
         <button className="property-panel__add-btn" onClick={addCard}>+ Ekle</button>
@@ -1261,6 +2423,8 @@ function ChecklistForm({ block, updateBlock }) {
   return (
     <>
       <Field label="Bölüm Başlığı"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Packing List" /></Field>
+      <Field label="Başlık Rengi"><ColorRow value={d.titleColor || '#ffffff'} onChange={v => updateBlock(block.id, { titleColor: v })} /></Field>
+      <Field label="Yazı Rengi"><ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} /></Field>
       <Field label="İkon Rengi"><ColorRow value={d.checkColor || '#9ca3af'} onChange={v => updateBlock(block.id, { checkColor: v })} /></Field>
       <div className="property-panel__list-header">
         <span>Maddeler ({items.length})</span>
@@ -1288,7 +2452,8 @@ function GenericForm({ block }) {
 }
 
 // ─── Helper Components ────────────────────────────────────────────────────────
-function Field({ label, children, onReset }) {
+function Field({ label, children, onReset, hidden }) {
+  if (hidden) return null;
   return (
     <div className="pp-field">
       <div className="pp-field__header">
@@ -1304,6 +2469,24 @@ function Field({ label, children, onReset }) {
         )}
       </div>
       {children}
+    </div>
+  );
+}
+
+// Dark mod açıkken metin rengi alanı yerine gösterilen not
+function DarkModeTextNote() {
+  return (
+    <div style={{
+      fontSize: '12px',
+      color: 'rgba(255,255,255,0.45)',
+      background: 'rgba(99,102,241,0.08)',
+      border: '1px solid rgba(99,102,241,0.2)',
+      borderRadius: '8px',
+      padding: '8px 12px',
+      marginBottom: '8px',
+      lineHeight: 1.5,
+    }}>
+      🌗 Metin rengi <strong style={{ color: 'rgba(255,255,255,0.7)' }}>Görünüm Modu</strong> bölümünden yönetiliyor.
     </div>
   );
 }
@@ -1388,6 +2571,7 @@ const BLOCK_FORMS = {
   cover: CoverForm,
   timeline: TimelineForm,
   checklist: ChecklistForm,
+  image_carousel: ImageCarouselForm,
 };
 
 const BLOCK_TYPE_LABELS = {
@@ -1414,6 +2598,7 @@ const BLOCK_TYPE_LABELS = {
   cover: '🖼️ Kapak Görseli',
   timeline: '🗓️ Zaman Çizelgesi',
   checklist: '✅ Kontrol Listesi',
+  image_carousel: '🎠 Görsel Slider',
 };
 
 const BLOCK_TYPE_COLORS = {
@@ -1440,7 +2625,134 @@ const BLOCK_TYPE_COLORS = {
   cover: '#8b5cf6',
   timeline: '#6366f1',
   checklist: '#10b981',
+  image_carousel: '#f472b6',
 };
+// ─── Visual Settings Controls ──────────────────────────────────────────────────
+function VisualSettingsControls({ block }) {
+  const { updateBlockProps } = useBuilderStore();
+  const id = block.id;
+
+  return (
+    <>
+      <Section icon="✨" title="Görünüm ve Animasyon" defaultOpen={false}>
+        <Field label="Giriş Animasyonu">
+          <select className="property-panel__select" value={block.animation || 'none'} onChange={e => updateBlockProps(id, { animation: e.target.value })}>
+            <option value="none">Yok</option>
+            <option value="fade-in">Soluklaşarak Giriş (Fade In)</option>
+            <option value="slide-up">Aşağıdan Kayarak (Slide Up)</option>
+            <option value="slide-down">Yukarıdan Kayarak (Slide Down)</option>
+            <option value="slide-left">Sağdan Kayarak (Slide Left)</option>
+            <option value="slide-right">Soldan Kayarak (Slide Right)</option>
+            <option value="zoom-in">Yakınlaşarak (Zoom In)</option>
+            <option value="rotate-in">Dönerek Giriş (Rotate In)</option>
+            <option value="bounce-in">Sıçrama (Bounce In)</option>
+            <option value="blur-in">Odaklanarak (Blur In)</option>
+          </select>
+        </Field>
+      </Section>
+
+      <Section icon="✒️" title="Tipografi Ayarları" defaultOpen={false}>
+        <Field label={
+          <>
+            Yazı Boyutu
+            <span className="pp-field__value-badge">{block.fontSize || 16}px</span>
+          </>
+        }>
+          <input 
+            className="property-panel__input" 
+            type="range" min={12} max={72} step={1}
+            value={block.fontSize || 16} 
+            onChange={e => updateBlockProps(id, { fontSize: parseInt(e.target.value) })}
+          />
+        </Field>
+
+        <Field label={
+          <>
+            Satır Yüksekliği
+            <span className="pp-field__value-badge">{block.lineHeight || 1.5}</span>
+          </>
+        }>
+          <input 
+            className="property-panel__input" 
+            type="range" min={1} max={3} step={0.1}
+            value={block.lineHeight || 1.5} 
+            onChange={e => updateBlockProps(id, { lineHeight: parseFloat(e.target.value) })}
+          />
+        </Field>
+
+        <Field label={
+          <>
+            Harf Aralığı
+            <span className="pp-field__value-badge">{block.letterSpacing || 0}px</span>
+          </>
+        }>
+          <input 
+            className="property-panel__input" 
+            type="range" min={-2} max={10} step={0.1}
+            value={block.letterSpacing || 0} 
+            onChange={e => updateBlockProps(id, { letterSpacing: parseFloat(e.target.value) })}
+          />
+        </Field>
+
+        <Field label="Yazı Kalınlığı">
+          <select className="property-panel__select" value={block.fontWeight || 'normal'} onChange={e => updateBlockProps(id, { fontWeight: e.target.value })}>
+            <option value="300">İnce (300)</option>
+            <option value="normal">Normal (400)</option>
+            <option value="500">Orta (500)</option>
+            <option value="600">Yarı Kalın (600)</option>
+            <option value="bold">Kalın (700)</option>
+            <option value="800">Ekstra Kalın (800)</option>
+            <option value="900">Siyah (900)</option>
+          </select>
+        </Field>
+      </Section>
+
+      <Section icon="↕️" title="Boyut ve Yükseklik" defaultOpen={false}>
+        <Field label="Yükseklik Tipi">
+          <select className="property-panel__select" value={block.heightType || 'auto'} onChange={e => updateBlockProps(id, { heightType: e.target.value })}>
+            <option value="auto">Otomatik (İçeriğe Göre)</option>
+            <option value="px">Sabit (Pixel)</option>
+            <option value="vh">Ekran Oranı (VH)</option>
+            <option value="full">Tam Ekran (100vh)</option>
+          </select>
+        </Field>
+
+        {block.heightType === 'px' && (
+          <Field label={
+            <>
+              Yükseklik (PX)
+              <span className="pp-field__value-badge">{block.heightPx || 400}px</span>
+            </>
+          }>
+            <input 
+              className="property-panel__input" 
+              type="range" min={50} max={1200} step={10}
+              value={block.heightPx || 400} 
+              onChange={e => updateBlockProps(id, { heightPx: parseInt(e.target.value) })}
+            />
+          </Field>
+        )}
+
+        {block.heightType === 'vh' && (
+          <Field label={
+            <>
+              Yükseklik (VH)
+              <span className="pp-field__value-badge">{block.heightVh || 50}vh</span>
+            </>
+          }>
+            <input 
+              className="property-panel__input" 
+              type="range" min={10} max={100} step={1}
+              value={block.heightVh || 50} 
+              onChange={e => updateBlockProps(id, { heightVh: parseInt(e.target.value) })}
+            />
+          </Field>
+        )}
+      </Section>
+    </>
+  );
+}
+
 
 // ─── Spacing Controls ─────────────────────────────────────────────────────────
 function SpacingControls({ block }) {
@@ -1684,6 +2996,7 @@ export default function PropertyPanel({ onClose }) {
   const selectedBlock = getSelectedBlock();
   const BlockForm = selectedBlock ? (BLOCK_FORMS[selectedBlock.type] || GenericForm) : null;
   const blockColor = selectedBlock ? (BLOCK_TYPE_COLORS[selectedBlock.type] || '#6366f1') : '#6366f1';
+  const isDarkMode = !!(site?.theme?.darkMode);
 
   return (
     <div className="pp">
@@ -1741,17 +3054,18 @@ export default function PropertyPanel({ onClose }) {
           <div className="pp__scroll">
             {/* Block Content Form */}
             <Section icon="✏️" title="İçerik" defaultOpen={true}>
-              <BlockForm block={selectedBlock} updateBlock={updateBlock} />
+              <BlockForm block={selectedBlock} updateBlock={updateBlock} isDarkMode={isDarkMode} />
             </Section>
 
-            {/* Background Settings for Hero Block */}
-            {selectedBlock.type === 'hero' && (
+            {/* Background Settings for Hero & Cover Blocks */}
+            {(selectedBlock.type === 'hero' || selectedBlock.type === 'cover') && (
               <Section icon="🎨" title="Arka Plan" defaultOpen={true}>
                 <HeroBackgroundForm block={selectedBlock} updateBlock={updateBlock} />
               </Section>
             )}
 
             {/* Layout Controls */}
+            <VisualSettingsControls block={selectedBlock} />
             <SpacingControls block={selectedBlock} />
 
             {/* Delete */}

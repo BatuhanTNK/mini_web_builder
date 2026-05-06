@@ -1,5 +1,5 @@
 export default function NumberedListBlock({ data }) {
-  const { items = [], accentColor = '#6366f1' } = data || {};
+  const { items = [], accentColor = '#6366f1', titleColor = '#ffffff', descColor = 'rgba(255, 255, 255, 0.7)' } = data || {};
 
   if (!items || items.length === 0) {
     return (
@@ -28,8 +28,8 @@ export default function NumberedListBlock({ data }) {
             {item.number || String(i + 1).padStart(2, '0')}
           </span>
           <div>
-            <h4 style={{ margin: '0 0 6px 0', fontSize: '18px', fontWeight: 600 }}>{item.title || 'Yeni Madde'}</h4>
-            <p style={{ margin: 0, fontSize: '15px', opacity: 0.8, lineHeight: 1.6 }}>{item.description}</p>
+            <h4 style={{ margin: '0 0 6px 0', fontSize: '18px', fontWeight: 600, color: titleColor }}>{item.title || 'Yeni Madde'}</h4>
+            <p style={{ margin: 0, fontSize: '15px', lineHeight: 1.6, color: descColor }}>{item.description}</p>
           </div>
         </div>
       ))}

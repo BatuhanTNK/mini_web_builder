@@ -35,7 +35,18 @@ if (fs.existsSync(frontendDist)) {
 // Multer config — save to uploads/images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadsDir);
+    // Default to 'images' if no folder is provided
+    const targetFolder = req.body.folder || 'images';
+    // Validate folder path to prevent path traversal
+    const safeFolder = path.normalize(targetFolder).replace(/^(\.\.[\/\\])+/, '');
+    const dynamicDir = path.join(__dirname, 'uploads', safeFolder);
+    
+    // Ensure directory exists
+    if (!fs.existsSync(dynamicDir)) {
+      fs.mkdirSync(dynamicDir, { recursive: true });
+    }
+    
+    cb(null, dynamicDir);
   },
   filename: (req, file, cb) => {
     const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e6);
@@ -65,7 +76,9 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: 'Dosya yüklenemedi' });
   }
-  const url = `/uploads/images/${req.file.filename}`;
+  const targetFolder = req.body.folder || 'images';
+  const safeFolder = path.normalize(targetFolder).replace(/^(\.\.[\/\\])+/, '');
+  const url = `/uploads/${safeFolder.replace(/\\/g, '/')}/${req.file.filename}`;
   res.json({
     success: true,
     url,

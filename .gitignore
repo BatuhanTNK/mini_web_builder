@@ -5,3 +5,9 @@ node_modules
 coverage
 build
 dist
+backend/uploads/
+error.txt
+project_bundle.txt
+response.txt
+ask_notebook.js
+*.log

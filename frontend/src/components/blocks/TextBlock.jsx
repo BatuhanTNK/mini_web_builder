@@ -17,8 +17,10 @@ export default function TextBlock({ data }) {
     <div
       style={{ 
         textAlign: alignment, 
-        fontSize: actualFontSize, 
-        lineHeight: 1.7, 
+        fontSize: 'var(--block-font-size, inherit)', 
+        lineHeight: 'var(--block-line-height, 1.7)', 
+        letterSpacing: 'var(--block-letter-spacing, normal)',
+        fontWeight: 'var(--block-font-weight, normal)',
         color: 'inherit',
         whiteSpace: 'pre-wrap',
         wordBreak: 'break-word',

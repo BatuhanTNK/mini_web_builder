@@ -10,8 +10,13 @@ import ConfirmDialog from '../components/shared/ConfirmDialog';
 export default function Builder() {
   const { siteId } = useParams();
   const navigate = useNavigate();
-  const { site, loading, saving, hasUnsavedChanges, fetchSite, saveSite, togglePublish, updateSiteLocal, selectBlock } = useBuilderStore();
+  const { 
+    site, loading, saving, hasUnsavedChanges, 
+    fetchSite, saveSite, togglePublish, updateSiteLocal, 
+    selectBlock, undo, redo, duplicateBlock, removeBlock, moveBlock, selectedBlockId 
+  } = useBuilderStore();
   const [activeTab, setActiveTab] = useState('blocks');
+  const [previewDevice, setPreviewDevice] = useState('mobile');
   const [saved, setSaved] = useState(false);
   const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const [rightPanelVisible, setRightPanelVisible] = useState(true);
@@ -21,6 +26,67 @@ export default function Builder() {
   useEffect(() => {
     fetchSite(siteId);
   }, [siteId]);
+
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ignore if focus is in an input or textarea
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable) {
+        // Exception for Ctrl+Z/Y/Shift+Z even in inputs? Usually best to let native handle it there
+        return;
+      }
+
+      const isCtrl = e.ctrlKey || e.metaKey;
+      const key = e.key.toLowerCase();
+
+      // Undo: Ctrl+Z
+      if (isCtrl && key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      }
+      // Redo: Ctrl+Y or Ctrl+Shift+Z
+      if ((isCtrl && key === 'y') || (isCtrl && e.shiftKey && key === 'z')) {
+        e.preventDefault();
+        redo();
+      }
+      // Duplicate: Ctrl+D
+      if (isCtrl && key === 'd') {
+        if (selectedBlockId) {
+          e.preventDefault();
+          duplicateBlock(selectedBlockId);
+        }
+      }
+      // Delete: Delete or Backspace
+      if (key === 'delete' || key === 'backspace') {
+        if (selectedBlockId) {
+          e.preventDefault();
+          if (window.confirm('Bu bloğu silmek istediğinizden emin misiniz?')) {
+            removeBlock(selectedBlockId);
+          }
+        }
+      }
+      // Move: Up/Down Arrows
+      if (key === 'arrowup') {
+        if (selectedBlockId) {
+          e.preventDefault();
+          moveBlock(selectedBlockId, 'up');
+        }
+      }
+      if (key === 'arrowdown') {
+        if (selectedBlockId) {
+          e.preventDefault();
+          moveBlock(selectedBlockId, 'down');
+        }
+      }
+      // Deselect: Escape
+      if (key === 'escape') {
+        selectBlock(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [undo, redo, duplicateBlock, removeBlock, moveBlock, selectedBlockId, selectBlock]);
 
   // Warn user before leaving page with unsaved changes
   useEffect(() => {
@@ -166,7 +232,43 @@ export default function Builder() {
           </button>
         </div>
 
+        {isPreviewMode && (
+          <div className="builder__device-selector">
+            <button 
+              className={`builder__device-btn ${previewDevice === 'mobile' ? 'active' : ''}`}
+              onClick={() => setPreviewDevice('mobile')}
+              title="Mobil Görünüm"
+            >📱</button>
+            <button 
+              className={`builder__device-btn ${previewDevice === 'tablet' ? 'active' : ''}`}
+              onClick={() => setPreviewDevice('tablet')}
+              title="Tablet Görünüm"
+            >Tablet</button>
+            <button 
+              className={`builder__device-btn ${previewDevice === 'desktop' ? 'active' : ''}`}
+              onClick={() => setPreviewDevice('desktop')}
+              title="Masaüstü Görünüm"
+            >🖥️</button>
+          </div>
+        )}
+
         <div className="builder__topbar-right">
+          {/* Undo/Redo Buttons */}
+          {!isPreviewMode && (
+            <div className="builder__history-btns">
+              <button 
+                className="builder__history-btn" 
+                onClick={undo}
+                title="Geri Al (Ctrl+Z)"
+              >↩️</button>
+              <button 
+                className="builder__history-btn" 
+                onClick={redo}
+                title="İleri Al (Ctrl+Y)"
+              >↪️</button>
+              <div className="builder__topbar-divider" />
+            </div>
+          )}
           {/* Sidebar Toggle Buttons */}
           {showLeft && (
             <button
@@ -248,11 +350,17 @@ export default function Builder() {
 
         {/* Center: Canvas */}
         <main className={`builder__center builder__panel--active ${isPreviewMode ? 'builder__center--preview' : 'builder__center--edit'}`}>
-          <div className="builder__canvas-wrapper">
+          <div className={`builder__canvas-wrapper builder__canvas-wrapper--${previewDevice}`}>
             {isPreviewMode ? (
-              <MobileFrame>
-                <Canvas />
-              </MobileFrame>
+              previewDevice === 'mobile' ? (
+                <MobileFrame>
+                  <Canvas />
+                </MobileFrame>
+              ) : (
+                <div className={`builder__preview-frame builder__preview-frame--${previewDevice}`}>
+                  <Canvas />
+                </div>
+              )
             ) : (
               <div className="builder__canvas-edit">
                 <Canvas />
@@ -262,7 +370,9 @@ export default function Builder() {
           <div className="builder__canvas-footer">
             <span className="builder__canvas-url">🔗 {siteUrl}</span>
             <span className="builder__canvas-info">
-              {isPreviewMode ? '📱 Mobil Önizleme (480px)' : '🖥️ Düzenleme Modu'}
+              {isPreviewMode 
+                ? `${previewDevice === 'mobile' ? '📱 Mobil' : previewDevice === 'tablet' ? 'Tablet' : '🖥️ Masaüstü'} Önizleme` 
+                : '🖥️ Düzenleme Modu'}
             </span>
           </div>
         </main>
