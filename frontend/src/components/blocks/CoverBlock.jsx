@@ -91,7 +91,7 @@ export default function CoverBlock({ data }) {
           </p>
         )}
         
-        {ctaText && (
+        {data.showButton !== false && ctaText && (
           <div style={{ marginTop: '16px' }}>
             <a href={ctaLink || '#'} target="_blank" rel="noreferrer" style={{
               display: 'inline-block',

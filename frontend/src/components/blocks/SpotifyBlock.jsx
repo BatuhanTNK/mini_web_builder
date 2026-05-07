@@ -1,10 +1,9 @@
-export default function SpotifyBlock({ data = {} }) {
+export default function SpotifyBlock({ data = {}, isBuilder }) {
   const { spotifyUrl = '', compact = false } = data;
 
   const getEmbedUrl = (url) => {
     if (!url) return '';
     // Convert spotify URLs to embed format
-    // https://open.spotify.com/track/xxx -> https://open.spotify.com/embed/track/xxx
     const match = url.match(/open\.spotify\.com\/(track|album|playlist|episode|show)\/([a-zA-Z0-9]+)/);
     if (match) {
       return `https://open.spotify.com/embed/${match[1]}/${match[2]}`;
@@ -28,7 +27,7 @@ export default function SpotifyBlock({ data = {} }) {
   }
 
   return (
-    <div className="spotify-block">
+    <div className="spotify-block" style={{ position: 'relative' }}>
       <iframe
         src={embedUrl}
         width="100%"
@@ -38,6 +37,15 @@ export default function SpotifyBlock({ data = {} }) {
         loading="lazy"
         style={{ borderRadius: '12px' }}
       />
+      {isBuilder && (
+        <div 
+          style={{ 
+            position: 'absolute', 
+            top: 0, left: 0, right: 0, bottom: 0, 
+            zIndex: 10, cursor: 'pointer' 
+          }} 
+        />
+      )}
     </div>
   );
 }

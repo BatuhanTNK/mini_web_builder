@@ -4,6 +4,7 @@ import { useBuilderStore } from '../../store/builderStore';
 import ImageUploader from '../shared/ImageUploader';
 import BackgroundUploader from '../shared/BackgroundUploader';
 import ProfileAvatarUploader from '../shared/ProfileAvatarUploader';
+import VideoUploader from '../shared/VideoUploader';
 import EmojiPicker from 'emoji-picker-react';
 
 // ─── Emoji Picker Field ───────────────────────────────────────────────────────
@@ -988,7 +989,6 @@ function CountdownForm({ block, updateBlock }) {
     label: 'Etkinliğe Kalan Süre', showDays: true,
     labelColor: 'rgba(255,255,255,0.8)',
     style: 'card', expiredMessage: 'Kampanya Sona Erdi!', hideOnExpire: false,
-    labelColor: 'rgba(255,255,255,0.8)',
     boxBg: 'rgba(255,255,255,0.1)',
     numberColor: '#ffffff',
     unitLabelColor: 'rgba(255,255,255,0.6)',
@@ -1137,8 +1137,11 @@ function VideoForm({ block, updateBlock }) {
   const d = block.data;
   return (
     <>
-      <Field label="Video URL">
-        <input className="property-panel__input" value={d.videoUrl || ''} onChange={e => updateBlock(block.id, { videoUrl: e.target.value })} placeholder="YouTube veya Vimeo linki..." />
+      <Field label="Video URL veya Dosya">
+        <VideoUploader value={d.videoUrl || ''} onChange={v => updateBlock(block.id, { videoUrl: v })} />
+        <div style={{ marginTop: '8px' }}>
+          <input className="property-panel__input" value={d.videoUrl || ''} onChange={e => updateBlock(block.id, { videoUrl: e.target.value })} placeholder="Veya YouTube/Vimeo linki yapıştırın..." />
+        </div>
       </Field>
       <Field label="En-Boy Oranı">
         <select className="property-panel__select" value={d.aspectRatio || '16/9'} onChange={e => updateBlock(block.id, { aspectRatio: e.target.value })}>
@@ -1859,6 +1862,14 @@ function FAQForm({ block, updateBlock }) {
 
   return (
     <>
+      <Field label="Kategori Başlığı (Opsiyonel)">
+        <input 
+          className="property-panel__input" 
+          value={d.title || ''} 
+          onChange={e => updateBlock(block.id, { title: e.target.value })} 
+          placeholder="Örn: Sipariş ve Teslimat" 
+        />
+      </Field>
       {/* ── Sorular ── */}
       <div className="property-panel__list-header">
         <span>Sorular ({items.length})</span>
@@ -2342,61 +2353,113 @@ function ContactFormForm({ block, updateBlock }) {
 
 function CoverForm({ block, updateBlock }) {
   const d = block.data;
+  const defaults = {
+    title: 'Amazing Cover Title',
+    subtitle: 'This is a beautiful cover section.',
+    badgeText: 'Featured',
+    ctaText: 'Learn More',
+    ctaLink: '#',
+    textColor: '#ffffff',
+    buttonColor: '#f2f2f2',
+    buttonTextColor: '#1a1a1a',
+    alignment: 'center',
+    showButton: true
+  };
+
   return (
     <>
-      <Field label="Başlık"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="48 HOURS IN CHICAGO" /></Field>
-      <Field label="Alt Başlık"><input className="property-panel__input" value={d.subtitle || ''} onChange={e => updateBlock(block.id, { subtitle: e.target.value })} placeholder="Food & Architecture" /></Field>
-      <Field label="Rozet/Etiket"><input className="property-panel__input" value={d.badgeText || ''} onChange={e => updateBlock(block.id, { badgeText: e.target.value })} placeholder="Weekend Guide" /></Field>
-      <Field label="Arka Plan Görseli"><ImageUploader value={d.bgImage || ''} onChange={v => updateBlock(block.id, { bgImage: v })} label="Kapak" /></Field>
-      <Field label="Buton Metni"><input className="property-panel__input" value={d.ctaText || ''} onChange={e => updateBlock(block.id, { ctaText: e.target.value })} placeholder="Get Itinerary" /></Field>
-      <Field label="Buton URL"><input className="property-panel__input" value={d.ctaLink || ''} onChange={e => updateBlock(block.id, { ctaLink: e.target.value })} placeholder="#" /></Field>
-      <Field label="Yazı Rengi"><ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} /></Field>
-      <Field label="Buton Arka Plan Rengi"><ColorRow value={d.buttonColor || '#f2f2f2'} onChange={v => updateBlock(block.id, { buttonColor: v })} /></Field>
-      <Field label="Buton Yazı Rengi"><ColorRow value={d.buttonTextColor || '#1a1a1a'} onChange={v => updateBlock(block.id, { buttonTextColor: v })} /></Field>
-      <Field label="Örtü (Overlay) Rengi"><ColorRow value={d.overlayColor || '#000000'} onChange={v => updateBlock(block.id, { overlayColor: v })} /></Field>
-      <Field label="Örtü Saydamlığı (0-1)"><input className="property-panel__input" type="number" step="0.1" min="0" max="1" value={d.overlayOpacity || 0} onChange={e => updateBlock(block.id, { overlayOpacity: parseFloat(e.target.value) })} /></Field>
-      <Field label="Hizalama"><AlignRow value={d.alignment || 'center'} onChange={v => updateBlock(block.id, { alignment: v })} /></Field>
+      <Field label="Başlık" onReset={() => updateBlock(block.id, { title: defaults.title })}>
+        <input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="BAŞLIK" />
+      </Field>
+      <Field label="Alt Başlık" onReset={() => updateBlock(block.id, { subtitle: defaults.subtitle })}>
+        <input className="property-panel__input" value={d.subtitle || ''} onChange={e => updateBlock(block.id, { subtitle: e.target.value })} placeholder="Alt başlık..." />
+      </Field>
+      <Field label="Rozet/Etiket" onReset={() => updateBlock(block.id, { badgeText: defaults.badgeText })}>
+        <input className="property-panel__input" value={d.badgeText || ''} onChange={e => updateBlock(block.id, { badgeText: e.target.value })} placeholder="Etiket..." />
+      </Field>
+      <Field label="Yazı Rengi" onReset={() => updateBlock(block.id, { textColor: defaults.textColor })}>
+        <ColorRow value={d.textColor || '#ffffff'} onChange={v => updateBlock(block.id, { textColor: v })} />
+      </Field>
+      <Field label="Hizalama" onReset={() => updateBlock(block.id, { alignment: defaults.alignment })}>
+        <AlignRow value={d.alignment || 'center'} onChange={v => updateBlock(block.id, { alignment: v })} />
+      </Field>
+
+      <div className="property-panel__divider" />
+      
+      <Field label="Buton Göster">
+        <ToggleRow value={d.showButton !== false} onChange={v => updateBlock(block.id, { showButton: v })} />
+      </Field>
+
+      {d.showButton !== false && (
+        <>
+          <Field label="Buton Metni" onReset={() => updateBlock(block.id, { ctaText: defaults.ctaText })}>
+            <input className="property-panel__input" value={d.ctaText || ''} onChange={e => updateBlock(block.id, { ctaText: e.target.value })} placeholder="Buton metni..." />
+          </Field>
+          <Field label="Buton URL" onReset={() => updateBlock(block.id, { ctaLink: defaults.ctaLink })}>
+            <input className="property-panel__input" value={d.ctaLink || ''} onChange={e => updateBlock(block.id, { ctaLink: e.target.value })} placeholder="https://..." />
+          </Field>
+          <Field label="Buton Arka Plan" onReset={() => updateBlock(block.id, { buttonColor: defaults.buttonColor })}>
+            <ColorRow value={d.buttonColor || '#f2f2f2'} onChange={v => updateBlock(block.id, { buttonColor: v })} />
+          </Field>
+          <Field label="Buton Yazı Rengi" onReset={() => updateBlock(block.id, { buttonTextColor: defaults.buttonTextColor })}>
+            <ColorRow value={d.buttonTextColor || '#1a1a1a'} onChange={v => updateBlock(block.id, { buttonTextColor: v })} />
+          </Field>
+        </>
+      )}
     </>
   );
 }
 
 function TimelineForm({ block, updateBlock }) {
   const d = block.data;
-  const cards = d.cards || [];
+  // Support both 'items' (new) and 'cards' (legacy)
+  const items = d.items || d.cards || [];
 
-  const updateCard = (index, field, value) => {
-    const newCards = cards.map((c, i) => i === index ? { ...c, [field]: value } : c);
-    updateBlock(block.id, { cards: newCards });
+  const updateItem = (index, field, value) => {
+    const newItems = items.map((item, i) => i === index ? { ...item, [field]: value } : item);
+    // Standardize on 'items' going forward
+    updateBlock(block.id, { items: newItems, cards: undefined });
   };
 
-  const addCard = () => {
-    updateBlock(block.id, { cards: [...cards, { time: '10:00 AM', title: 'Yeni Etkinlik', bgColor: '#6366f1', textColor: '#ffffff' }] });
+  const addItem = () => {
+    const newItem = { title: 'Yeni Adım', description: 'Açıklama...', time: '' };
+    updateBlock(block.id, { items: [...items, newItem], cards: undefined });
   };
 
-  const removeCard = (index) => {
-    updateBlock(block.id, { cards: cards.filter((_, i) => i !== index) });
+  const removeItem = (index) => {
+    updateBlock(block.id, { items: items.filter((_, i) => i !== index), cards: undefined });
   };
 
   return (
     <>
-      <Field label="Bölüm Başlığı"><input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Day 1" /></Field>
-      <Field label="Başlık Rengi"><ColorRow value={d.titleColor || '#ffffff'} onChange={v => updateBlock(block.id, { titleColor: v })} /></Field>
+      <Field label="Bölüm Başlığı">
+        <input className="property-panel__input" value={d.title || ''} onChange={e => updateBlock(block.id, { title: e.target.value })} placeholder="Süreç Başlığı" />
+      </Field>
+      <Field label="Başlık Rengi">
+        <ColorRow value={d.titleColor || 'var(--site-text, #ffffff)'} onChange={v => updateBlock(block.id, { titleColor: v })} />
+      </Field>
+      <Field label="Vurgu Rengi">
+        <ColorRow value={d.accentColor || '#6366f1'} onChange={v => updateBlock(block.id, { accentColor: v })} />
+      </Field>
       <div className="property-panel__list-header">
-        <span>Kartlar ({cards.length})</span>
-        <button className="property-panel__add-btn" onClick={addCard}>+ Ekle</button>
+        <span>Süreç Adımları ({items.length})</span>
+        <button className="property-panel__add-btn" onClick={addItem}>+ Ekle</button>
       </div>
-      {cards.map((c, i) => (
+      {items.map((item, i) => (
         <div key={i} className="property-panel__list-item">
           <div className="property-panel__list-item-header">
-            <span>{c.time || `Kart ${i + 1}`}</span>
-            <button className="property-panel__remove-btn" onClick={() => removeCard(i)}>✕</button>
+            <span>{item.title || `Adım ${i + 1}`}</span>
+            <button className="property-panel__remove-btn" onClick={() => removeItem(i)}>✕</button>
           </div>
-          <Field label="Zaman"><input className="property-panel__input" value={c.time || ''} onChange={e => updateCard(i, 'time', e.target.value)} placeholder="09:00 AM" /></Field>
-          <Field label="Başlık"><input className="property-panel__input" value={c.title || ''} onChange={e => updateCard(i, 'title', e.target.value)} placeholder="Aktivite..." /></Field>
-          <Field label="Açıklama"><textarea className="property-panel__textarea" rows={2} value={c.description || ''} onChange={e => updateCard(i, 'description', e.target.value)} placeholder="Açıklama" /></Field>
-          <Field label="Arka Plan Rengi"><ColorRow value={c.bgColor || '#6366f1'} onChange={v => updateCard(i, 'bgColor', v)} /></Field>
-          <Field label="Yazı Rengi"><ColorRow value={c.textColor || '#ffffff'} onChange={v => updateCard(i, 'textColor', v)} /></Field>
-          <Field label="Görsel"><ImageUploader value={c.image || ''} onChange={v => updateCard(i, 'image', v)} label="Kart Görseli" /></Field>
+          <Field label="Başlık">
+            <input className="property-panel__input" value={item.title || ''} onChange={e => updateItem(i, 'title', e.target.value)} placeholder="Adım başlığı..." />
+          </Field>
+          <Field label="Açıklama">
+            <textarea className="property-panel__textarea" rows={2} value={item.description || ''} onChange={e => updateItem(i, 'description', e.target.value)} placeholder="Süreç detayı..." />
+          </Field>
+          <Field label="Görsel">
+            <ImageUploader value={item.image || ''} onChange={v => updateItem(i, 'image', v)} label="Adım Görseli" />
+          </Field>
         </div>
       ))}
     </>

@@ -225,8 +225,12 @@ export default function PublicSite() {
               overflow: (block.rounded === false || block.borderRadius != null) && block.type !== 'profile' ? 'hidden' : undefined,
               animation: animationName ? `${animationName} 0.6s ease-out both` : undefined,
             };
-            // Dark mode aktifken textColor'u çözülmüş renkle override et
-            const blockData = theme.darkMode
+            // Dark mode aktifken textColor'u çözülmüş renkle override et, 
+            // ANCAK bloğun kendi özel arka planı (görsel, gradyan veya düz renk) varsa orijinal rengi koru.
+            const hasOwnBg = block.data.bgImage || block.data.bgGradient || (block.data.bgColor && block.data.bgColor !== 'transparent') || (block.data.bannerColor && block.data.bannerColor !== 'transparent') || (block.data.containerBg && block.data.containerBg !== 'transparent');
+            const isSelfContained = ['hero', 'cover', 'video', 'map', 'profile'].includes(block.type) || hasOwnBg;
+
+            const blockData = (theme.darkMode && !isSelfContained)
               ? { ...block.data, textColor: resolvedText }
               : block.data;
             return (
@@ -235,7 +239,7 @@ export default function PublicSite() {
                 className={`public-site__block ${block.rounded === false ? 'public-site__block--square' : ''}`}
                 style={blockStyle}
               >
-                <BlockComponent data={blockData} />
+                <BlockComponent data={blockData} isDarkMode={isDark} />
               </div>
             );
           })}

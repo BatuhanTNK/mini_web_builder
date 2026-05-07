@@ -12,7 +12,7 @@ export default function Builder() {
   const navigate = useNavigate();
   const { 
     site, loading, saving, hasUnsavedChanges, 
-    fetchSite, saveSite, togglePublish, updateSiteLocal, 
+    fetchSite, saveSite, togglePublish, updateSiteLocal, updateTheme,
     selectBlock, undo, redo, duplicateBlock, removeBlock, moveBlock, selectedBlockId 
   } = useBuilderStore();
   const [activeTab, setActiveTab] = useState('blocks');
@@ -249,6 +249,14 @@ export default function Builder() {
               onClick={() => setPreviewDevice('desktop')}
               title="Masaüstü Görünüm"
             >🖥️</button>
+            <div className="builder__topbar-divider" />
+            <button 
+              className={`builder__device-btn ${site.theme?.darkMode ? 'active' : ''}`}
+              onClick={() => updateTheme({ darkMode: !site.theme?.darkMode })}
+              title={site.theme?.darkMode ? 'Aydınlık Moda Geç' : 'Karanlık Moda Geç'}
+            >
+              {site.theme?.darkMode ? '🌙' : '☀️'}
+            </button>
           </div>
         )}
 
@@ -256,6 +264,14 @@ export default function Builder() {
           {/* Undo/Redo Buttons */}
           {!isPreviewMode && (
             <div className="builder__history-btns">
+              <button 
+                className={`builder__history-btn ${site.theme?.darkMode ? 'active' : ''}`}
+                onClick={() => updateTheme({ darkMode: !site.theme?.darkMode })}
+                title={site.theme?.darkMode ? 'Aydınlık Moda Geç' : 'Karanlık Moda Geç'}
+              >
+                {site.theme?.darkMode ? '🌙' : '☀️'}
+              </button>
+              <div className="builder__topbar-divider" />
               <button 
                 className="builder__history-btn" 
                 onClick={undo}

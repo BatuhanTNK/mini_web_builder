@@ -24,7 +24,7 @@ const MiniSite = sequelize.define('MiniSite', {
   },
   slug: {
     type: DataTypes.STRING(255),
-    unique: true,
+    unique: 'mini_sites_slug_unique',
     set(value) {
       this.setDataValue('slug', value ? value.toLowerCase().trim() : value);
     }
@@ -83,11 +83,7 @@ const MiniSite = sequelize.define('MiniSite', {
   }
 }, {
   tableName: 'mini_sites',
-  timestamps: true,
-  indexes: [
-    { fields: ['userId'] },
-    { unique: true, fields: ['slug'] }
-  ]
+  timestamps: true
 });
 
 module.exports = MiniSite;

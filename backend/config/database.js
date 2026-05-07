@@ -34,7 +34,7 @@ const testConnection = async () => {
 
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log('✅ Veritabanı tabloları senkronize edildi');
   } catch (error) {
     console.error('❌ Tablo senkronizasyon hatası:', error.message);

@@ -173,8 +173,11 @@ function BlockWrapper({ block, isSelected, onSelect, onMove, onRemove, onToggleV
       {/* Block content */}
       <div className={`canvas-block__content ${!block.visible ? 'canvas-block__content--hidden' : ''}`}>
         <BlockComponent 
-          data={isDarkMode ? { ...block.data, textColor: resolvedText } : block.data} 
+          data={(isDarkMode && !(['hero', 'cover', 'video', 'map', 'profile'].includes(block.type) || block.data.bgImage || block.data.bgGradient || block.data.bgColor || block.data.bannerColor || block.data.containerBg)) 
+            ? { ...block.data, textColor: resolvedText } 
+            : block.data} 
           isDarkMode={isDarkMode}
+          isBuilder={true}
         />
       </div>
 
@@ -217,6 +220,7 @@ export default function Canvas() {
     '--site-primary': theme.primaryColor || '#6366f1',
     '--site-bg': resolvedBg,
     '--site-text': resolvedText,
+    '--site-border': isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
     '--site-font': theme.fontFamily || 'Inter',
     fontFamily: `var(--site-font), sans-serif`,
     backgroundColor: resolvedBg,

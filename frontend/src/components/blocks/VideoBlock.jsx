@@ -1,8 +1,10 @@
-export default function VideoBlock({ data = {} }) {
-  const { videoUrl = '', aspectRatio = '16/9', autoPlay = false, muted = true } = data;
+export default function VideoBlock({ data = {}, isBuilder }) {
+  const { videoUrl = '', aspectRatio = '16/9', autoPlay = false, muted = true, controls = true } = data;
+
+  const isDirectVideo = videoUrl.match(/\.(mp4|webm|ogg|mov|m4v)$/i) || videoUrl.startsWith('/uploads/video');
 
   const getEmbedUrl = (url) => {
-    if (!url) return '';
+    if (!url || isDirectVideo) return '';
     // YouTube
     const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
     if (ytMatch) {
@@ -25,28 +27,57 @@ export default function VideoBlock({ data = {} }) {
   const embedUrl = getEmbedUrl(videoUrl);
   const paddingTop = aspectRatio === '9/16' ? '177.77%' : aspectRatio === '1/1' ? '100%' : '56.25%';
 
-  if (!embedUrl) {
+  if (!videoUrl) {
     return (
       <div className="video-block video-block--empty">
         <div className="video-block__placeholder">
           <span className="video-block__icon">▶</span>
-          <p>Video URL ekleyin</p>
+          <p>Video URL ekleyin veya yükleyin</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="video-block">
+    <div className="video-block" style={{ position: 'relative' }}>
       <div className="video-block__wrapper" style={{ paddingTop }}>
-        <iframe
-          src={embedUrl}
-          className="video-block__iframe"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          loading="lazy"
-        />
+        {isDirectVideo ? (
+          <video
+            src={videoUrl}
+            className="video-block__video"
+            autoPlay={autoPlay}
+            muted={muted}
+            controls={controls}
+            playsInline
+            loop
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+          />
+        ) : (
+          <iframe
+            src={embedUrl}
+            className="video-block__iframe"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+          />
+        )}
       </div>
+      {isBuilder && (
+        <div 
+          style={{ 
+            position: 'absolute', 
+            top: 0, left: 0, right: 0, bottom: 0, 
+            zIndex: 10, cursor: 'pointer' 
+          }} 
+        />
+      )}
     </div>
   );
 }

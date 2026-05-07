@@ -153,7 +153,7 @@ const DEFAULT_BLOCK_DATA = {
     originalPriceColor: 'rgba(255,255,255,0.4)',
   },
   video: {
-    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', aspectRatio: '16/9', autoPlay: false
+    videoUrl: '', aspectRatio: '16/9', autoPlay: false, controls: true
   },
   map: {
     locationType: 'address', address: 'New York, USA', lat: 40.7128, lng: -74.0060, zoom: 13, height: 300
@@ -283,7 +283,8 @@ const DEFAULT_BLOCK_DATA = {
   cover: {
     title: 'Amazing Cover Title', subtitle: 'This is a beautiful cover section.',
     badgeText: 'Featured', bgImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920',
-    ctaText: 'Learn More', ctaLink: '#', textColor: '#ffffff', overlayOpacity: 0.5, overlayColor: '#000000', alignment: 'center'
+    ctaText: 'Learn More', ctaLink: '#', textColor: '#ffffff', overlayOpacity: 0.5, overlayColor: '#000000', alignment: 'center',
+    showButton: true
   },
   timeline: {
     title: 'Project Timeline',
@@ -347,8 +348,8 @@ const templateDefinitions = {
         { platform: 'twitter', url: 'https://twitter.com/eceyildiz' },
         { platform: 'pinterest', url: 'https://pinterest.com/eceyildiz' }
       ],
-      iconBgColor: 'rgba(255,255,255,0.06)',
-      iconBorderColor: 'rgba(255,255,255,0.12)',
+      iconBgColor: '#000000',
+      iconBorderColor: '#ffffff',
       iconBorderWidth: 2
     }, 2),
 
@@ -372,14 +373,18 @@ const templateDefinitions = {
   ],
 
   digital_card: () => [
-    // 1) Profile - Professional Business Identity
+    // 1) Profile - Professional Business Identity (Premium Dark)
     makeBlock('profile', {
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop',
       name: 'Dr. Selin Yılmaz',
       title: 'Yönetim Danışmanı & Mentor',
       bio: 'Şirketlerin dijital dönüşüm süreçlerine rehberlik ediyorum. 15 yıllık sektör deneyimi ile stratejik çözüm ortağınız.',
       shape: 'circle',
-      bannerColor: 'linear-gradient(135deg, #0f172a 0%, #334155 100%)',
+      textColor: '#ffffff',
+      bannerColor: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+      haloEnabled: true,
+      haloColor1: '#3b82f6',
+      haloColor2: '#1d4ed8',
       verifiedBadge: true
     }, 0),
 
@@ -392,46 +397,50 @@ const templateDefinitions = {
       email: 'selin@syconsulting.com',
       website: 'https://selinyilmaz.com',
       downloadable: true,
-      btnBg: '#0f172a',
-      btnTextColor: '#ffffff'
+      avatarBg: 'transparent',
+      btnBg: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+      btnTextColor: '#ffffff',
+      nameColor: '#ffffff',
+      textColor: 'rgba(255,255,255,0.7)',
+      iconColor: '#3b82f6'
     }, 1),
 
     // 3) Link List - Professional Connections
     makeBlock('link_list', {
       links: [
-        { label: 'Resmi Web Sitesi', url: '#', icon: '🌐', color: '#0f172a' },
+        { label: 'Resmi Web Sitesi', url: '#', icon: '🌐', color: '#3b82f6' },
         { label: 'LinkedIn Profili', url: '#', icon: '💼', color: '#0077b5' },
         { label: 'Medium Blog', url: '#', icon: '📝', color: '#000000' }
-      ]
+      ],
+      size: 'lg',
+      borderRadius: 12,
+      fontWeight: '600'
     }, 2),
 
-    // 4) Checklist - Hizmet Alanları
-    makeBlock('checklist', {
-      title: 'Uzmanlık Alanlarım',
-      checkColor: '#0f172a',
-      items: [
-        { text: 'Dijital Dönüşüm Stratejileri' },
-        { text: 'Liderlik ve Yönetim Eğitimi' },
-        { text: 'Süreç Optimizasyonu' },
-        { text: 'Yapay Zeka Entegrasyonu' }
-      ]
+    // 4) Social Icons - Digital Presence
+    makeBlock('social_icons', {
+      socials: [
+        { platform: 'instagram', url: '#' },
+        { platform: 'twitter', url: '#' },
+        { platform: 'linkedin', url: '#' }
+      ],
+      iconBgColor: 'rgba(255,255,255,0.03)',
+      iconBorderColor: 'rgba(128,128,128,0.2)'
     }, 3),
 
-    // 5) Map - Ofis Konumu
-    makeBlock('map', {
-      address: 'Levent, Beşiktaş, İstanbul',
-      lat: 41.0772,
-      lng: 29.0124,
-      zoom: 14,
-      height: 200
+    // 5) Text - Professional Bio
+    makeBlock('text', {
+      content: '<p style="text-align:center; opacity:0.8;">Vizyoner liderlik ve dijital strateji konularında uzmanlaşmış, global ölçekte projeler yöneten bir danışman olarak, markanızın geleceğini birlikte inşa ediyoruz.</p>',
+      alignment: 'center',
+      fontSize: 'md'
     }, 4),
 
-    // 6) Button - Hızlı İletişim
+    // 6) Button - Action
     makeBlock('button', {
-      label: 'WhatsApp ile Mesaj Gönder',
+      label: 'Hemen İletişime Geç',
       url: 'https://wa.me/905329876543',
       style: 'filled',
-      color: '#25D366',
+      color: '#3b82f6',
       textColor: '#ffffff',
       icon: '💬',
       target: '_blank'
@@ -439,121 +448,196 @@ const templateDefinitions = {
   ],
 
   restaurant: () => [
-    // 1) Premium Cover - Fine Dining Atmosphere
+    // 1) Luxury Cover
     makeBlock('cover', {
-      title: 'L’Artiste Bistro',
-      subtitle: 'Modern Fransız Mutfağı & Unutulmaz Bir Gastronomi Deneyimi',
-      badgeText: 'MICHELIN SEÇKİSİ • 2024',
-      bgImage: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop',
-      ctaText: 'Menüyü Keşfet',
-      ctaLink: '#menu',
+      title: 'THE IRON GRILL',
+      subtitle: 'Premium Steakhouse & Craft Bar Experience',
+      badgeText: 'EST. 1994 • AWARD WINNING',
+      bgImage: 'https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2070&auto=format&fit=crop',
+      ctaText: 'MASA REZERVASYONU',
+      ctaLink: '#reserve',
       textColor: '#ffffff',
-      overlayOpacity: 0.5,
-      overlayColor: '#0a0a0a',
+      overlayOpacity: 0.65,
+      overlayColor: '#000000',
       alignment: 'center',
-      buttonColor: '#c2410c', // Elegant orange/brown
+      buttonColor: '#991b1b',
       buttonTextColor: '#ffffff',
-      minHeight: '85vh'
+      minHeight: '100vh'
     }, 0),
 
-    // 2) Hero - Hoşgeldiniz & Çalışma Saatleri
+    // 2) Welcome Hero
     makeBlock('hero', {
-      title: 'Lezzet Sanatla Buluşuyor',
-      subtitle: 'Her gün 12:00 - 23:00 saatleri arasında hizmetinizdeyiz.',
-      accentWord: 'Sanatla',
-      accentColor: '#c2410c',
-      bgColor: '#0f0f0f',
+      title: 'Ateşin ve Lezzetin Buluşma Noktası',
+      subtitle: 'Kusursuz mermerleşmiş özel kesim etlerimiz, uzman kasaplarımızın ustalığı ve modern steakhouse dokunuşlarıyla unutulmaz bir lezzet şölenine davetlisiniz.',
+      accentWord: 'Ateşin',
+      accentColor: '#991b1b',
+      bgColor: '#111827',
+      bgGradient: true,
+      gradientColor1: '#0f172a',
+      gradientColor2: '#000000',
       textColor: '#ffffff',
       alignment: 'center'
     }, 1),
 
-    // 3) Checklist - Neden Biz?
-    makeBlock('checklist', {
-      title: 'Ayrıcalıklı Deneyim',
-      checkColor: '#c2410c',
-      items: [
-        { text: '🌿 %100 Organik ve Mevsimsel Ürünler' },
-        { text: '🍷 Zengin Şarap Kavı ve Tadım Menüleri' },
-        { text: '🎶 Akşamları Canlı Piyano Performansı' },
-        { text: '🚗 Ücretsiz Vale ve Otopark Hizmeti' }
-      ]
-    }, 2),
-
-    // 4) Menu - Gurme Seçenekler
+    // 3) Expanded Gourmet Menu
     makeBlock('menu', {
+      title: 'GURME SEÇENEKLERİMİZ',
       categories: [
         {
-          name: 'Başlangıçlar',
-          icon: '🥟',
+          name: 'Başlangıçlar & Atıştırmalıklar',
+          icon: '🥘',
+          image: 'https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=600',
           subcategories: [
             {
-              name: 'Sıcak & Soğuk',
+              name: 'Soğuk Başlangıçlar',
+              image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=600',
               items: [
-                { name: 'Trüflü Burrata', price: '450', description: 'Taze roka, balsamik inci ve trüf yağı ile', image: 'https://images.unsplash.com/photo-1600335895229-6e75511892c8?q=80&w=200&auto=format&fit=crop' },
-                { name: 'Izgara Ahtapot', price: '680', description: 'İsli patates püresi ve chimichurri sos ile', image: 'https://images.unsplash.com/photo-1594041680534-e8c8cdebd679?q=80&w=200&auto=format&fit=crop' }
+                { name: 'Dana Carpaccio', price: '520', description: 'Trüf mayonez, parmesan ve roka ile', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200' },
+                { name: 'Somon Tartar', price: '480', description: 'Avokado püresi ve kapari sos eşliğinde', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=200' }
+              ]
+            },
+            {
+              name: 'Sıcak Başlangıçlar',
+              image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=600',
+              items: [
+                { name: 'İlikli Kemik', price: '390', description: 'Sarımsaklı ekşi maya ekmek ve deniz tuzu ile', image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=200' },
+                { name: 'Izgara Hellim', price: '280', description: 'Nar ekşisi ve taze nane ile', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=200' }
               ]
             }
           ]
         },
         {
-          name: 'Ana Yemekler',
+          name: 'Ana Yemekler (Steakhouse)',
           icon: '🥩',
+          image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=600',
           subcategories: [
             {
-              name: 'Et & Deniz Ürünleri',
+              name: 'Özel Kesim Etler',
+              image: 'https://images.unsplash.com/photo-1603048297172-c92544798d5e?q=80&w=600',
               items: [
-                { name: 'Dana Bonfile', price: '1.200', description: 'Madagaskar biber sosu ve kuşkonmaz eşliğinde', image: 'https://images.unsplash.com/photo-1546241072-48010ad28c2c?q=80&w=200&auto=format&fit=crop' },
-                { name: 'Levrek Fileto', price: '890', description: 'Limonlu tereyağı sosu ve safranlı risotto ile', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=200&auto=format&fit=crop' }
+                { name: 'Dallas Steak (500g)', price: '1.450', description: 'Kendi suyunda dinlendirilmiş, kemikli antrikot', image: 'https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?q=80&w=200' },
+                { name: 'T-Bone Steak (600g)', price: '1.680', description: 'Bonfile ve antrikotun muhteşem uyumu', image: 'https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=200' },
+                { name: 'Kuzu Kafes', price: '1.250', description: 'Taze kekik ve biberiye ile mühürlenmiş', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=200' }
+              ]
+            },
+            {
+              name: 'İmza Burgerler',
+              image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600',
+              items: [
+                { name: 'Iron Grill Burger', price: '420', description: '180g dana köfte, karamelize soğan, cheddar ve özel sos', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=200' },
+                { name: 'Tütsülenmiş Burger', price: '460', description: 'Füme kaburga eti ve barbekü sos ile', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=200' }
+              ]
+            }
+          ]
+        },
+        {
+          name: 'Tatlılar & Kapanış',
+          icon: '🍰',
+          image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=600',
+          subcategories: [
+            {
+              name: 'Tatlılar',
+              image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=600',
+              items: [
+                { name: 'Sıcak Çikolatalı Sufle', price: '240', description: 'Vanilyalı dondurma eşliğinde', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=200' },
+                { name: 'San Sebastian Cheesecake', price: '220', description: 'Belçika çikolatası sosu ile', image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=200' }
+              ]
+            }
+          ]
+        },
+        {
+          name: 'İçecekler',
+          icon: '🥤',
+          image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=600',
+          subcategories: [
+            {
+              name: 'Sıcak İçecekler',
+              image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600',
+              items: [
+                { name: 'Americano', price: '120', description: 'Yumuşak içimli, taze çekilmiş çekirdeklerden', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=200' },
+                { name: 'Türk Kahvesi', price: '95', description: 'Geleneksel sunumu ve çifte kavrulmuş tadıyla', image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?q=80&w=200' },
+                { name: 'Demleme Siyah Çay', price: '45', description: 'Rize yaylalarından taze harman', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=200' }
+              ]
+            },
+            {
+              name: 'Soğuk İçecekler',
+              image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600',
+              items: [
+                { name: 'Ev Yapımı Limonata', price: '110', description: 'Taze nane ve bal ile tatlandırılmış', image: 'https://images.unsplash.com/photo-1523473827533-2a64d0d36748?q=80&w=200' },
+                { name: 'Taze Portakal Suyu', price: '135', description: 'Günlük sıkılmış, %100 doğal', image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?q=80&w=200' },
+                { name: 'San Pellegrino (750ml)', price: '185', description: 'Doğal mineralli su', image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=200' }
               ]
             }
           ]
         }
       ],
-      themeColor: '#c2410c',
+      themeColor: '#991b1b',
       cardBg: 'rgba(255,255,255,0.03)',
       nameColor: '#ffffff',
-      priceColor: '#c2410c'
-    }, 3),
+      priceColor: '#ca8a04'
+    }, 2),
 
-    // 5) Image Gallery - Mekan & Tabaklar
+    // 4) Atmosphere Gallery
     makeBlock('image_gallery', {
       images: [
-        { src: 'https://images.unsplash.com/photo-1550966841-3ee390234720?q=80&w=800&auto=format&fit=crop', alt: 'İç Mekan Tasarımı' },
-        { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=800&auto=format&fit=crop', alt: 'Sunum Detayı' },
-        { src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800&auto=format&fit=crop', alt: 'Şarap Kavı' },
-        { src: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800&auto=format&fit=crop', alt: 'Bar Alanı' }
+        { src: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800', alt: 'Ateş Üstünde Mühürleme' },
+        { src: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?q=80&w=800', alt: 'Mutfak Sanatı' },
+        { src: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=800', alt: 'Zarif Sunum' },
+        { src: 'https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?q=80&w=800', alt: 'Premium Dinlendirilmiş Etler' }
       ],
       columns: 2,
-      gap: '10px',
+      gap: '15px',
       borderRadius: '12px'
-    }, 4),
-    // 6) Profile - Şefimiz
+    }, 3),
+
+    // 5) Executive Chef
     makeBlock('profile', {
-      avatar: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=400&auto=format&fit=crop', 
-      name: 'Chef Julian Rossi',
-      title: 'Executive Chef',
-      bio: 'Michelin yıldızlı mutfaklarda yetişen Şef Rossi, geleneksel Fransız tekniklerini modern dokunuşlarla harmanlıyor.',
-      shape: 'circle'
+      avatar: 'https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?q=80&w=400', 
+      name: 'Şef Marco Vieri',
+      title: 'Mutfak Direktörü',
+      bio: 'Steakhouse kültürünü Avrupa teknikleriyle birleştiren Şef Vieri, THE IRON GRILL mutfağının ruhunu oluşturuyor.',
+      shape: 'circle',
+      textColor: '#ffffff',
+      bannerColor: '#1a1a1a',
+      haloEnabled: true,
+      haloColor1: '#991b1b',
+      haloColor2: '#ca8a04',
+      verifiedBadge: true
+    }, 4),
+
+    // 6) Map & Location
+    makeBlock('map', {
+      address: 'Zorlu Center, Beşiktaş, İstanbul',
+      lat: 41.0667,
+      lng: 29.0167,
+      zoom: 16,
+      height: 300,
+      borderRadius: '12px'
     }, 5),
 
-    // 7) Map - Konum
-    makeBlock('map', {
-      address: 'Nişantaşı, Şişli, İstanbul',
-      lat: 41.0519,
-      lng: 28.9904,
-      zoom: 15,
-      height: 250
+    // 7) Social Presence
+    makeBlock('social_icons', {
+      socials: [
+        { platform: 'instagram', url: '#' },
+        { platform: 'facebook', url: '#' },
+        { platform: 'twitter', url: '#' },
+        { platform: 'youtube', url: '#' }
+      ],
+      iconBgColor: 'rgba(255,255,255,0.05)',
+      iconBorderColor: 'rgba(153,27,27,0.3)'
     }, 6),
 
-    // 8) Button - Rezervasyon
+    // 8) Action Button
     makeBlock('button', {
-      label: 'Rezervasyon Yap (WhatsApp)',
-      url: 'https://wa.me/905551234567?text=Merhaba%2C%20ak%C5%9Fam%20i%C3%A7in%20rezervasyon%20yapt%C4%B1rmak%20istiyorum.',
+      label: 'WHATSAPP REZERVASYON',
+      url: 'https://wa.me/905550000000',
       style: 'filled',
-      color: '#c2410c',
+      color: '#991b1b',
       textColor: '#ffffff',
-      icon: '🍴',
-      target: '_blank'
+      icon: '🥩',
+      target: '_blank',
+      animation: 'bounce',
+      hoverEffect: 'grow'
     }, 7)
   ],
 
@@ -647,108 +731,97 @@ const templateDefinitions = {
   ],
 
   portfolio: () => [
-    // 1) Cover - Professional Intro
+    // 1) Minimalist Cover - First Impression
     makeBlock('cover', {
-      title: 'Mert Demir',
-      subtitle: 'Senior Full-Stack Developer & UI Designer',
-      badgeText: 'AÇIK PORTFÖY • 2024',
+      title: 'MERT DEMİR',
+      subtitle: 'Dijital Ürün Tasarımcısı & Full-Stack Geliştirici',
+      badgeText: 'KREATİF PORTFOLYO • 2024',
       bgImage: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop',
-      ctaText: 'Projelerimi Gör',
+      ctaText: 'Projelerimi Keşfet',
       ctaLink: '#projeler',
       textColor: '#ffffff',
-      overlayOpacity: 0.7,
+      overlayOpacity: 0.75,
       overlayColor: '#0f172a',
       alignment: 'center',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
-      minHeight: '80vh'
+      minHeight: '85vh'
     }, 0),
 
-    // 2) Hero - Misyon & Vizyon
-    makeBlock('hero', {
-      title: 'Kullanıcı Odaklı Dijital Deneyimler Tasarlıyorum',
-      subtitle: 'Karmaşık problemleri, basit ve estetik çözümlere dönüştürmek için buradayım.',
-      accentWord: 'Deneyimler',
-      accentColor: '#3b82f6',
-      bgColor: '#0f172a',
-      textColor: '#ffffff',
-      alignment: 'center'
-    }, 1),
-
-    // 3) Numbered List - Uzmanlık Alanları
-    makeBlock('numbered_list', {
-      items: [
-        { number: '01', title: 'Web Geliştirme', description: 'React, Next.js ve modern web teknolojileri ile hızlı uygulamalar.' },
-        { number: '02', title: 'UI/UX Tasarım', description: 'Kullanıcı dostu arayüzler ve etkileşimli prototipler.' },
-        { number: '03', title: 'Mobil Uygulama', description: 'React Native ile her iki platformda da kusursuz çalışan uygulamalar.' }
-      ],
-      accentColor: '#3b82f6'
-    }, 2),
-
-    // 4) Image Gallery - Portfolyo Projeleri
-    makeBlock('image_gallery', {
-      images: [
-        { src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop', alt: 'Fintech Dashboard' },
-        { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop', alt: 'E-Ticaret Platformu' },
-        { src: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop', alt: 'Mobil Sağlık Uygulaması' },
-        { src: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=2070&auto=format&fit=crop', alt: 'Veri Analiz Paneli' }
-      ],
-      columns: 2,
-      gap: '12px',
-      borderRadius: '16px'
-    }, 3),
-
-    // 5) Checklist - Yetenek Seti
-    makeBlock('checklist', {
-      title: 'Teknik Yetkinlikler',
-      checkColor: '#3b82f6',
-      items: [
-        { text: 'Proficient in JavaScript (ES6+), TypeScript' },
-        { text: 'Expert in React.js, Next.js, Redux' },
-        { text: 'Backend: Node.js, Express, MongoDB' },
-        { text: 'Design tools: Figma, Adobe XD' },
-        { text: 'DevOps: Docker, CI/CD, AWS' }
-      ]
-    }, 4),
-
-    // 6) Timeline - Deneyim Yolculuğu
-    makeBlock('timeline', {
-      title: 'İş Deneyimi',
-      cards: [
-        { time: '2021 - Günümüz', title: 'Senior Developer @ TechCorp', description: 'Büyük ölçekli web uygulamalarının mimarisi ve ekip liderliği.', bgColor: '#3b82f6', textColor: '#ffffff' },
-        { time: '2018 - 2021', title: 'Full-Stack Developer @ StartupX', description: 'Sıfırdan ürün geliştirme ve pazar genişletme süreçleri.', bgColor: '#1d4ed8', textColor: '#ffffff' },
-        { time: '2016 - 2018', title: 'Frontend Developer @ AgencyX', description: 'Modern ve responsive arayüz tasarımları.', bgColor: '#1e3a8a', textColor: '#ffffff' }
-      ]
-    }, 5),
-
-    // 7) Profile - Hakkımda Detay
+    // 2) Profile - Expertise & Bio
     makeBlock('profile', {
       avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1974&auto=format&fit=crop', 
       name: 'Mert Demir',
-      title: 'Full-Stack Creator',
-      bio: 'Yazılım dünyasına olan tutkum, kullanıcıların hayatını kolaylaştıran dijital ürünler tasarlamamı sağlıyor. Her projede yeni bir şeyler öğrenmeyi ve sınırları zorlamayı seviyorum.',
-      shape: 'circle'
+      title: 'Senior Full-Stack Creator',
+      bio: '10 yılı aşkın süredir markaların dijital dönüşüm süreçlerine liderlik ediyorum. Estetik ve fonksiyonelliği bir araya getiren, ölçeklenebilir çözümler üretiyorum.',
+      shape: 'circle',
+      verifiedBadge: true
+    }, 1),
+
+    // 3) Hero - Key Statement
+    makeBlock('hero', {
+      title: 'Karmaşıklığı Basitliğe Dönüştürüyorum',
+      subtitle: 'Kullanıcı dostu arayüzler ve güçlü backend mimarileri ile işinizi bir üst seviyeye taşıyın.',
+      accentWord: 'Basitliğe',
+      accentColor: '#3b82f6',
+      alignment: 'center'
+    }, 2),
+
+    // 4) Numbered List - Expertise
+    makeBlock('numbered_list', {
+      title: 'Neler Sunuyorum?',
+      items: [
+        { number: '01', title: 'Stratejik Tasarım', description: 'Kullanıcı araştırması ve veri analizi odaklı modern UI/UX çözümleri.' },
+        { number: '02', title: 'Modern Web Mimarisi', description: 'Next.js ve React ile SEO dostu, yüksek performanslı web uygulamaları.' },
+        { number: '03', title: 'Mobil Çözümler', description: 'iOS ve Android platformlarında kusursuz çalışan hibrit uygulamalar.' }
+      ],
+      accentColor: '#3b82f6'
+    }, 3),
+
+    // 5) Image Gallery - Case Studies
+    makeBlock('image_gallery', {
+      title: 'Seçili Projeler',
+      images: [
+        { src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop', alt: 'Fintech App' },
+        { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop', alt: 'E-Commerce' },
+        { src: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop', alt: 'Health Platform' },
+        { src: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=800&auto=format&fit=crop', alt: 'Data Analytics' }
+      ],
+      columns: 2,
+      gap: 16,
+      borderRadius: 20
+    }, 4),
+
+    // 6) Timeline - Professional Journey
+    makeBlock('timeline', {
+      title: 'Kariyer Yolculuğum',
+      items: [
+        { title: 'Senior Developer @ TechCorp', description: 'Global ölçekli projelerin mimari tasarımı ve teknik liderlik.' },
+        { title: 'Product Designer @ DesignStudio', description: 'Kullanıcı deneyimi odaklı arayüz tasarımları ve prototipleme.' },
+        { title: 'Full-Stack Developer @ StartupX', description: 'MVP aşamasından ölçeklenebilir ürünlere geçiş süreçleri.' }
+      ],
+      accentColor: '#3b82f6'
+    }, 5),
+
+    // 7) Contact Form - Get in Touch
+    makeBlock('contact_form', {
+      title: 'Birlikte Çalışalım',
+      subtitle: 'Projeniz hakkında konuşmak veya sadece selam vermek için bana ulaşın.',
+      buttonText: 'Mesaj Gönder',
+      buttonColor: '#3b82f6'
     }, 6),
 
-    // 8) Link List - Sosyal Medya & Linkler
-    makeBlock('link_list', {
-      links: [
-        { label: 'GitHub', url: 'https://github.com/mertdemir', icon: '💻', color: '#333' },
-        { label: 'LinkedIn', url: 'https://linkedin.com/in/mertdemir', icon: '💼', color: '#0077b5' },
-        { label: 'Dribbble', url: 'https://dribbble.com/mertdemir', icon: '🎨', color: '#ea4c89' }
-      ]
-    }, 7),
-
-    // 9) Button - İletişim & CV
-    makeBlock('button', {
-      label: 'CV İndir (PDF)',
-      url: '#',
+    // 8) Social Icons - Network
+    makeBlock('social_icons', {
+      icons: [
+        { type: 'linkedin', url: 'https://linkedin.com' },
+        { type: 'github', url: 'https://github.com' },
+        { type: 'instagram', url: 'https://instagram.com' }
+      ],
+      alignment: 'center',
       style: 'filled',
-      color: '#3b82f6',
-      textColor: '#ffffff',
-      icon: '📄',
-      target: '_blank'
-    }, 8)
+      color: '#3b82f6'
+    }, 7)
   ],
 
   e_commerce: () => [
@@ -1272,7 +1345,7 @@ const templateDefinitions = {
 
     // 2) Video - Eğitim Tanıtımı
     makeBlock('video', {
-      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      videoUrl: '',
       autoplay: false,
       controls: true
     }, 1),
@@ -1353,67 +1426,83 @@ const templateDefinitions = {
   faq_support: () => [
     // 1) Hero - Modern Help Center Header
     makeBlock('hero', {
-      title: 'Müşteri Destek Merkezi',
-      subtitle: 'Sorularınıza en hızlı çözümü bulmak için buradayız. Aşağıdaki sıkça sorulan soruları inceleyebilir veya bizimle iletişime geçebilirsiniz.',
-      accentWord: 'Destek',
+      title: 'Size Nasıl Yardımcı Olabiliriz?',
+      subtitle: 'Sorularınıza en hızlı çözümü bulmak için hazırladığımız yardım merkezine hoş geldiniz. Kategorilere göz atarak aradığınız cevabı bulabilirsiniz.',
+      accentWord: 'Yardımcı',
       accentColor: '#3b82f6',
-      bgColor: '#f8fafc',
-      textColor: '#0f172a',
+      // bgColor ve textColor bırakıldı, Canvas'tan gelen tema renklerini kullanacak
       alignment: 'center'
     }, 0),
 
-    // 2) FAQ - Categorized Questions
+    // 2) FAQ - Sipariş & Teslimat
     makeBlock('faq', {
+      title: '📦 Sipariş ve Teslimat',
       items: [
-        { question: 'Kargom ne zaman ulaşır?', answer: 'Siparişleriniz genellikle 24 saat içinde kargoya verilir ve 1-3 iş günü içinde adresinize ulaşır.' },
-        { question: 'İade sürecini nasıl başlatırım?', answer: 'Profilinizdeki "Siparişlerim" bölümünden kolayca iade talebi oluşturabilirsiniz.' },
-        { question: 'Taksit seçenekleri nelerdir?', answer: 'Tüm kredi kartlarına vade farksız 3, toplamda 12 aya varan taksit seçenekleri sunuyoruz.' }
+        { question: 'Kargom ne zaman ulaşır?', answer: 'Siparişleriniz genellikle 24 saat içinde kargoya verilir ve bulunduğunuz bölgeye göre 1-3 iş günü içinde adresinize ulaşır.' },
+        { question: 'Kargo takibini nasıl yaparım?', answer: 'Siparişiniz kargoya verildiğinde size bir takip numarası gönderilecektir. Bu numara ile kargo firmasının sitesinden takip yapabilirsiniz.' },
+        { question: 'Aynı gün teslimat seçeneği var mı?', answer: 'İstanbul içi seçili bölgelerde saat 12:00\'den önce verilen siparişlerde aynı gün teslimat seçeneği sunulmaktadır.' }
       ],
-      activeBg: 'rgba(59,130,246,0.05)',
-      iconColor: '#3b82f6'
+      iconColor: '#3b82f6',
+      questionColor: 'var(--site-text)',
+      answerColor: 'var(--site-text)',
+      borderColor: 'rgba(255,255,255,0.12)' // Bu değer FaqBlock'ta otomatik çözülecek
     }, 1),
 
-    // 3) Link List - Contact Channels
+    // 3) FAQ - Ödeme & İade
+    makeBlock('faq', {
+      title: '💳 Ödeme ve İade',
+      items: [
+        { question: 'Hangi ödeme yöntemleri geçerli?', answer: 'Tüm banka ve kredi kartları ile ödeme yapabilirsiniz. Ayrıca havale/EFT seçeneğimiz de mevcuttur.' },
+        { question: 'İade sürecini nasıl başlatırım?', answer: 'Ürünü teslim aldığınız tarihten itibaren 14 gün içinde orijinal kutusuyla birlikte iade edebilirsiniz.' },
+        { question: 'Geri ödeme ne zaman yapılır?', answer: 'İade onaylandıktan sonra 3-5 iş günü içerisinde tutar kartınıza iade edilir.' }
+      ],
+      iconColor: '#3b82f6',
+      questionColor: 'var(--site-text)',
+      answerColor: 'var(--site-text)',
+      borderColor: 'rgba(255,255,255,0.12)'
+    }, 2),
+
+    // 4) Link List - Hızlı İletişim Kanalları
     makeBlock('link_list', {
       links: [
         { label: 'WhatsApp Canlı Destek', url: 'https://wa.me/905551234567', icon: '💬', color: '#25D366' },
         { label: 'E-Posta Gönder', url: 'mailto:destek@firma.com', icon: '📧', color: '#3b82f6' },
-        { label: 'Kargo Takip', url: '#', icon: '📦', color: '#64748b' }
+        { label: 'Kullanım Kılavuzları', url: '#', icon: '📚', color: '#64748b' }
       ],
       size: 'md',
       borderRadius: 12,
       fontWeight: 'bold',
       hoverEffect: 'lift'
-    }, 2),
+    }, 3),
 
-    // 4) Button - Secondary Action
+    // 5) Button - Destek Talebi
     makeBlock('button', {
       label: 'Destek Talebi Oluştur',
       url: '#',
-      style: 'outline',
+      style: 'filled',
       color: '#3b82f6',
-      textColor: '#3b82f6',
+      textColor: '#ffffff',
       icon: '🎫',
       target: '_blank'
-    }, 3)
+    }, 4)
   ],
 
   personal_trainer: () => [
     // 1) Premium Cover - Motivation & Grit
     makeBlock('cover', {
-      title: 'SINIRLARINI ZORLA',
-      subtitle: 'Kişiye özel antrenman ve beslenme planlarıyla hayalindeki forma kavuş.',
-      badgeText: 'ONLINE KOÇLUK • 2024',
+      title: 'HAYALİNDEKİ FORMA KAVUŞ',
+      subtitle: 'Kişiye özel antrenman ve beslenme planlarıyla sınırlarını beraber aşalım.',
+      badgeText: 'PROFESYONEL KOÇLUK • 2024',
       bgImage: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop',
       ctaText: 'Değişime Başla',
-      ctaLink: '#paketler',
+      ctaLink: '#hakkimda',
       textColor: '#ffffff',
-      overlayOpacity: 0.6,
+      overlayOpacity: 0.65,
       overlayColor: '#000000',
       alignment: 'center',
       buttonColor: '#ef4444',
       buttonTextColor: '#ffffff',
-      minHeight: '80vh'
+      minHeight: '85vh'
     }, 0),
 
     // 2) Profile - Expert Trainer
@@ -1426,43 +1515,65 @@ const templateDefinitions = {
       verifiedBadge: true
     }, 1),
 
-    // 3) Numbered List - Değişim Süreci
-    makeBlock('numbered_list', {
-      items: [
-        { number: '01', title: 'Analiz', description: 'Form ve postür analizi ile mevcut durumunu belirliyoruz.' },
-        { number: '02', title: 'Planlama', description: 'Sana özel antrenman ve sürdürülebilir beslenme programı.' },
-        { number: '03', title: 'Takip', description: 'Haftalık kontroller ve anlık WhatsApp desteği ile gelişimini izliyoruz.' }
-      ],
-      accentColor: '#ef4444'
+    // 3) Hero - Tanıtım Başlığı
+    makeBlock('hero', {
+      title: 'Neden Benimle Çalışmalısın?',
+      subtitle: 'Bilimsel temelli antrenman metodolojisi ve sürdürülebilir beslenme ile kalıcı sonuçlar almanı sağlıyorum.',
+      accentWord: 'Çalışmalısın?',
+      accentColor: '#ef4444',
+      alignment: 'center'
     }, 2),
 
-    // 4) Product Card - Online Koçluk
-    makeBlock('product_card', {
-      image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=600&auto=format&fit=crop',
-      name: 'Aylık Online Koçluk',
-      description: 'Kişiye özel antrenman, kalori takibi, haftalık form kontrolü ve 7/24 soru-cevap.',
-      price: '1.500',
-      originalPrice: '2.000',
-      currency: '₺',
-      showButton: true,
-      buttonText: 'Hemen Başla',
-      buyUrl: '#',
-      buttonColor: '#ef4444',
-      buttonTextColor: '#ffffff',
-      priceColor: '#ef4444',
-      cardBg: 'rgba(255,255,255,0.04)'
+    // 4) Timeline - Değişim Süreci
+    makeBlock('timeline', {
+      title: 'Nasıl Başlıyoruz?',
+      items: [
+        { title: 'Ücretsiz Ön Görüşme', description: 'Hedeflerini, yaşam tarzını ve beklentilerini anlamak için kısa bir tanışma toplantısı yapıyoruz.' },
+        { title: 'Kapsamlı Analiz', description: 'Vücut kompozisyonu, postür analizi ve spor geçmişini detaylıca inceliyoruz.' },
+        { title: 'Kişiye Özel Planlama', description: 'Sadece sana özel, yaşam tarzına uygun ve sürdürülebilir antrenman/beslenme programını hazırlıyorum.' },
+        { title: 'Uygulama & Eğitim', description: 'Program detaylarını mobil uygulama üzerinden videolu anlatımlarla ve teknik detaylarla paylaşıyorum.' },
+        { title: 'Haftalık Takip & Güncelleme', description: 'Form fotoğrafların ve performans verilerin ışığında programı her hafta optimize ediyoruz.' },
+        { title: 'Kesintisiz Destek', description: 'Tüm soruların için 7/24 WhatsApp üzerinden doğrudan benimle iletişimde kalıyorsun.' }
+      ],
+      accentColor: '#ef4444'
     }, 3),
 
-    // 5) Button - Hızlı İletişim
+    // 5) Image Gallery - Başarı Hikayeleri
+    makeBlock('image_gallery', {
+      images: [
+        { src: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop', alt: 'Antrenman' },
+        { src: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop', alt: 'Beslenme' },
+        { src: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop', alt: 'Değişim 1' },
+        { src: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=800&auto=format&fit=crop', alt: 'Değişim 2' }
+      ],
+      columns: 2,
+      gap: 12,
+      borderRadius: 16
+    }, 4),
+
+    // 6) Checklist - Paket İçeriği
+    makeBlock('checklist', {
+      title: 'Koçluk Paketine Neler Dahil?',
+      checkColor: '#ef4444',
+      items: [
+        { text: 'Kişiye Özel Antrenman Programı' },
+        { text: 'Makro-Mikro Beslenme Planı' },
+        { text: '7/24 WhatsApp Soru-Cevap Desteği' },
+        { text: 'Haftalık Görüntülü Form Kontrolü' },
+        { text: 'Supplement Danışmanlığı' }
+      ]
+    }, 5),
+
+    // 7) Button - WhatsApp Bilgi Al
     makeBlock('button', {
-      label: 'Ücretsiz Ön Görüşme Yap',
-      url: 'https://wa.me/905551234567',
+      label: 'WhatsApp ile Bilgi Al',
+      url: 'https://wa.me/905551234567?text=Merhaba!%20Online%20ko%C3%A7luk%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.',
       style: 'filled',
       color: '#25D366',
       textColor: '#ffffff',
       icon: '💬',
       target: '_blank'
-    }, 4)
+    }, 6)
   ],
 
   pdf_lead: () => [
@@ -1600,12 +1711,14 @@ const templateThemes = {
     darkMode: true,
   },
   digital_card: {
-    primaryColor: '#0f172a',
-    backgroundColor: '#f8fafc',
-    textColor: '#0f172a',
-    fontFamily: 'Outfit',
-    backgroundType: 'solid',
-    darkMode: false,
+    primaryColor: '#3b82f6',
+    backgroundColor: '#0f172a',
+    textColor: '#ffffff',
+    fontFamily: 'Inter',
+    backgroundType: 'gradient',
+    gradientFrom: '#0f172a',
+    gradientTo: '#1e293b',
+    darkMode: true,
   },
   restaurant: {
     primaryColor: '#c2410c',
@@ -1629,8 +1742,12 @@ const templateThemes = {
   },
   portfolio: {
     primaryColor: '#3b82f6',
-    backgroundColor: '#0f172a',
-    textColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    textColor: '#0f172a',
+    lightBg: '#ffffff',
+    lightText: '#0f172a',
+    darkBg: '#0f172a',
+    darkText: '#ffffff',
     fontFamily: 'Inter',
     backgroundType: 'gradient',
     gradientFrom: '#0f172a',
@@ -1679,16 +1796,24 @@ const templateThemes = {
   },
   faq_support: {
     primaryColor: '#3b82f6',
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#ffffff',
     textColor: '#0f172a',
+    lightBg: '#ffffff',
+    lightText: '#0f172a',
+    darkBg: '#0f0f13',
+    darkText: '#ffffff',
     fontFamily: 'Inter',
     backgroundType: 'solid',
-    darkMode: false,
+    darkMode: true,
   },
   personal_trainer: {
     primaryColor: '#ef4444',
-    backgroundColor: '#0a0a0a',
-    textColor: '#ffffff',
+    backgroundColor: '#ffffff',
+    textColor: '#0f172a',
+    lightBg: '#ffffff',
+    lightText: '#0f172a',
+    darkBg: '#0a0a0a',
+    darkText: '#ffffff',
     fontFamily: 'Inter',
     backgroundType: 'gradient',
     gradientFrom: '#0a0a0a',

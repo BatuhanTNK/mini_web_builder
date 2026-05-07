@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function MenuBlock({ data = {} }) {
+export default function MenuBlock({ data = {}, isDarkMode }) {
   const {
     title = 'Menü',
     categories = [],
@@ -23,6 +23,15 @@ export default function MenuBlock({ data = {} }) {
 
   const [nav, setNav] = useState({ level: 0 });
 
+  // Theme-aware color resolution
+  const resolved = {
+    titleColor: titleColor === '#ffffff' && !isDarkMode ? 'var(--site-text)' : titleColor,
+    cardNameColor: cardNameColor === '#ffffff' && !isDarkMode ? 'var(--site-text)' : cardNameColor,
+    cardSubColor: cardSubColor === 'rgba(255,255,255,0.5)' && !isDarkMode ? 'rgba(0,0,0,0.5)' : cardSubColor,
+    itemNameColor: itemNameColor === '#ffffff' && !isDarkMode ? 'var(--site-text)' : itemNameColor,
+    itemDescColor: itemDescColor === 'rgba(255,255,255,0.6)' && !isDarkMode ? 'rgba(0,0,0,0.6)' : itemDescColor,
+  };
+
   const current = {
     category: nav.catIdx != null ? categories[nav.catIdx] : null,
     subcategory: nav.subIdx != null && nav.catIdx != null
@@ -36,7 +45,7 @@ export default function MenuBlock({ data = {} }) {
 
   const containerStyle = {
     borderRadius: 16, overflow: 'hidden',
-    backgroundColor: containerBg,
+    backgroundColor: containerBg === 'rgba(255,255,255,0.04)' && !isDarkMode ? 'rgba(0,0,0,0.04)' : containerBg,
     padding: 16, fontFamily: 'inherit',
   };
 
@@ -47,17 +56,22 @@ export default function MenuBlock({ data = {} }) {
   };
 
   const backBtnStyle = {
-    background: backBtnBg, border: 'none', color: backBtnColor,
+    background: backBtnBg === 'rgba(255,255,255,0.08)' && !isDarkMode ? 'rgba(0,0,0,0.08)' : backBtnBg, 
+    border: 'none', 
+    color: backBtnColor === '#ffffff' && !isDarkMode ? 'var(--site-text)' : backBtnColor,
     padding: '6px 12px', borderRadius: 8, fontSize: 13,
     cursor: 'pointer', fontWeight: 600,
   };
 
-  const titleStyle = { margin: 0, fontSize: 20, fontWeight: 700, flex: 1, color: titleColor };
+  const titleStyle = { 
+    margin: 0, fontSize: 20, fontWeight: 700, flex: 1, 
+    color: titleColor === '#ffffff' && !isDarkMode ? 'var(--site-text)' : titleColor 
+  };
 
   const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 };
 
   const cardStyle = {
-    background: cardBg,
+    background: cardBg === 'rgba(255,255,255,0.06)' && !isDarkMode ? 'rgba(0,0,0,0.03)' : cardBg,
     border: `1px solid ${cardBorder}`,
     borderRadius: 12, padding: 14,
     cursor: 'pointer', textAlign: 'center',
@@ -67,7 +81,8 @@ export default function MenuBlock({ data = {} }) {
   const cardImgBoxStyle = {
     width: '100%', height: 80,
     objectFit: 'cover', borderRadius: 8,
-    marginBottom: 8, background: cardImageBg,
+    marginBottom: 8, 
+    background: cardImageBg === 'rgba(255,255,255,0.08)' && !isDarkMode ? 'rgba(0,0,0,0.05)' : cardImageBg,
   };
 
   const itemRowStyle = {
@@ -77,7 +92,8 @@ export default function MenuBlock({ data = {} }) {
 
   const itemImgStyle = {
     width: 60, height: 60, objectFit: 'cover',
-    borderRadius: 8, flexShrink: 0, background: cardImageBg,
+    borderRadius: 8, flexShrink: 0, 
+    background: cardImageBg === 'rgba(255,255,255,0.08)' && !isDarkMode ? 'rgba(0,0,0,0.05)' : cardImageBg,
   };
 
   // ─── Level 0: Kategoriler
@@ -88,7 +104,7 @@ export default function MenuBlock({ data = {} }) {
           <h3 style={titleStyle}>{title}</h3>
         </div>
         {categories.length === 0 ? (
-          <div style={{ opacity: 0.5, textAlign: 'center', padding: 20, color: cardSubColor }}>
+          <div style={{ opacity: 0.5, textAlign: 'center', padding: 20, color: resolved.cardSubColor }}>
             Henüz kategori yok
           </div>
         ) : (
@@ -102,8 +118,8 @@ export default function MenuBlock({ data = {} }) {
                     {cat.icon || '🍽️'}
                   </div>
                 )}
-                <div style={{ fontSize: 14, fontWeight: 600, color: cardNameColor }}>{cat.name}</div>
-                <div style={{ fontSize: 11, color: cardSubColor, marginTop: 2 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: resolved.cardNameColor }}>{cat.name}</div>
+                <div style={{ fontSize: 11, color: resolved.cardSubColor, marginTop: 2 }}>
                   {(cat.subcategories?.length || 0)} alt kategori
                 </div>
               </div>
@@ -124,7 +140,7 @@ export default function MenuBlock({ data = {} }) {
           <h3 style={titleStyle}>{current.category.name}</h3>
         </div>
         {subs.length === 0 ? (
-          <div style={{ opacity: 0.5, textAlign: 'center', padding: 20, color: cardSubColor }}>
+          <div style={{ opacity: 0.5, textAlign: 'center', padding: 20, color: resolved.cardSubColor }}>
             Alt kategori yok
           </div>
         ) : (
@@ -138,8 +154,8 @@ export default function MenuBlock({ data = {} }) {
                     {sub.icon || '🥂'}
                   </div>
                 )}
-                <div style={{ fontSize: 14, fontWeight: 600, color: cardNameColor }}>{sub.name}</div>
-                <div style={{ fontSize: 11, color: cardSubColor, marginTop: 2 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: resolved.cardNameColor }}>{sub.name}</div>
+                <div style={{ fontSize: 11, color: resolved.cardSubColor, marginTop: 2 }}>
                   {(sub.items?.length || 0)} ürün
                 </div>
               </div>
@@ -172,7 +188,7 @@ export default function MenuBlock({ data = {} }) {
                 )}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: itemNameColor }}>{item.name}</div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: resolved.itemNameColor }}>{item.name}</div>
                     {item.price && (
                       <div style={{ fontSize: 15, fontWeight: 700, color: accentColor, whiteSpace: 'nowrap' }}>
                         {item.price}{currency}
@@ -180,7 +196,7 @@ export default function MenuBlock({ data = {} }) {
                     )}
                   </div>
                   {item.description && (
-                    <div style={{ fontSize: 12, color: itemDescColor, marginTop: 3, lineHeight: 1.4 }}>
+                    <div style={{ fontSize: 12, color: resolved.itemDescColor, marginTop: 3, lineHeight: 1.4 }}>
                       {item.description}
                     </div>
                   )}

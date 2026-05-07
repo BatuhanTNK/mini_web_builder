@@ -447,21 +447,22 @@
 .vcard-block__header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   margin-bottom: 20px;
 }
 .vcard-block__avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
   background: var(--site-primary, #6366f1);
   color: #fff;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .vcard-block__info { flex: 1; }
 .vcard-block__name { font-size: 18px; font-weight: 800; }

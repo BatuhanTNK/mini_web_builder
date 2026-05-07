@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-export default function FAQBlock({ data = {} }) {
+export default function FAQBlock({ data = {}, isDarkMode }) {
   const {
     items = [],
+    title = '',
     // Renkler
     questionColor = '#ffffff',
     answerColor = 'rgba(255,255,255,0.65)',
@@ -12,6 +13,12 @@ export default function FAQBlock({ data = {} }) {
   } = data;
 
   const [openIndex, setOpenIndex] = useState(null);
+
+  const resolved = {
+    questionColor: (questionColor === '#ffffff' || questionColor === 'var(--site-text)') ? 'var(--site-text)' : questionColor,
+    answerColor: (answerColor === 'rgba(255,255,255,0.65)' || answerColor === 'var(--site-text)') ? 'var(--site-text)' : answerColor,
+    borderColor: (borderColor === 'rgba(255,255,255,0.12)') ? 'var(--site-border, rgba(0,0,0,0.1))' : borderColor,
+  };
 
   const toggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -27,13 +34,24 @@ export default function FAQBlock({ data = {} }) {
 
   return (
     <div style={{ width: '100%' }}>
+      {title && (
+        <h3 style={{ 
+          margin: '0 0 16px', 
+          fontSize: '18px', 
+          fontWeight: 700, 
+          color: resolved.questionColor,
+          padding: '0 8px'
+        }}>
+          {title}
+        </h3>
+      )}
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
           <div
             key={index}
             style={{
-              borderBottom: `1px solid ${borderColor}`,
+              borderBottom: `1px solid ${resolved.borderColor}`,
               background: isOpen ? activeBg : 'transparent',
               borderRadius: isOpen ? '8px' : '0',
               transition: 'background 0.2s',
@@ -57,7 +75,7 @@ export default function FAQBlock({ data = {} }) {
               <span style={{
                 fontSize: '15px',
                 fontWeight: 600,
-                color: questionColor,
+                color: resolved.questionColor,
                 lineHeight: 1.4,
                 flex: 1,
               }}>
@@ -89,7 +107,7 @@ export default function FAQBlock({ data = {} }) {
                 padding: '0 16px 16px',
                 fontSize: '14px',
                 lineHeight: 1.7,
-                color: answerColor,
+                color: resolved.answerColor,
               }}>
                 {item.answer}
               </p>
